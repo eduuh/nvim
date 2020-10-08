@@ -9,7 +9,7 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 " Provides asynchronous execution.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 " nvim ui{{{

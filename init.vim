@@ -79,11 +79,14 @@ augroup END
 
 " -------------------------Load files --------------------------"
 "
-source ~/.config/nvim/plugins.vim
 source ~/.config/nvim/mappings.vim
-
+source ~/.config/nvim/settings.vim
+source ~/.config/nvim/plugins.vim
 
 set noshowmode
 set shortmess+=F  " to get rid of the file name displayed in the command line bar
 set shortmess+=I         "hide splash screen 
+
+
+
  

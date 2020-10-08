@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/home/eduuh'
+let g:netrw_dirhist_6='/home/eduuh/repos/proglearning/.git'
+let g:netrw_dirhist_5='/home/eduuh/.tmux'
+let g:netrw_dirhist_4='/home/eduuh/repos/blog'
+let g:netrw_dirhist_3='/home/eduuh/repos'
+let g:netrw_dirhist_2='/home/eduuh/.config'
+let g:netrw_dirhist_1='/etc/conf.d'
+let g:netrw_dirhist_0='/etc'
+let g:netrw_dirhist_9='/etc/conf.d'
+let g:netrw_dirhist_8='/etc'
