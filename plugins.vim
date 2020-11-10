@@ -33,7 +33,10 @@ Plug 'djoshea/vim-autoread'
 "Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-"Plug 'OmniSharp/omnisharp-vim'
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'nickspoons/vim-sharpenup'
+Plug 'airblade/vim-gitgutter'
+Plug 'jiangmiao/auto-pairs'
 "}}}
 " Git {{{
 " Plug 'airblade/vim-gitgutter'
@@ -46,6 +49,7 @@ Plug 'honza/vim-snippets' " tabular plugin is used to format tables
 Plug 'godlygeek/tabular' " JSON front matter highlight plugin
 Plug 'plasticboy/vim-markdown' " Markdown Previewing
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'alvan/vim-closetag'
 " }}}
 
 " Plugin --Editing {{{
@@ -65,8 +69,58 @@ Plug 'epilande/vim-react-snippets'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release' }
 let g:coc_global_extensions=['coc-eslint', 'coc-json', 'coc-tsserver', 'coc-omnisharp', 'coc-docker',  'coc-html' , 'coc-css' ,  'coc-jest', 'coc-snippets', 'coc-markdownlint']
 
+Plug 'markwoodhall/vim-nuget'
+" Bracket pair colorizer
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
 call plug#end()
+
+" Sharpenve {{{
+let g:sharpenup_map_prefix = ','
+" }}}
+" Autoclose Tag {{{
+" Took this directly from the Website
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,phtml'
+
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1
+
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+"
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ }
+
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
+" }}}
 
 " AutoSave Settings {{{
 let g:auto_save =1 "enable Autosave on Vim startupx

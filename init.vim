@@ -1,25 +1,20 @@
 " Author: @edwinmuraya
 " Spaces & Tabs {{{
-set tabstop=2     " number of visual spaces per TAB
-set softtabstop=2 " number of spaces in tab when editing
+set tabstop=4     " number of visual spaces per TAB
+set softtabstop=4 " number of spaces in tab when editing
 set expandtab     " turns <TAB's> into spaces.
 set shiftwidth=2
 set autoindent
 set smartindent
-set conceallevel=2
 set mouse=a
-set linebreak
 " change directory to the current buffer when opening files.
 " set autochdir
 " }}}
 " UI Layout {{{
 " set number
 " set relativenumber
-set updatetime=100       "Reduce swap-writing update time (better for vim-gutter) 
-" set cursorline    " highlight the current line
 set nocursorline
 set splitright | set splitbelow
-set ruler         " show the cursor position all the time
 set wildmenu  " Show a menu when using Tab completion
 set wildmode=longest,full            " Tab complete longest common string, then each full match.
 set showcmd
@@ -84,9 +79,10 @@ source ~/.config/nvim/settings.vim
 source ~/.config/nvim/plugins.vim
 
 set noshowmode
+set nowrap
 set shortmess+=F  " to get rid of the file name displayed in the command line bar
 set shortmess+=I         "hide splash screen 
 
-
+autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
 
  
