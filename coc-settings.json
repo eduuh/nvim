@@ -2,7 +2,6 @@
   "coc.preferences.formatOnSaveFiletypes": ["typescript", "javascript", "markdown" ],
   "prettier.singleQuote": true,
   "coc.preferences.formatOnType": false,
-  "markdownlint.onSave": true,
   "markdownlint.config": {
   "no-inline-html": false,
   "line-length": false
@@ -17,7 +16,6 @@
   "eslint.autoFixOnSave": false,
   "tsserver.formatOnType": false,
   "coc.preferences.formatOnInsertLeave": false,
-  "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips",
   "snippets.extends": {
     "typescript": ["javascript"]
   }

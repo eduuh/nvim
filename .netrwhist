@@ -1,5 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =5
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/media/data/repos/githubactions/readme.md'
+let g:netrw_dirhist_6='/media/data/repos/blog/content/en/workshops'
 let g:netrw_dirhist_5='/home/eduuh/.local/src/dwmblocks'
 let g:netrw_dirhist_4='/home/eduuh/.local/src'
 let g:netrw_dirhist_3='/home/eduuh/.local/src/dwmblocks'
@@ -8,5 +10,3 @@ let g:netrw_dirhist_1='/media/data/repos/oss/dwm-flexipatch/patch'
 let g:netrw_dirhist_0='/media/data/repos/surve-app/mng-node/middlewares'
 let g:netrw_dirhist_9='/media/data/repos/surve-app/mng-node'
 let g:netrw_dirhist_8='/media/data/repos/devconnector'
-let g:netrw_dirhist_7='/media/data/repos/dkutstuff/newtonreact'
-let g:netrw_dirhist_6='/media/data/repos/devconnector/clients/src/components'
