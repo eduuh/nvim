@@ -86,7 +86,7 @@ let mapleader=" "
   "source ~/.config/nvim/settings.vim
   "source ~/.config/nvim/plugins.vim
 
-  nnoremap <leader>t :split term://zsh<CR>
+  nnoremap <leader>t :split term://bash<CR>
   set noshowmode
   set wrap
   set linebreak
@@ -98,12 +98,11 @@ if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
 
-if exists('g:vscode')
+"if exists('g:vscode')
   nnoremap <leader>sp :setlocal spell! spelllang=en_us<cr>
   nnoremap gr <Cmd>call VSCodeNotify('editor.action.goToReferences')<CR>
-  nnoremap <leader>t <Cmd>call VSCodeNotify('workbench.action.terminal.toggleTerminal')<CR>
+" nnoremap <leader>t <Cmd>call VSCodeNotify('workbench.action.terminal.toggleTerminal')<CR>
 
-else
 
   if empty(glob('~/.config/nvim/autoload/plug.vim'))
     silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
@@ -591,10 +590,10 @@ command! -bang -nargs=* Rg
   " provide custom statusline: lightline.vim, vim-airline.
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}%{StatusDiagnostic()}
 
+
   set termguicolors
   colorscheme monokai_pro
   nmap ss :split<Return><C-w>w
   nmap sv :vsplit<Return><C-w>w
 
-endif
 
