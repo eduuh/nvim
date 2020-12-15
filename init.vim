@@ -173,7 +173,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'yasuhiroki/github-actions-yaml.vim'
 " nvim ui{{{
 Plug 'vim-airline/vim-airline'
-Plug 'vim-syntastic/syntastic'
+"Plug 'vim-syntastic/syntastic'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-git' " Git status column for defx
@@ -191,7 +191,7 @@ Plug 'djoshea/vim-autoread'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'OmniSharp/omnisharp-vim'
-Plug 'nickspoons/vim-sharpenup'
+"Plug 'nickspoons/vim-sharpenup'
 Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'
 "}}}
@@ -210,11 +210,13 @@ Plug 'alvan/vim-closetag'
 Plug 'sheerun/vim-polyglot'
 " }}}
 " Javascript snippets
+Plug 'dense-analysis/ale'
 Plug 'pangloss/vim-javascript' " JS syntax highlighting and indentation
 Plug 'leafgarland/typescript-vim' " TS syntax highlighting
 Plug 'maxmellon/vim-jsx-pretty' " JSX and TSX syntax highlighting
 Plug 'epilande/vim-es2015-snippets'
 Plug 'epilande/vim-react-snippets'
+Plug 'ctrlpvim/ctrlp.vim'
 " Conquer of Completion {{{
 "}}}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -222,6 +224,7 @@ let g:coc_global_extensions=['coc-eslint', 'coc-json', 'coc-tsserver', 'coc-omni
 " Bracket pair colorizer
 Plug 'luochen1990/rainbow'
 call plug#end()
+let g:OmniSharp_selector_ui = 'fzf'  " Use ctrlp.vim
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 " AutoSave Settings {{{
 let g:auto_save =1 "enable Autosave on Vim startupx
@@ -374,11 +377,11 @@ nmap <silent> gr <Plug>(coc-references)
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <leader>ca  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>cf  <Plug>(coc-fix-current)
 " Use K to show documentation in preview window.
-nnoremap <silent><leader>s :call <SID>show_documentation()<CR>
+nnoremap <silent><leader>d :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -531,15 +534,65 @@ let g:OmniSharp_server_stdio = 1
 let g:omnicomplete_fetch_full_documentation = 1
 " Timeout in seconds to wait for a response from the server
 let g:OmniSharp_timeout = 30
-let g:OmniSharp_popup_options = {
-\ 'highlight': 'Normal',
-\ 'padding': [1],
-\ 'border': [1]
+let g:OmniSharp_popup_position = 'peek'
+if has('nvim')
+  let g:OmniSharp_popup_options = {
+  \ 'winhl': 'Normal:NormalFloat'
+  \}
+else
+  let g:OmniSharp_popup_options = {
+  \ 'highlight': 'Normal',
+  \ 'padding': [0, 0, 0, 0],
+  \ 'border': [1]
+  \}
+endif
+let g:OmniSharp_popup_mappings = {
+\ 'sigNext': '<C-n>',
+\ 'sigPrev': '<C-p>',
+\ 'pageDown': ['<C-f>', '<PageDown>'],
+\ 'pageUp': ['<C-b>', '<PageUp>']
 \}
-let g:syntastic_cs_checkers = ['code_checker']
-  set statusline+=%#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*
-  "}}}
+
+let g:ale_linters = {
+\ 'cs': ['OmniSharp']
+\}
+
+augroup omnisharp_commands
+  autocmd!
+  " show type information automatically when the cursor stop moving
+  autocmd CursorHold *.cs OmniSharpTypeLookup
+  " Contextual, based on the Position
+  autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
+  autocmd FileType cs nmap <silent> <buffer> <leader>fu <Plug>(omnisharp_find_usages)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>fi <Plug>(omnisharp_find_implementations)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>pd <Plug>(omnisharp_preview_definition)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>pi <Plug>(omnisharp_preview_implementations)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>d <Plug>(omnisharp_documentation)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>fs <Plug>(omnisharp_find_symbol)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>fx <Plug>(omnisharp_fix_usings)
+  autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+  autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+" Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ca <Plug>(omnisharp_code_actions)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>ca <Plug>(omnisharp_code_actions)
+  " Navigate up and down by method/property/field
+  autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
+  autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
+  " Find all code errors/warnings for the current solution and populate the quickfix window
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osgcc <Plug>(omnisharp_global_code_check)
+  " Repeat the last code action performed (does not use a selector)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>. <Plug>(omnisharp_code_action_repeat)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>. <Plug>(omnisharp_code_action_repeat)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>= <Plug>(omnisharp_code_format)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>rn <Plug>(omnisharp_rename)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>rs <Plug>(omnisharp_restart_server)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ss <Plug>(omnisharp_start_server)
+  autocmd FileType cs nnoremap <leader>rl :OmniSharpReloadSolution<cr>
+  autocmd FileType cs nnoremap <leader>cf :OmniSharpCodeFormat<cr>
+augroup END
+ "}}}
 set termguicolors
 colorscheme monokai_pro

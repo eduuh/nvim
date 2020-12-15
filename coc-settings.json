@@ -18,5 +18,7 @@
   "coc.preferences.formatOnInsertLeave": false,
   "snippets.extends": {
     "typescript": ["javascript"]
-  }
+  },
+    "omnisharp.trace.server": "information",
+    "omnisharp.debug.server": true
 }
