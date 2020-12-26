@@ -1,4 +1,4 @@
-"Vim Plug {{{
+"{{{
 let mapleader=" "
 " The idea is to use HNEI as arrows – keeping the traditional Vim homerow style – and changing as
 " little else as possible. This means JKL are free to use and NEI need new keys.
@@ -33,6 +33,7 @@ noremap U <C-r>
 noremap Y y$
 cnoremap w!! execute 'silent! write !SUDO_ASKPASS=`which ssh-askpass` sudo tee % >/dev/null' <bar> edit!
 noremap <leader>rp :%s//g<left><left>
+noremap  <leader>rw ::%s//<C-r><C-w>/g<CR>
 " Better tabbing
 vnoremap < <gv
 vnoremap > >gv
@@ -48,15 +49,6 @@ noremap zn <C-y>|noremap ze <C-e>
 " Back and forth in jump and changelist.
 nnoremap gh <C-o>|nnoremap gi <C-i>|nnoremap gH g;|nnoremap gI g,
 " Easy CAPS
-inoremap <c-u> <ESC>viwUi
-nnoremap <c-u> viwU<Esc>
-" Use alt + hjkl hnei to resize windows
-" nnoremap <M-n>    :resize -2<CR>
-" nnoremap <M-e>    :resize +2<CR>
-" nnoremap <M-i>    :vertical resize -2<CR>
-" nnoremap <M-h>    :vertical resize +2<CR>
-" }}}
-" Commands {{{
 command! R execute "source ~/.config/nvim/init.vim"
 command! C execute ":e ~/.config/nvim/init.vim"
 " }}}
@@ -87,12 +79,11 @@ nnoremap <leader>t :split term://bash<CR>
 set noshowmode
 set wrap
 set linebreak
-set shortmess+=F  " to get rid of the file name displayed in the command line bar
 set shortmess+=I         "hide splash screen 
-" setting the clipboard manager 
 if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
+
 " Spaces & Tabs {{{
 set tabstop=4     " number of visual spaces per TAB
 set softtabstop=4 " number of spaces in tab when editing
@@ -128,7 +119,6 @@ set undodir=/home/eduuh/.config/nvim/undo
 " Searching {{{
 set hlsearch      " Stop highlight after searching
 " set gdefault      " Substitute all matches in a line (i.e. :s///g) by default
-set nohlsearch
 set ignorecase
 set smartcase
 set incsearch  "Highlig the search scheme when typing
@@ -169,8 +159,10 @@ call plug#begin('~/.config/nvim/plugged')
 " Provides asynchronous execution.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'mhinz/vim-startify'<C-LeftRelease>
+Plug 'tomasiser/vim-code-dark'
 Plug 'junegunn/fzf.vim'
 Plug 'yasuhiroki/github-actions-yaml.vim'
+Plug 'sjl/gundo.vim'
 " nvim ui{{{
 Plug 'vim-airline/vim-airline'
 "Plug 'vim-syntastic/syntastic'
@@ -192,7 +184,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'OmniSharp/omnisharp-vim'
 "Plug 'nickspoons/vim-sharpenup'
-Plug 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'
 "}}}
 " Markdown Support{{{
@@ -217,10 +209,11 @@ Plug 'maxmellon/vim-jsx-pretty' " JSX and TSX syntax highlighting
 Plug 'epilande/vim-es2015-snippets'
 Plug 'epilande/vim-react-snippets'
 Plug 'ctrlpvim/ctrlp.vim'
+
 " Conquer of Completion {{{
 "}}}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions=['coc-eslint', 'coc-json', 'coc-tsserver', 'coc-omnisharp', 'coc-docker',  'coc-html' , 'coc-css' ,  'coc-jest', 'coc-snippets', 'coc-yaml']
+let g:coc_global_extensions=[ 'coc-docker',  'coc-html' , 'coc-css' ,  'coc-jest', 'coc-snippets', 'coc-yaml']
 " Bracket pair colorizer
 Plug 'luochen1990/rainbow'
 call plug#end()
@@ -240,6 +233,12 @@ augroup end
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 " }}}
+
+nnoremap <leader>u :GundoToggle<Esc>
+let g:gundo_prefer_python3 = 1
+
+
+"
 nnoremap <silent> <Leader><leader> :Defx<CR>
   call defx#custom#option('_', {
       \ 'columns': 'git:indent:icon:filename',
@@ -263,6 +262,25 @@ nnoremap <silent> <Leader><leader> :Defx<CR>
       \ 'Deleted'   : '✖',
       \ 'Unknown'   : '?',
       \ })
+
+
+" Snippets
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+
 " Quit if defx is the last window.
 autocmd WinEnter * if &ft == 'defx' && winnr('$') == 1 | q | endif
   " defx mappings.
@@ -332,8 +350,12 @@ autocmd FileType defx call s:defx_my_settings()
 
   command! -bang -nargs=*  All
     \ call fzf#run(fzf#wrap({'source': 'rg --files --hidden --no-ignore-vcs --glob "!{node_modules/*,.git/*}"', 'down': '40%', 'options': '--expect=ctrl-t,ctrl-x,ctrl-v --multi --reverse' }))
+
   "}}}
-  " Vim Airline {{{
+" Altrasnippet {{
+   let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+" }}
+  "Vim Airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline_theme='minimalist'
@@ -579,12 +601,12 @@ augroup omnisharp_commands
   autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
   autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
   " Find all code errors/warnings for the current solution and populate the quickfix window
-  autocmd FileType cs nmap <silent> <buffer> <Leader>osgcc <Plug>(omnisharp_global_code_check)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>gcc <Plug>(omnisharp_global_code_check)
   " Repeat the last code action performed (does not use a selector)
   autocmd FileType cs nmap <silent> <buffer> <Leader>. <Plug>(omnisharp_code_action_repeat)
   autocmd FileType cs xmap <silent> <buffer> <Leader>. <Plug>(omnisharp_code_action_repeat)
 
-  autocmd FileType cs nmap <silent> <buffer> <Leader>= <Plug>(omnisharp_code_format)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>fc <Plug>(omnisharp_code_format)
 
   autocmd FileType cs nmap <silent> <buffer> <Leader>rn <Plug>(omnisharp_rename)
 
