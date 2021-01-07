@@ -11,6 +11,7 @@ let mapleader=" "
 " Colemak Remaps {{{
 " HNEI arrows. Swap 'gn'/'ge' and 'n'/'e'.|norhmap gn j|noremap ge k
 noremap n gj|noremap e gk|noremap i l
+set nohlsearch
 " In(s)ert. The default s/S is synonymous with cl/cc and is not very useful.
 noremap l i|noremap L I
 " Repeat search.
@@ -47,7 +48,7 @@ noremap <C-e> H|noremap <C-n> L
 " Scroll up/down.
 noremap zn <C-y>|noremap ze <C-e>
 " Back and forth in jump and changelist.
-nnoremap gh <C-o>|nnoremap gi <C-i>|nnoremap gH g;|nnoremap gI g,
+"nnoremap gh <C-o>|nnoremap gi <C-i>|nnoremap gH g;|nnoremap gI g,
 " Easy CAPS
 command! R execute "source ~/.config/nvim/init.vim"
 command! C execute ":e ~/.config/nvim/init.vim"
@@ -123,7 +124,7 @@ set ignorecase
 set smartcase
 set incsearch  "Highlig the search scheme when typing
 " Folding {{{
-set wrapmargin=0
+set wrapmargin=3
 set nofoldenable
 set foldmethod=manual
 " }}}
@@ -133,6 +134,10 @@ set backspace=2   " Backspace deletes like most programs in insert mode
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
 filetype plugin indent on
 nnoremap <leader>sp :setlocal spell! spelllang=en_us<cr>
+"Permanent delete{{{
+vnoremap <leader>p "_dP
+"}}}
+"
 "nnoremap <leader>q :q<cr>
 tmap <leader>q <C-d>
 autocmd BufWritePre markdown %s/\s\+$//e  " automatically remove all trailling whitespaces(allfiles).
@@ -156,6 +161,11 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 " }}}
 call plug#begin('~/.config/nvim/plugged')
+
+
+"{{{Vimspector
+Plug 'puremourning/vimspector'
+"}}}
 " Provides asynchronous execution.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'mhinz/vim-startify'<C-LeftRelease>
@@ -165,15 +175,14 @@ Plug 'yasuhiroki/github-actions-yaml.vim'
 Plug 'sjl/gundo.vim'
 " nvim ui{{{
 Plug 'vim-airline/vim-airline'
-"Plug 'vim-syntastic/syntastic'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-git' " Git status column for defx
-"Plug 'altercation/vim-colors-solarized'
+
 Plug 'arcticicestudio/nord-vim'
 Plug '907th/vim-auto-save'
 Plug 'preservim/nerdcommenter'
-Plug 'phanviet/vim-monokai-pro'
+Plug 'gruvbox-community/gruvbox'
 "}}}
 "intergrate fzf with vim {{{ fuzzy finding of files" Layout Look n Feal {{{
 " Plug 'itchyny/lightline.vim' " A light and configurable statusline/tabline plugin for Vim
@@ -184,7 +193,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'OmniSharp/omnisharp-vim'
 "Plug 'nickspoons/vim-sharpenup'
-"Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'
 "}}}
 " Markdown Support{{{
@@ -208,7 +217,7 @@ Plug 'leafgarland/typescript-vim' " TS syntax highlighting
 Plug 'maxmellon/vim-jsx-pretty' " JSX and TSX syntax highlighting
 Plug 'epilande/vim-es2015-snippets'
 Plug 'epilande/vim-react-snippets'
-Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
 
 " Conquer of Completion {{{
 "}}}
@@ -217,7 +226,11 @@ let g:coc_global_extensions=[ 'coc-docker',  'coc-html' , 'coc-css' ,  'coc-jest
 " Bracket pair colorizer
 Plug 'luochen1990/rainbow'
 call plug#end()
+
+"inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
 let g:OmniSharp_selector_ui = 'fzf'  " Use ctrlp.vim
+let g:OmniSharp_diagnostic_showid = 'fzf'  " Use ctrlp.vim
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 " AutoSave Settings {{{
 let g:auto_save =1 "enable Autosave on Vim startupx
@@ -233,10 +246,73 @@ augroup end
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 " }}}
+"{{{Vimspector
+"
+" Debugger remaps
+"
+nnoremap <leader>m :MaximizerToggle!<CR>
+nnoremap <leader>dd :call vimspector#Launch()<CR>
+nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>
+nnoremap <leader>dt :call GotoWindow(g:vimspector_session_windows.tagpage)<CR>
+nnoremap <leader>dv :call GotoWindow(g:vimspector_session_windows.variables)<CR>
+nnoremap <leader>dw :call GotoWindow(g:vimspector_session_windows.watches)<CR>
+nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<CR>
+nnoremap <leader>do :call GotoWindow(g:vimspector_session_windows.output)<CR>
+nnoremap <leader>de :call vimspector#Reset()<CR>
 
+nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
+
+nmap <leader>dl <Plug>VimspectorStepInto
+nmap <leader>dj <Plug>VimspectorStepOver
+nmap <leader>dk <Plug>VimspectorStepOut
+nmap <leader>d_ <Plug>VimspectorRestart
+nnoremap <leader>d<space> :call vimspector#Continue()<CR>
+
+nmap <leader>drc <Plug>VimspectorRunToCursor
+nmap <leader>dbp <Plug>VimspectorToggleBreakpoint
+nmap <leader>dcbp <Plug>VimspectorToggleConditionalBreakpoint
+
+let g:vimspector_sidebar_width = 80
+let g:vimspector_code_minwidth = 85
+let g:vimspector_terminal_minwidth = 75
+
+function! s:CustomiseUI()
+  " Customise the basic UI...
+  call win_gotoid( g:vimspector_session_windows.code )
+  " Clear the existing WinBar created by Vimspector
+  nunmenu WinBar
+  " Cretae our own WinBar
+  nnoremenu WinBar.Kill :call vimspector#Stop()<CR>
+  nnoremenu WinBar.Continue :call vimspector#Continue()<CR>
+  nnoremenu WinBar.Pause :call vimspector#Pause()<CR>
+  nnoremenu WinBar.Step\ Over  :call vimspector#StepOver()<CR>
+  nnoremenu WinBar.Step\ In :call vimspector#StepInto()<CR>
+  nnoremenu WinBar.Step\ Out :call vimspector#StepOut()<CR>
+  nnoremenu WinBar.Restart :call vimspector#Restart()<CR>
+  nnoremenu WinBar.Exit :call vimspector#Reset()<CR>  " Close the output window
+  call win_gotoid( g:vimspector_session_windows.output )
+  q
+endfunction
+
+function s:SetUpTerminal()
+  " Customise the terminal window size/position
+  " For some reasons terminal buffers in Neovim have line numbers
+  call win_gotoid( g:vimspector_session_windows.terminal )
+  set norelativenumber nonumber
+endfunction
+
+augroup MyVimspectorUICustomistaion
+  autocmd!
+  autocmd User VimspectorUICreated call s:CustomiseUI()
+  autocmd User VimspectorTerminalOpened call s:SetUpTerminal()
+augroup END
+
+"}}}
+"Gudo Trigger {{{
 nnoremap <leader>u :GundoToggle<Esc>
 let g:gundo_prefer_python3 = 1
-
+"
+"
 
 "
 nnoremap <silent> <Leader><leader> :Defx<CR>
@@ -282,7 +358,7 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 
 " Quit if defx is the last window.
-autocmd WinEnter * if &ft == 'defx' && winnr('$') == 1 | q | endif
+"autocmd WinEnter * if &ft == 'defx' && winnr('$') == 1 | q | endif
   " defx mappings.
 autocmd FileType defx call s:defx_my_settings()
     function! s:defx_my_settings() abort
@@ -320,38 +396,31 @@ autocmd FileType defx call s:defx_my_settings()
   let g:signify_sign_delete = '_'
   let g:signify_sign_delete_first_line = '‾'
   " }}}
-  "Fzf {{{
-  " FZF commands
-  let g:fzf_command_prefix = 'Fzf'
-    " Extra key bindings
-    " <C-n> (down), <C-e> (up), etc are mapped via $FZF_DEFAULT_OPTS.
-  let g:fzf_action = {
-    \ 'ctrl-h': 'topleft vsplit',
-    \ 'ctrl-i': 'botright vsplit',
-    \ 'H': 'aboveleft vsplit',
-    \ 'N': 'belowright split',
-    \ 'E': 'aboveleft split',
-    \ 'I': 'belowright vsplit',
-    \ 'T': 'tab split',
-    \ }
-    " Open FZF in tmux at bottom of screen.
-  let g:fzf_layout = { 'down': '~40%' }
-    " Disable statusline overwriting.
-  let g:fzf_nvim_statusline = 0
-    " [Buffers] Jump to the existing window if possible
-  let g:fzf_buffers_jump = 1
-    " Hide the statusbar in the FZF pane.
-    augroup fzf
-      autocmd!
-      autocmd! FileType fzf
-      autocmd  FileType fzf set laststatus=0 noshowmode noruler
-          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-    augroup END
 
-  command! -bang -nargs=*  All
-    \ call fzf#run(fzf#wrap({'source': 'rg --files --hidden --no-ignore-vcs --glob "!{node_modules/*,.git/*}"', 'down': '40%', 'options': '--expect=ctrl-t,ctrl-x,ctrl-v --multi --reverse' }))
-
-  "}}}
+"fzf {{{
+noremap <c-p> :FZF<cr>
+"let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let $FZF_DEFAULT_OPTS='--reverse'
+let g:fzf_branch_actions = {
+      \ 'rebase': {
+      \   'prompt': 'Rebase> ',
+      \   'execute': 'echo system("{git} rebase {branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-r',
+      \   'required': ['branch'],
+      \   'confirm': v:false,
+      \ },
+      \ 'track': {
+      \   'prompt': 'Track> ',
+      \   'execute': 'echo system("{git} checkout --track {branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-t',
+      \   'required': ['branch'],
+      \   'confirm': v:false,
+      \ },
+      \}
+" }}}
+"}}}
 " Altrasnippet {{
    let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 " }}
@@ -517,36 +586,7 @@ nnoremap <silent> <Leader><leader> :Defx<CR>
       \ 'Deleted'   : '✖',
       \ 'Unknown'   : '?',
       \ })
-" Quit if defx is the last window.
-autocmd WinEnter * if &ft == 'defx' && winnr('$') == 1 | q | endif
-" defx mappings.
-autocmd FileType defx call s:defx_my_settings()
-  function! s:defx_my_settings() abort
-    " Define mappings
-  nnoremap <silent><buffer><expr> <CR> defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('open', 'wincmd p \| drop')
-  nnoremap <silent><buffer><expr> o defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('open', 'wincmd p \| drop')
-    nnoremap <silent><buffer><expr> s defx#do_action('open', 'wincmd p \| split')
-    nnoremap <silent><buffer><expr> v defx#do_action('open', 'wincmd p \| vsplit')
-    nnoremap <silent><buffer><expr> t defx#do_action('open', 'tabnew')
-    nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
-    nnoremap <silent><buffer><expr> x defx#do_action('close_tree')
-    " nnoremap <silent><buffer><expr> go defx#do_action('open', 'pedit')
-    nnoremap <silent><buffer><expr> C defx#do_action('cd', defx#get_candidate().action__path)
-    nnoremap <silent><buffer><expr> u defx#do_action('cd', '..')
-    nnoremap <silent><buffer><expr> a defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> A defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr> c defx#do_action('copy')
-    nnoremap <silent><buffer><expr> p defx#do_action('paste')
-    nnoremap <silent><buffer><expr> m defx#do_action('move')
-    nnoremap <silent><buffer><expr> r defx#do_action('rename')
-    nnoremap <silent><buffer><expr> dd defx#do_action('remove')
-    nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> R defx#do_action('redraw')
-    " nnoremap <silent><buffer><expr> u defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> q defx#do_action('quit')
-  endfunction
-"}}} 
+
 " Sharpenve C#Code {{{
 let g:sharpenup_map_prefix = ','
 " }}}
@@ -557,27 +597,39 @@ let g:omnicomplete_fetch_full_documentation = 1
 " Timeout in seconds to wait for a response from the server
 let g:OmniSharp_timeout = 30
 let g:OmniSharp_popup_position = 'peek'
-if has('nvim')
-  let g:OmniSharp_popup_options = {
-  \ 'winhl': 'Normal:NormalFloat'
-  \}
-else
-  let g:OmniSharp_popup_options = {
-  \ 'highlight': 'Normal',
-  \ 'padding': [0, 0, 0, 0],
-  \ 'border': [1]
-  \}
-endif
+
+let g:OmniSharp_popup_options = {
+\ 'winhl': 'Normal:NormalFloat'
+\}
+
 let g:OmniSharp_popup_mappings = {
 \ 'sigNext': '<C-n>',
 \ 'sigPrev': '<C-p>',
 \ 'pageDown': ['<C-f>', '<PageDown>'],
-\ 'pageUp': ['<C-b>', '<PageUp>']
+\ 'pageUp': ['<C-b>', '<PageUp>'],
+\ 'lineDown': ['<C-e>', 'n'],
+\ 'lineUp': ['<C-y>', 'e']
 \}
+
+
+let g:OmniSharp_diagnostic_exclude_paths = [
+\ 'obj\\',
+\ '[Tt]emp\\',
+\ '\.nuget\\',
+\ '\<AssemblyInfo\.cs\>'
+\]
+
+" Listen for diagnostics and update ALE
+let g:OmniSharp_diagnostic_listen = 2
 
 let g:ale_linters = {
 \ 'cs': ['OmniSharp']
 \}
+
+let g:OmniSharp_selector_findusages = 'fzf'
+
+"show documentation when cursort stop moving
+autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 
 augroup omnisharp_commands
   autocmd!
@@ -587,7 +639,7 @@ augroup omnisharp_commands
   autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
   autocmd FileType cs nmap <silent> <buffer> <leader>fu <Plug>(omnisharp_find_usages)
   autocmd FileType cs nmap <silent> <buffer> <Leader>fi <Plug>(omnisharp_find_implementations)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>pd <Plug>(omnisharp_preview_definition)
+  autocmd FileType cs nmap <silent> <buffer> <Leader;>pd <Plug>(omnisharp_preview_definition)
   autocmd FileType cs nmap <silent> <buffer> <Leader>pi <Plug>(omnisharp_preview_implementations)
   autocmd FileType cs nmap <silent> <buffer> <Leader>d <Plug>(omnisharp_documentation)
   autocmd FileType cs nmap <silent> <buffer> <Leader>fs <Plug>(omnisharp_find_symbol)
@@ -595,8 +647,9 @@ augroup omnisharp_commands
   autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
   autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
 " Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>ca <Plug>(omnisharp_code_actions)
-  autocmd FileType cs xmap <silent> <buffer> <Leader>ca <Plug>(omnisharp_code_actions)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>a <Plug>(omnisharp_code_actions)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>a <Plug>(omnisharp_code_actions)
+ 
   " Navigate up and down by method/property/field
   autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
   autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
@@ -609,6 +662,7 @@ augroup omnisharp_commands
   autocmd FileType cs nmap <silent> <buffer> <Leader>fc <Plug>(omnisharp_code_format)
 
   autocmd FileType cs nmap <silent> <buffer> <Leader>rn <Plug>(omnisharp_rename)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>rt :OmniSharpRunTest<CR>
 
   autocmd FileType cs nmap <silent> <buffer> <Leader>rs <Plug>(omnisharp_restart_server)
   autocmd FileType cs nmap <silent> <buffer> <Leader>ss <Plug>(omnisharp_start_server)
@@ -617,4 +671,5 @@ augroup omnisharp_commands
 augroup END
  "}}}
 set termguicolors
-colorscheme monokai_pro
+colorscheme gruvbox
+

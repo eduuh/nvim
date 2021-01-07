@@ -1,17 +1,7 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["typescript", "javascript", "markdown" ],
+  "javascript.suggest.enabled": false,
   "prettier.singleQuote": true,
-  "coc.preferences.formatOnType": false,
-  "markdownlint.config": {
-  "no-inline-html": false,
-  
-  "line-length": false
-  },
-  "coc.preferences.formatOnInsertLeave": false,
   "snippets.userSnippetsDirectory": "~/.config/nvim/snippets",
-  "snippets.extends": {
-    "typescript": ["javascript"]
-  },
     "omnisharp.trace.server": "information",
     "omnisharp.debug.server": true
     
