@@ -1,159 +1,3 @@
-"{{{
-let mapleader=" "
-" The idea is to use HNEI as arrows – keeping the traditional Vim homerow style – and changing as
-" little else as possible. This means JKL are free to use and NEI need new keys.
-" - k/K is the new n/N.
-" - s/S is the new i/I ["inSert"].
-" - j/J is the new e/E ["Jump" to EOW].
-" - l/L skip to the beginning and end of lines. Much more intuitive than ^/$.
-" - Ctrl-l joins lines, making l/L the veritable "Line" key.
-" - r replaces i as the "inneR" modifier [e.g. "diw" becomes "drw"].
-" Colemak Remaps {{{
-" HNEI arrows. Swap 'gn'/'ge' and 'n'/'e'.|norhmap gn j|noremap ge k
-noremap n gj|noremap e gk|noremap i l
-set nohlsearch
-" In(s)ert. The default s/S is synonymous with cl/cc and is not very useful.
-noremap l i|noremap L I
-" Repeat search.
-noremap k n|noremap K N
-" BOL/EOL/Join.
-"noremap l ^|noremap L $|noremap <C-l> J
-" _r_ = inneR text objects.
-onoremap l i
-" EOW.
-noremap j e|noremap J E
-" Faster in-line navigation - Takes you to previos buffer
-nmap <BS> <C-^>
-" Jump to exact mark location with ' instead of line.
-"noremap ' `|noremap ` '
-" The best!
-noremap ; :|noremap : ;
-" Sane redo.
-noremap U <C-r>
-" Y consistent with C and D
-noremap Y y$
-cnoremap w!! execute 'silent! write !SUDO_ASKPASS=`which ssh-askpass` sudo tee % >/dev/null' <bar> edit!
-noremap <leader>rp :%s//g<left><left>
-noremap  <leader>rw ::%s//<C-r><C-w>/g<CR>
-" Better tabbing
-vnoremap < <gv
-vnoremap > >gv
-" Switch tabs with ctrl
-" Switch panes with Shift.
-noremap H <C-w>h|noremap I <C-w>l|noremap N <C-w>j|noremap E <C-w>k
-" Moving windows around.
-noremap <C-w>N <C-w>J|noremap <C-w>E <C-w>K|noremap <C-w>I <C-w>L
-" High/Low. Mid remains `M` since <C-m> is unfortunately interpreted as <CR>.
-noremap <C-e> H|noremap <C-n> L
-" Scroll up/down.
-noremap zn <C-y>|noremap ze <C-e>
-" Back and forth in jump and changelist.
-"nnoremap gh <C-o>|nnoremap gi <C-i>|nnoremap gH g;|nnoremap gI g,
-" Easy CAPS
-command! R execute "source ~/.config/nvim/init.vim"
-command! C execute ":e ~/.config/nvim/init.vim"
-" }}}
-" Tab managements {{{
- " Create a new tab with tu
-noremap te :tabedit<CR>
-" Move the t~/.config/nvim/mappings.vimabs with tmn and tmi;:
-noremap tmp :-tabmove<CR>
-noremap tmn :+tabmove<CR>
-nmap tl :Unite tab
-" Move around tabs with tn and ti
-noremap <Tab> :bnext<CR>
-noremap <S-Tab> :bp<CR>
-"source ~/.config/nvim/settings.vim
-"source ~/.config/nvim/plugins.vim
-nnoremap <leader>t :split term://bash<CR>
-  augroup terminal_settings
-  autocmd!
-  autocmd BufWinEnter,WinEnter term://* startinsert
-  autocmd BufLeave term://* stopinsert
-  " Ignore various filetypes as those will close terminal automatically
-  " Ignore fzf, ranger, coc
-  autocmd TermClose term://*
-    \ if (expand('<afile>') !~ "fzf") && (expand('<afile>') !~ "ranger") && (expand('<afile>') !~ "coc") |
-    \   call nvim_input('<CR>')  |
-    \ endif
-  augroup END
-set noshowmode
-set wrap
-set linebreak
-set shortmess+=I         "hide splash screen 
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-endif
-
-" Spaces & Tabs {{{
-set tabstop=4     " number of visual spaces per TAB
-set softtabstop=4 " number of spaces in tab when editing
-set expandtab     " turns <TAB's> into spaces.
-set shiftwidth=2
-set autoindent
-set smartindent
-set mouse=a
-" change directory to the current buffer when opening files.
-" set autochdir
-" }}}
-" UI Layout {{{
-" set number
-" set relativenumber
-set nocursorline
-set splitright | set splitbelow
-set wildmenu  " Show a menu when using Tab completion
-set wildmode=longest,full            " Tab complete longest common string, then each full match.
-set showcmd
-set scrolloff=5 "Show some few more line when using z-enter"
-" }}}
-" Neovim Misc {{{
-scriptencoding utf-8
-set encoding=utf-8
-set visualbell    " stop that ANNOYING beeping
-set autowrite     " Automatically :write before running commands
-set autoread      " Reload files changed outside vim
-set autowriteall  " save the buffer content fhe some specific commands are executed"
-" tell it to use an undo file
-set undofile
-" set a directory to store the undo history
-set undodir=/home/eduuh/.config/nvim/undo
-" Searching {{{
-set hlsearch      " Stop highlight after searching
-" set gdefault      " Substitute all matches in a line (i.e. :s///g) by default
-set ignorecase
-set smartcase
-set incsearch  "Highlig the search scheme when typing
-" Folding {{{
-set wrapmargin=3
-set nofoldenable
-set foldmethod=manual
-" }}}
-" colors  {{{
-syntax on          " enables syntax procesing
-set backspace=2   " Backspace deletes like most programs in insert mode
-set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
-filetype plugin indent on
-nnoremap <leader>sp :setlocal spell! spelllang=en_us<cr>
-"Permanent delete{{{
-vnoremap <leader>p "_dP
-"}}}
-"
-"nnoremap <leader>q :q<cr>
-tmap <leader>q <C-d>
-autocmd BufWritePre markdown %s/\s\+$//e  " automatically remove all trailling whitespaces(allfiles).
-  "Refprence for later usage.
-autocmd BufWritePost ~/media/data/dm/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
-augroup terminal_settings
-  autocmd!
-  autocmd BufWinEnter,WinEnter term://* startinsert
-  autocmd BufLeave term://* stopinsert
-  " Ignore various filetypes as those will close terminal automatically
-  " Ignore fzf, ranger, coc
-  autocmd TermClose term://*
-    \ if (expand('<afile>') !~ "fzf") && (expand('<afile>') !~ "ranger") && (expand('<afile>') !~ "coc") |
-    \   call nvim_input('<CR>')  |
-    \ endif
-augroup END
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -170,9 +14,11 @@ Plug 'puremourning/vimspector'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'mhinz/vim-startify'<C-LeftRelease>
 Plug 'tomasiser/vim-code-dark'
+Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/fzf.vim'
 Plug 'yasuhiroki/github-actions-yaml.vim'
 Plug 'sjl/gundo.vim'
+Plug 'nickspoons/vim-sharpenup'
 " nvim ui{{{
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -200,8 +46,6 @@ Plug 'jiangmiao/auto-pairs'
 " Track the engine
 Plug 'SirVer/ultisnips' 
 Plug 'honza/vim-snippets' " tabular plugin is used to format tables
-Plug 'plasticboy/vim-markdown' " Markdown Previewing
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 Plug 'alvan/vim-closetag'
 " }}}
 " Plugin --Editing {{{
@@ -227,7 +71,10 @@ let g:coc_global_extensions=[ 'coc-docker',  'coc-html' , 'coc-css' ,  'coc-jest
 Plug 'luochen1990/rainbow'
 call plug#end()
 
-"inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+inoremap b. {<cr>}<c-o>O<tab>
+inoremap [<cr> [<cr>]<c-o>O<tab>
+inoremap (<cr> (<cr>)<c-o>O<tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 let g:OmniSharp_selector_ui = 'fzf'  " Use ctrlp.vim
 let g:OmniSharp_diagnostic_showid = 'fzf'  " Use ctrlp.vim
@@ -245,9 +92,9 @@ augroup mygroup
 augroup end
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
+
 " }}}
 "{{{Vimspector
-"
 " Debugger remaps
 "
 nnoremap <leader>m :MaximizerToggle!<CR>
@@ -315,7 +162,7 @@ let g:gundo_prefer_python3 = 1
 "
 
 "
-nnoremap <silent> <Leader><leader> :Defx<CR>
+nnoremap <silent> <c-o> :Defx<CR>
   call defx#custom#option('_', {
       \ 'columns': 'git:indent:icon:filename',
       \ 'winwidth':30,
@@ -517,7 +364,6 @@ endfunction
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}%{StatusDiagnostic()}
-autocmd BufWritePre markdown %s/\s\+$//e  " automatically remove all trailling whitespaces(allfiles).
 "Refprence for later usage.
 " autocmd BufWritePost ~/media/data/dm/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
 let g:sharpenup_map_prefix = ','
@@ -628,48 +474,158 @@ let g:ale_linters = {
 
 let g:OmniSharp_selector_findusages = 'fzf'
 
-"show documentation when cursort stop moving
-autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
-
 augroup omnisharp_commands
   autocmd!
-  " show type information automatically when the cursor stop moving
-  autocmd CursorHold *.cs OmniSharpTypeLookup
-  " Contextual, based on the Position
-  autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
-  autocmd FileType cs nmap <silent> <buffer> <leader>fu <Plug>(omnisharp_find_usages)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>fi <Plug>(omnisharp_find_implementations)
-  autocmd FileType cs nmap <silent> <buffer> <Leader;>pd <Plug>(omnisharp_preview_definition)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>pi <Plug>(omnisharp_preview_implementations)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>d <Plug>(omnisharp_documentation)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>fs <Plug>(omnisharp_find_symbol)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>fx <Plug>(omnisharp_fix_usings)
-  autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
-  autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
-" Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>a <Plug>(omnisharp_code_actions)
-  autocmd FileType cs xmap <silent> <buffer> <Leader>a <Plug>(omnisharp_code_actions)
- 
-  " Navigate up and down by method/property/field
-  autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
-  autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
-  " Find all code errors/warnings for the current solution and populate the quickfix window
-  autocmd FileType cs nmap <silent> <buffer> <Leader>gcc <Plug>(omnisharp_global_code_check)
-  " Repeat the last code action performed (does not use a selector)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>. <Plug>(omnisharp_code_action_repeat)
-  autocmd FileType cs xmap <silent> <buffer> <Leader>. <Plug>(omnisharp_code_action_repeat)
-
-  autocmd FileType cs nmap <silent> <buffer> <Leader>fc <Plug>(omnisharp_code_format)
-
   autocmd FileType cs nmap <silent> <buffer> <Leader>rn <Plug>(omnisharp_rename)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>rt :OmniSharpRunTest<CR>
+  autocmd FileType cs nnoremap <leader>rc :!dotnet run<cr>
+  autocmd FileType cs nnoremap <leader>rt :!dotnet test<cr>
 
-  autocmd FileType cs nmap <silent> <buffer> <Leader>rs <Plug>(omnisharp_restart_server)
-  autocmd FileType cs nmap <silent> <buffer> <Leader>ss <Plug>(omnisharp_start_server)
-  autocmd FileType cs nnoremap <leader>rl :OmniSharpReloadSolution<cr>
-  autocmd FileType cs nnoremap <leader>cf :OmniSharpCodeFormat<cr>
 augroup END
  "}}}
 set termguicolors
 colorscheme gruvbox
+set nohlsearch
 
+let mapleader=" "
+
+noremap n gj|noremap e gk|noremap i l
+" In(s)ert. The default s/S is synonymous with cl/cc and is not very useful.
+noremap l i|noremap L I
+" Repeat search.
+noremap k n|noremap K N
+" BOL/EOL/Join.
+"noremap l ^|noremap L $|noremap <C-l> J
+" _r_ = inneR text objects.
+onoremap l i
+" EOW.
+noremap j e|noremap J E
+" Faster in-line navigation - Takes you to previos buffer
+nmap <BS> <C-^>
+" Jump to exact mark location with ' instead of line.
+"noremap ' `|noremap ` '
+" The best!
+"noremap ; :|noremap : ;
+" Sane redo.
+noremap U <C-r>
+" Y consistent with C and D
+noremap Y y$
+cnoremap w!! execute 'silent! write !SUDO_ASKPASS=`which ssh-askpass` sudo tee % >/dev/null' <bar> edit!
+noremap <leader>rp :%s//g<left><left>
+noremap  <leader>rw ::%s//<C-r><C-w>/g<CR>
+" Better tabbing
+vnoremap < <gv
+vnoremap > >gv
+" Switch tabs with ctrl
+" Switch panes with Shift.
+noremap H <C-w>h|noremap I <C-w>l|noremap N <C-w>j|noremap E <C-w>k
+" Moving windows around.
+noremap <C-w>N <C-w>J|noremap <C-w>E <C-w>K|noremap <C-w>I <C-w>L
+" High/Low. Mid remains `M` since <C-m> is unfortunately interpreted as <CR>.
+noremap <C-e> H|noremap <C-n> L
+" Scroll up/down.
+noremap zn <C-y>|noremap ze <C-e>
+" Back and forth in jump and changelist.
+"nnoremap gh <C-o>|nnoremap gi <C-i>|nnoremap gH g;|nnoremap gI g,
+" Easy CAPS
+command! R execute "source ~/.config/nvim/init.vim"
+command! C execute ":e ~/.config/nvim/init.vim"
+" }}}
+" Tab managements {{{
+ " Create a new tab with tu
+noremap te :tabedit<CR>
+" Move the t~/.config/nvim/mappings.vimabs with tmn and tmi;:
+noremap tmp :-tabmove<CR>
+noremap tmn :+tabmove<CR>
+nmap tl :Unite tab
+" Move around tabs with tn and ti
+"noremap <Tab> :bnext<CR>
+"noremap <S-Tab> :bp<CR>
+"source ~/.config/nvim/settings.vim
+"source ~/.config/nvim/plugins.vim
+nnoremap <leader>t :split term://bash<CR>
+  augroup terminal_settings
+  autocmd!
+  autocmd BufWinEnter,WinEnter term://* startinsert
+  autocmd BufLeave term://* stopinsert
+  " Ignore various filetypes as those will close terminal automatically
+  " Ignore fzf, ranger, coc
+  autocmd TermClose term://*
+    \ if (expand('<afile>') !~ "fzf") && (expand('<afile>') !~ "ranger") && (expand('<afile>') !~ "coc") |
+    \   call nvim_input('<CR>')  |
+    \ endif
+  augroup END
+set noshowmode
+set wrap
+set linebreak
+set shortmess+=I         "hide splash screen 
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+endif
+
+" Spaces & Tabs {{{
+set tabstop=4     " number of visual spaces per TAB
+set softtabstop=4 " number of spaces in tab when editing
+set expandtab     " turns <TAB's> into spaces.
+set shiftwidth=2
+set autoindent
+set smartindent
+set mouse=a
+" change directory to the current buffer when opening files.
+" set autochdir
+" }}}
+" UI Layout {{{
+" set number
+" set relativenumber
+set nocursorline
+set splitright | set splitbelow
+set wildmenu  " Show a menu when using Tab completion
+set wildmode=longest,full            " Tab complete longest common string, then each full match.
+set showcmd
+set scrolloff=5 "Show some few more line when using z-enter"
+" }}}
+" Neovim Misc {{{
+scriptencoding utf-8
+set encoding=utf-8
+set visualbell    " stop that ANNOYING beeping
+set autowrite     " Automatically :write before running commands
+set autoread      " Reload files changed outside vim
+set autowriteall  " save the buffer content fhe some specific commands are executed"
+" tell it to use an undo file
+set undofile
+" set a directory to store the undo history
+set undodir=/home/eduuh/.config/nvim/undo
+" Searching {{{
+" set gdefault      " Substitute all matches in a line (i.e. :s///g) by default
+set ignorecase
+set smartcase
+set incsearch  "Highlig the search scheme when typing
+" Folding {{{
+set wrapmargin=3
+set nofoldenable
+set foldmethod=manual
+" }}}
+" colors  {{{
+syntax on          " enables syntax procesing
+set backspace=2   " Backspace deletes like most programs in insert mode
+set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
+filetype plugin indent on
+nnoremap <leader>sp :setlocal spell! spelllang=en_us<cr>
+"Permanent delete{{{
+vnoremap <leader>p "_dP
+"}}}
+"
+"nnoremap <leader>q :q<cr>
+tmap <leader>q <C-d>
+  "Refprence for later usage.
+autocmd BufWritePost ~/media/data/dm/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
+augroup terminal_settings
+  autocmd!
+  autocmd BufWinEnter,WinEnter term://* startinsert
+  autocmd BufLeave term://* stopinsert
+  " Ignore various filetypes as those will close terminal automatically
+  " Ignore fzf, ranger, coc
+  autocmd TermClose term://*
+    \ if (expand('<afile>') !~ "fzf") && (expand('<afile>') !~ "ranger") && (expand('<afile>') !~ "coc") |
+    \   call nvim_input('<CR>')  |
+    \ endif
+augroup END
