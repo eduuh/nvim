@@ -1,5 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =6
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/media/data/repos/proglearning/books/graphql'
+let g:netrw_dirhist_7='/home/eduuh/edwin'
 let g:netrw_dirhist_6='/media/data/repos/repos/gas_backend_uds/Controllers'
 let g:netrw_dirhist_5='/media/data/repos/repos/gas_backend_uds'
 let g:netrw_dirhist_4='/media/data/repos/repos/gas_backend_uds/Controllers'
@@ -8,5 +10,3 @@ let g:netrw_dirhist_2='/media/data/repos/repos/gas_backend_uds'
 let g:netrw_dirhist_1='/media/data/repos/repos/gas_backend_uds/Controllers'
 let g:netrw_dirhist_0='/media/data/repos/proglearning'
 let g:netrw_dirhist_9='/home/eduuh/edwin'
-let g:netrw_dirhist_8='/home/eduuh/repos/Vim-Katas/exercises'
-let g:netrw_dirhist_7='/home/eduuh/repos/Vim-Katas'
