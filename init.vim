@@ -1,3 +1,4 @@
+set number
 set cmdheight=2
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
@@ -24,13 +25,17 @@ Plug 'nickspoons/vim-sharpenup'
 Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'djoshea/vim-autoread'
-Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
-Plug 'epilande/vim-es2015-snippets'
-Plug 'HerringtonDarkholme/yats.vim', {'do': 'rm -rf UltiSnips'}
 Plug 'pangloss/vim-javascript'
-Plug 'wellle/targets.vim'
 
+" Snippet Suite
+Plug 'garbas/vim-snipmate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'grvcoelho/vim-javascript-snippets'
+"! snippet suite
+"
+Plug 'wellle/targets.vim'
 " make fzf work related to git root of buffer
 Plug 'airblade/vim-rooter'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -375,6 +380,8 @@ endfunction
 au BufNewFile,BufRead *.prisma setfiletype graphql
 
 "UltiSnips
+"
+let g:snipMate = { 'snippet_version' : 1 }
 let g:UltiSnipsExpandTrigger='<c-l>'
 let g:UltiSnipsJumpForwardTrigger="<c-n>"
 let g:UltiSnipsJumpBackwardTrigger="<c-i>"

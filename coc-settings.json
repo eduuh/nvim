@@ -1,5 +1,7 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "javascript", "typescript"],
   "suggest.noselect": false,
-   "suggest.maxCompleteItemCount": 5
+   "suggest.maxCompleteItemCount": 10,
+   "suggest.snippetIndicator": "~",
+   "snippets.priority": 1
 }
