@@ -1,18 +1,19 @@
 return {
 	{
-		"ellisonleao/gruvbox.nvim",
-		lazy = false,
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
 		config = function()
-			require("gruvbox").setup({})
-			vim.cmd("colorscheme gruvbox")
+			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
+	{ "embark-theme/vim", as = "embark" },
 	{
 		"nvim-lualine/lualine.nvim",
 		requires = { "nvim-tree/nvim-web-devicons", opt = true },
 		opts = {
 			options = {
-				theme = "gruvbox",
+				theme = "catppuccin",
 				icons_enabled = true,
 				component_separators = "|",
 				section_separators = "",
