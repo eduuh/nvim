@@ -1,7 +1,7 @@
 local M = {}
 
 -- Check if running on Windows or macOS
-local isWinOrMac = vim.fn.has("win32") == 1 or vim.fn.has("mac") == 1
+local isWinOrMac = vim.fn.has("win32") == 1 or vim.fn.has("mac") == 1 or vim.fn.has("unix") == 1
 
 -- Check if running in Codespaces
 local isCodespace = os.getenv("CODESPACES") ~= nil
