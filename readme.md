@@ -20,4 +20,11 @@ Linking you thinking. Follow you curiosity and passion
 
 ### Obsidian
 
-1. 
+
+## nvim terminal
+
+tnoremap <Esc> <C-\><C-n>
+
+- Navigate in terminal.
+
+tnoremap <A-h> <C-\><C-N><C-w>h

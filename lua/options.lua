@@ -33,6 +33,8 @@ vim.opt.splitkeep = "cursor"
 vim.opt.mouse = "a"
 vim.opt.textwidth = 80
 
+vim.opt.conceallevel = 2
+
 vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 -- Add asterisks in block comments
