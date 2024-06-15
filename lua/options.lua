@@ -39,5 +39,13 @@ vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 -- Add asterisks in block comments
 vim.opt.formatoptions:append({ "r" })
-vim.o.signcolumn = "no"
+vim.o.signcolumn = "yes"
 vim.opt.swapfile = false
+
+vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", {
+	desc = "Prev buffer",
+})
+
+vim.keymap.set("n", "]b", "<cmd>bnext<cr>", {
+	desc = "Next buffer",
+})
