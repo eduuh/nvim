@@ -49,3 +49,10 @@ vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", {
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", {
 	desc = "Next buffer",
 })
+
+vim.cmd([[
+  augroup PopupInsertMode
+    autocmd!
+    autocmd FileType popupmenu inoremap <buffer> <C-q> <C-\><C-n>
+  augroup END
+]])

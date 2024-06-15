@@ -28,3 +28,13 @@ tnoremap <Esc> <C-\><C-n>
 - Navigate in terminal.
 
 tnoremap <A-h> <C-\><C-N><C-w>h
+
+
+## Distant Setup
+
+install distant binary in nvim command mode.
+
+```nvim
+:DistantInstall
+```
+
