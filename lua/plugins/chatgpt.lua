@@ -1,6 +1,7 @@
 return {
 	{
 		"jackMort/ChatGPT.nvim",
+		enabled = require("utils").isEnabled,
 		event = "VeryLazy",
 		config = function()
 			require("chatgpt").setup({
@@ -14,5 +15,6 @@ return {
 			"nvim-telescope/telescope.nvim",
 		},
 	},
-	"github/copilot.vim",
+	--TODO: Figure out subcription
+	{ "github/copilot.vim", enabled = false },
 }
