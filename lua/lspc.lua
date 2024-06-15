@@ -30,6 +30,7 @@ require("mason-tool-installer").setup({
 		"vim-language-server",
 		"prettier",
 		"prettierd",
+		"clang-format",
 	},
 	integrations = {
 		["mason-lspconfig"] = true,
