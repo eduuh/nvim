@@ -45,6 +45,9 @@ local cmp_format = require("lsp-zero").cmp_format({ details = true })
 require("luasnip.loaders.from_vscode").lazy_load()
 
 cmp.setup({
+	experimental = {
+		ghost_text = true,
+	},
 	window = {
 		completion = cmp.config.window.bordered(),
 		documentation = cmp.config.window.bordered(),
