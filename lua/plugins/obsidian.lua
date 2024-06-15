@@ -1,6 +1,7 @@
 return {
 	"epwalsh/obsidian.nvim",
 	version = "*",
+	enabled = require("utils").isEnabled,
 	event = "VeryLazy",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
