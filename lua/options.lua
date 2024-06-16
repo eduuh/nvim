@@ -56,3 +56,5 @@ vim.cmd([[
     autocmd FileType popupmenu inoremap <buffer> <C-q> <C-\><C-n>
   augroup END
 ]])
+
+vim.opt.fillchars = { eob = " " }
