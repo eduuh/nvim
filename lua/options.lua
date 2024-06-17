@@ -58,3 +58,4 @@ vim.cmd([[
 ]])
 
 vim.opt.fillchars = { eob = " " }
+-- vim.opt.wrap = true
