@@ -15,6 +15,5 @@ return {
 			"nvim-telescope/telescope.nvim",
 		},
 	},
-	--TODO: Figure out subcription
 	{ "github/copilot.vim", enabled = false },
 }
