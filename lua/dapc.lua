@@ -2,24 +2,24 @@ local M = {}
 -- custom adapter for running tasks before starting debug
 local dap = require("dap")
 
-function registerCustomAdapter(custom_adapter, type)
-	local dap_l = require("dap")
-	dap_l.adapters[custom_adapter] = function(cb, config)
-		if config.preLaunchTask then
-			local async = require("plenary.async")
-			local notify = require("notify").async
-
-			async.run(function()
-				---@diagnostic disable-next-line: missing-parameter
-				notify("Running [" .. config.preLaunchTask .. "]").events.close()
-			end, function()
-				vim.fn.system(config.preLaunchTask)
-				config.type = type
-				dap.run(config)
-			end)
-		end
-	end
-end
+-- function registerCustomAdapter(custom_adapter, type)
+-- 	local dap_l = require("dap")
+-- 	dap_l.adapters[custom_adapter] = function(cb, config)
+-- 		if config.preLaunchTask then
+-- 			local async = require("plenary.async")
+-- 			local notify = require("notify").async
+--
+-- 			async.run(function()
+-- 				---@diagnostic disable-next-line: missing-parameter
+-- 				notify("Running [" .. config.preLaunchTask .. "]").events.close()
+-- 			end, function()
+-- 				vim.fn.system(config.preLaunchTask)
+-- 				config.type = type
+-- 				dap.run(config)
+-- 			end)
+-- 		end
+-- 	end
+-- end
 
 M.dap_configurations = function()
 	dap.adapters.nlua = function(callback, conf)
