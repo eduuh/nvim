@@ -1,20 +1,23 @@
 local M = {}
 -- custom adapter for running tasks before starting debug
-local custom_adapter = "pwa-node-custom"
 local dap = require("dap")
-dap.adapters[custom_adapter] = function(cb, config)
-	if config.preLaunchTask then
-		local async = require("plenary.async")
-		local notify = require("notify").async
 
-		async.run(function()
-			---@diagnostic disable-next-line: missing-parameter
-			notify("Running [" .. config.preLaunchTask .. "]").events.close()
-		end, function()
-			vim.fn.system(config.preLaunchTask)
-			config.type = "pwa-node"
-			dap.run(config)
-		end)
+function registerCustomAdapter(custom_adapter, type)
+	local dap_l = require("dap")
+	dap_l.adapters[custom_adapter] = function(cb, config)
+		if config.preLaunchTask then
+			local async = require("plenary.async")
+			local notify = require("notify").async
+
+			async.run(function()
+				---@diagnostic disable-next-line: missing-parameter
+				notify("Running [" .. config.preLaunchTask .. "]").events.close()
+			end, function()
+				vim.fn.system(config.preLaunchTask)
+				config.type = type
+				dap.run(config)
+			end)
+		end
 	end
 end
 
@@ -132,5 +135,36 @@ M.dap_configurations = function()
 			},
 		}
 	end
+
+	local codelldb_custom = "codelldb_custom"
+	dap.adapters.codelldb = {
+		type = "server",
+		host = "127.0.0.1",
+		port = "${port}",
+		executable = {
+			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/codelldb",
+			args = { "--port", "${port}" },
+
+			-- On windows you may have to uncomment this:
+			-- detached = false,
+		},
+	}
+
+	--registerCustomAdapter(codelldb_custom, "codelldb")
+
+	require("dap").configurations["cpp"] = {
+		{
+			name = "Launch",
+			type = "codelldb", --gdb_custom,
+			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
+			request = "launch",
+			program = function()
+				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+			end,
+			cwd = "${workspaceFolder}",
+			stop0nEntry = true,
+		},
+	}
 end
+
 return M
