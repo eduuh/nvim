@@ -39,8 +39,8 @@ function error(message: string): never {
 
 // Object
 declare function create(o: object | null): void;
-create({ prop: 0 });
-create(null);
+//create({ prop: 0 });
+//create(null);
 
 // Type Assertions
 let someValue: any = "this is a string";
@@ -159,4 +159,5 @@ export namespace Geometry {
     }
   }
 }
+
 

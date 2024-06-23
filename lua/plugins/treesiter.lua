@@ -7,6 +7,8 @@ return {
 		require("nvim-treesitter.configs").setup({
 			-- Add languages to be installed here that you want installed for treesitter
 			ensure_installed = {
+				"cpp",
+				"c",
 				"lua",
 				"rust",
 				"typescript",
