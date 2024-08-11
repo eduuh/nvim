@@ -40,7 +40,7 @@ M.show_docker_images = function(opts)
 						true,
 						vim.tbl_flatten({
 							"#" .. entry.value.ID,
-							"",
+							""
 							"```lua",
 							vim.split(vim.inspect(entry.value), "\n"),
 							"```",

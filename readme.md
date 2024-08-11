@@ -1,40 +1,10 @@
-## Self-education
+# dushg nvim
 
-Promoting curiosity and self-education. Link note taking.
+## base/minimal
 
-Linking you thinking. Follow you curiosity and passion
+## Complete
 
-### Self Education
+## Todo
 
-1. Credibility - Anyone can give advice. Most people speak with authority with extenal factor such as money.
-2. Transparency - Link to publication.
-3. Intergrity - Personalization. do not tell me what to do. Tell me how you came to the conclusion.
-
-### Setup
-
-1. Folder structure
-2. Links
-3. Templates
-4. Local Files
-5. Graph View
-
-### Obsidian
-
-
-## nvim terminal
-
-tnoremap <Esc> <C-\><C-n>
-
-- Navigate in terminal.
-
-tnoremap <A-h> <C-\><C-N><C-w>h
-
-
-## Distant Setup
-
-install distant binary in nvim command mode.
-
-```nvim
-:DistantInstall
-```
-
+1. Float term
+2. Competitest
