@@ -1,5 +1,4 @@
 return {
-	{ "neovim/nvim-lspconfig" },
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		config = function()
@@ -71,6 +70,7 @@ return {
 		end,
 	},
 	{ "L3MON4D3/LuaSnip" },
+	{ "neovim/nvim-lspconfig" },
 	{
 		"williamboman/mason.nvim",
 		dependencies = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },

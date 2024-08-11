@@ -1,8 +1,7 @@
 return {
 	{
 		"jackMort/ChatGPT.nvim",
-		enabled = require("utils").isEnabled,
-		event = "VeryLazy",
+		cmd = { "ChatGPT" },
 		config = function()
 			require("chatgpt").setup({
 				api_key_cmd = "op read op://personal/openai/credential --no-newline",
