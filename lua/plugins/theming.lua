@@ -1,19 +1,16 @@
 return {
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
+		"navarasu/onedark.nvim",
 		config = function()
-			vim.cmd.colorscheme("catppuccin")
+			require("onedark").load()
 		end,
 	},
-	{ "embark-theme/vim", as = "embark" },
 	{
 		"nvim-lualine/lualine.nvim",
 		requires = { "nvim-tree/nvim-web-devicons", opt = true },
 		opts = {
 			options = {
-				theme = "catppuccin",
+				theme = "onedark",
 				icons_enabled = true,
 				component_separators = "|",
 				section_separators = "",

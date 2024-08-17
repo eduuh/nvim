@@ -17,6 +17,11 @@ return {
 					name = "personal",
 					path = "~/projects/notes",
 				},
+
+				{
+					name = "nvim",
+					path = "~/.config/nvim/notes",
+				},
 				-- {
 				-- 	name = "work",
 				-- 	path = "~/projects/work_notes",
