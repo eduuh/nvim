@@ -17,15 +17,19 @@ return {
 					name = "personal",
 					path = "~/projects/notes",
 				},
+				{
+					name = "dsa",
+					path = "~/projects/byte_safari/dsa/notes",
+				},
 
 				{
 					name = "nvim",
 					path = "~/.config/nvim/notes",
 				},
-				-- {
-				-- 	name = "work",
-				-- 	path = "~/projects/work_notes",
-				-- },
+				{
+					name = "nvim",
+					path = "~/projects/byte_safari/explores/cpp/the_lang/",
+				},
 			},
 			completion = {
 				nvim_cmp = true,
