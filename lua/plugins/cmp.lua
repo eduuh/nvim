@@ -7,12 +7,10 @@ return {
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/nvim-cmp",
+	{ "L3MON4D3/LuaSnip" },
 	},
 	config = function()
 		local cmp = require("cmp")
-		local cmp_action = require("lsp-zero").cmp_action()
-		local cmp_format = require("lsp-zero").cmp_format({ details = true })
-		require("luasnip.loaders.from_vscode").lazy_load()
 
 		cmp.setup({
 			experimental = {
@@ -33,16 +31,15 @@ return {
 				{ name = "nvim_lua" },
 				{ name = "path" },
 			},
-			formatting = cmp_format,
 			mapping = cmp.mapping.preset.insert({
-				["<Tab>"] = cmp_action.luasnip_supertab(),
-				["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
+				-- ["<Tab>"] = cmp_action.luasnip_supertab(),
+				-- ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
 				["<CR>"] = cmp.mapping.confirm({ select = false }),
 
 				["<C-Space>"] = cmp.mapping.complete(),
 
-				["<C-f>"] = cmp_action.luasnip_jump_forward(),
-				["<C-b>"] = cmp_action.luasnip_jump_backward(),
+				-- ["<C-f>"] = cmp_action.luasnip_jump_forward(),
+				-- ["<C-b>"] = cmp_action.luasnip_jump_backward(),
 
 				["<C-u>"] = cmp.mapping.scroll_docs(-4),
 				["<C-d>"] = cmp.mapping.scroll_docs(4),
@@ -66,7 +63,7 @@ return {
 				end),
 			}),
 			snippet = {
-				expand = function(args)
+			expand = function(args)
 					require("luasnip").lsp_expand(args.body)
 				end,
 			},

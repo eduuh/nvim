@@ -10,7 +10,7 @@ return {
 				c = { "clang-format", "cmake_format" },
 			},
 			format_on_save = {
-				timeout_ms = 500,
+				     timeout_ms = 500,
 				lsp_fallback = true,
 			},
 		})
