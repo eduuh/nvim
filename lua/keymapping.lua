@@ -18,7 +18,7 @@ keymap.set("n", "<Leader>q", ":quit<Return>", opts)
 keymap.set("n", "<Leader>Q", ":qa<Return>", opts)
 
 -- Split window
-keymap.set("n", "<laeder>s", ":split<Return>", opts)
+keymap.set("n", "<leader>h", ":split<Return>", opts)
 keymap.set("n", "<leader>v", ":vsplit<Return>", opts)
 
 -- Move window
