@@ -1,5 +1,10 @@
 return {
 	{
+		"mrcjkb/rustaceanvim",
+		version = "^5", -- Recommended
+		lazy = false, -- This plugin is already lazy
+	},
+	{
 		"VonHeikemen/lsp-zero.nvim",
 		config = function()
 			local lsp_zero = require("lsp-zero")
@@ -56,7 +61,6 @@ return {
 				},
 				servers = {
 					["tsserver"] = { "javascript", "typescript" },
-					["rust_analyzer"] = { "rust" },
 					["clangd"] = { "c", "c++" },
 				},
 			})
@@ -72,7 +76,7 @@ return {
 	{ "L3MON4D3/LuaSnip" },
 	{ "neovim/nvim-lspconfig" },
 	{
-		"williamboman/mason.nvim",
+		"w lliamboman/mason.nvim",
 		dependencies = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
 		config = function()
 			require("mason").setup({})
@@ -82,6 +86,7 @@ return {
 					function(server_name)
 						require("lspconfig")[server_name].setup({})
 					end,
+					rust_analyzer = function() end,
 					lua_ls = function()
 						local lsp_zero = require("lsp-zero")
 						local lua_opts = lsp_zero.nvim_lua_ls()
@@ -102,6 +107,7 @@ return {
 					"chrome-debug-adapter",
 					"codelldb",
 					"cpptools",
+					"rust-analyzer",
 				},
 				integrations = {
 					["mason-lspconfig"] = true,
@@ -110,10 +116,5 @@ return {
 				},
 			})
 		end,
-	},
-	{
-		"mrcjkb/rustaceanvim",
-		version = "^4", -- Recommended
-		lazy = false, -- This plugin is already lazy
 	},
 }
