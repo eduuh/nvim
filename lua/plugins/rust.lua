@@ -17,9 +17,6 @@ return {
 					adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
 				},
 				server = {
-					on_attach = function(_, bufnr)
-						LSP_MAPPINGS(bufnr)
-					end,
 					default_settings = {
 						["rust-analyzer"] = {},
 					},
