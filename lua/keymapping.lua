@@ -38,7 +38,23 @@ keymap.set("n", "<C-j>", function()
 	vim.diagnostic.goto_next()
 end, opts)
 
-LSP_Mappings = function(bufnr)
+-- Remap the delete command to use a less-used register, for example, "q"
+keymap.set("n", "d", '"qd', opts)
+keymap.set("v", "d", '"qd', opts)
+
+-- Remap delete line (dd) to also use the "q" register
+keymap.set("n", "dd", '"qdd', opts)
+
+-- Remap delete to the end of the line (D) to use the "q" register
+keymap.set("n", "D", '"qD', opts)
+
+-- Remap change (c) commands similarly to use the "q" register
+keymap.set("n", "c", '"qc', opts)
+keymap.set("v", "c", '"qc', opts)
+keymap.set("n", "cc", '"qcc', opts)
+keymap.set("n", "C", '"qC', opts)
+
+LSP_MAPPINGS = function(bufnr)
 	local map = vim.keymap.set
 
 	local diagnostic_goto = function(next, severity)
@@ -79,5 +95,5 @@ end
 local lsp_zero = require("lsp-zero")
 
 lsp_zero.on_attach(function(_, bufnr)
-	LSP_Mappings(bufnr)
+	LSP_MAPPINGS(bufnr)
 end)

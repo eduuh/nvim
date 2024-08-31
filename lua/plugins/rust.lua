@@ -2,7 +2,7 @@ vim.g.rustaceanvim = {
 	tools = {},
 	server = {
 		on_attach = function(_, bufnr)
-			LSP_Mappings(bufnr)
+			LSP_MAPPINGS(bufnr)
 		end,
 		default_settings = {
 			["rust-analyzer"] = {},

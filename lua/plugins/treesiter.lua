@@ -2,8 +2,9 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
 	config = function()
-		-- [[ Configure Treesitter ]]
-		-- See `:help nvim-treesitter`
+		vim.filetype.add({ extension = { mdx = "mdx" } })
+		vim.treesitter.language.register("markdown", "mdx")
+
 		require("nvim-treesitter.configs").setup({
 			-- Add languages to be installed here that you want installed for treesitter
 			ensure_installed = {
