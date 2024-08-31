@@ -1,5 +1,4 @@
 --TODO: Add vscode - config support
---ToDO: Add way to selected binary when debugging c++
 
 ---@param config {args?:string[]|fun():string[]?}
 local function get_args(config)

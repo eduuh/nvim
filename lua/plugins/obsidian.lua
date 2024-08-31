@@ -23,10 +23,6 @@ return {
 
 				{
 					name = "nvim",
-					path = "~/.config/nvim/notes",
-				},
-				{
-					name = "nvim",
 					path = "~/projects/byte_safari/explores/cpp/the_lang/",
 				},
 			},
