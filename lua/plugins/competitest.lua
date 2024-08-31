@@ -1,6 +1,6 @@
 return {
 	"xeluxee/competitest.nvim",
-	ft = { "cpp", "c", "cs", "typescript", "javascript", "rs", "rust" },
+	ft = { "cpp", "c", "cs", "typescript", "javascript", "rs", "rust", "js" },
 	dependencies = "MunifTanjim/nui.nvim",
 	enabled = require("utils").isEnabled,
 	config = function()
@@ -21,8 +21,12 @@ return {
 				c = { exec = "./$(FNOEXT)" .. ".out" },
 				cpp = { exec = "./$(FNOEXT)" .. ".out" },
 				rust = { exec = "./$(FNOEXT)" },
-				javascript = { exec = "node", "$(FNAME)" .. ".js" },
-				typescript = { exec = "bun", "$(FNAME)" .. ".ts" },
+				javascript = { exec = "node", args = { "$(FNAME)" } },
+			},
+			template_file = {
+				c = "~/.config/nvim/config_test/c++/template.cpp",
+				cpp = "~/.config/nvim/config_test/c++/template.cpp",
+				rust = "~/.config/nvim/config_test/rust/template.rs",
 			},
 			runner_ui = {
 				interface = "popup",

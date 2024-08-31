@@ -18,7 +18,7 @@ const { firstName, lastName } = person;
 const numbers = [1, 2, 3];
 const newNumbers = [...numbers, 4, 5];
 
-// 6. Classes
+//t6. Classes
 class Animal {
   constructor(name) {
     this.name = name;
