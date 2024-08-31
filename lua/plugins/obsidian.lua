@@ -1,6 +1,5 @@
 return {
 	"epwalsh/obsidian.nvim",
-	version = "*",
 	enabled = require("utils").isEnabled,
 	event = "VeryLazy",
 	dependencies = {
@@ -22,10 +21,6 @@ return {
 					path = "~/projects/byte_safari/dsa/notes",
 				},
 
-				{
-					name = "nvim",
-					path = "~/.config/nvim/notes",
-				},
 				{
 					name = "nvim",
 					path = "~/projects/byte_safari/explores/cpp/the_lang/",

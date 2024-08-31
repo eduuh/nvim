@@ -12,10 +12,7 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 -- vim.g.python3_host_prog = "~/.local/state/python3/bin/python3"
-
 require("options")
-require("keymapping")
-require("autocmd")
 
 require("lazy").setup({
 	spec = {
@@ -25,3 +22,7 @@ require("lazy").setup({
 	{ "folke/neoconf.nvim", cmd = "Neoconf" },
 	"folke/neodev.nvim",
 })
+
+require("keymapping")
+require("autocmd")
+require("ttconfig")
