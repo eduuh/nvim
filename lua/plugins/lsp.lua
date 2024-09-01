@@ -116,6 +116,7 @@ return {
 						end,
 					})
 				end,
+				["rust_analyzer"] = function() end,
 				["graphql"] = function()
 					-- configure graphql language server
 					lspconfig["graphql"].setup({

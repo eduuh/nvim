@@ -50,7 +50,7 @@ return {
 				desc = "Toggle Breakpoint",
 			},
 			{
-				"<leader>d",
+				"<leader>dc",
 				function()
 					require("dap").continue()
 				end,

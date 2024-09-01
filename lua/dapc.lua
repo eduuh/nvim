@@ -136,7 +136,7 @@ M.dap_configurations = function()
 		}
 	end
 
-	local codelldb_custom = "codelldb_custom"
+	--local codelldb_custom = "codelldb_custom"
 	dap.adapters.codelldb = {
 		type = "server",
 		host = "127.0.0.1",
@@ -153,6 +153,20 @@ M.dap_configurations = function()
 	--registerCustomAdapter(codelldb_custom, "codelldb")
 
 	require("dap").configurations["cpp"] = {
+		{
+			name = "Launch",
+			type = "codelldb", --gdb_custom,
+			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
+			request = "launch",
+			program = function()
+				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+			end,
+			cwd = "${workspaceFolder}",
+			stop0nEntry = true,
+		},
+	}
+
+	require("dap").configurations["rust"] = {
 		{
 			name = "Launch",
 			type = "codelldb", --gdb_custom,

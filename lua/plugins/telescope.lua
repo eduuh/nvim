@@ -28,6 +28,18 @@ return {
 			end,
 		})
 
+		local yank_path = function()
+			local entry = require("telescope.actions.state").get_selected_entry()
+			local cb_opts = vim.opt.clipboard:get()
+			if vim.tbl_contains(cb_opts, "unnamed") then
+				vim.fn.setreg("*", entry.path)
+			end
+			if vim.tbl_contains(cb_opts, "unnamedplus") then
+				vim.fn.setreg("+", entry.path)
+			end
+			vim.fn.setreg("", entry.path)
+		end
+
 		telescope.setup({
 			defaults = {
 				path_display = { "smart" },
@@ -37,6 +49,14 @@ return {
 						["<C-j>"] = actions.move_selection_next, -- move to next result
 						["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
 						["<C-t>"] = trouble_telescope.open,
+						["C-y"] = function()
+							yank_path()
+						end,
+					},
+					n = {
+						["y"] = function()
+							yank_path()
+						end,
 					},
 				},
 			},
@@ -46,8 +66,7 @@ return {
 		pcall(require("telescope").load_extension("fzf"))
 		pcall(require("telescope").load_extension("file_browser"))
 
-		local keymap = vim.keymap -- for conciseness
-		local opt = {}
+		local opt = { noremap = true, silent = true }
 
 		opt.desc = "Find Harpoon [M]arks"
 		vim.keymap.set("n", "<leader>fm", ":Telescope harpoon marks<CR>", opt)
