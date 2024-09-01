@@ -26,3 +26,6 @@ require("lazy").setup({
 require("keymapping")
 require("autocmd")
 require("ttconfig")
+
+vim.api.nvim_set_keymap("n", ";", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", ";", "<Nop>", { noremap = true, silent = true })

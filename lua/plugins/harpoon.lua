@@ -7,11 +7,8 @@ return {
 
 		harpoon:setup({})
 
-		vim.keymap.set("n", "<leader>m", function()
+		vim.keymap.set("n", ";m", function()
 			harpoon:list():add()
-		end)
-		vim.keymap.set("n", "<leader>ht", function()
-			harpoon.ui:toggle_quick_menu(harpoon:list())
 		end)
 
 		-- basic telescope configuration
@@ -33,9 +30,5 @@ return {
 				})
 				:find()
 		end
-
-		vim.keymap.set("n", "<leader>sh", function()
-			toggle_telescope(harpoon:list())
-		end, { desc = "Open harpoon window" })
 	end,
 }

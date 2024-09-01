@@ -7,7 +7,7 @@ return {
 		cmd = { "ChatGPT" },
 		config = function()
 			require("chatgpt").setup({
-				api_key_cmd = "op read op://personal/openai/credential --no-newline",
+				api_key_cmd = "op read op://personal/openai/credential --no-newline ",
 				openai_params = {
 					model = "gpt-4o",
 					frequency_penalty = 0,

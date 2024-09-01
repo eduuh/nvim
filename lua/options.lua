@@ -7,7 +7,7 @@ vim.opt.number = true
 vim.opt.relativenumber = false
 
 -- Reduce nvim annoying messages
-vim.opt.shortmess:append("aTI")
+vim.opt.shortmess:append("cFWaIT")
 
 vim.opt.title = true
 vim.opt.autoindent = true
@@ -15,7 +15,7 @@ vim.opt.smartindent = true
 vim.opt.hlsearch = true
 vim.opt.backup = false
 vim.opt.showcmd = true
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 2
 vim.opt.laststatus = 0
 vim.opt.expandtab = true
 vim.opt.scrolloff = 10
@@ -60,4 +60,3 @@ vim.cmd([[
 ]])
 
 vim.opt.fillchars = { eob = " " }
--- vim.opt.wrap = true

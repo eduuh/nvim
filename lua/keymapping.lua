@@ -20,6 +20,8 @@ keymap.set("n", "<Leader>Q", ":qa<Return>", opts)
 -- Split window
 keymap.set("n", "<leader>h", ":split<Return>", opts)
 keymap.set("n", "<leader>v", ":vsplit<Return>", opts)
+keymap.set("n", ";n", ":cnext<cr>", opts)
+keymap.set("n", ";p", ":cprev<cr>", opts)
 
 -- Move window
 keymap.set("n", "sh", "<C-w>h")
@@ -33,7 +35,5 @@ keymap.set("n", "<C-S-l>", "<C-w>>")
 keymap.set("n", "<C-S-k>", "<C-w>+")
 keymap.set("n", "<C-S-j>", "<C-w>-")
 
--- Diagnostics
-keymap.set("n", "<C-j>", function()
-	vim.diagnostic.goto_next()
-end, opts)
+-- Power moves
+keymap.set("n", "ss", "<cmd>ChatGpt<cr>", opts)

@@ -61,7 +61,7 @@ return {
 					keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
 					opts.desc = "Show line diagnostics"
-					keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+					keymap.set("n", "<leader>dl", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 					opts.desc = "Go to previous diagnostic"
 					keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
@@ -76,8 +76,6 @@ return {
 					keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
 					local map = vim.keymap.set
-					map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-					map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 					map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
 					map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 					map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
