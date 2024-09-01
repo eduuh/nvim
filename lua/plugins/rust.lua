@@ -1,10 +1,9 @@
 local rust_tools = {}
 
 function rust_tools.setup()
-	local mason_registry = require("mason-registry")
-
-	local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
-	local codelldb_path = codelldb_root .. "adapter/codelldb"
+	local codelldb_root = vim.fn.stdpath("data") .. "/mason" .. "/packages/"
+	local codelldb_path = codelldb_root .. "/codelldb"
+	print(codelldb_root)
 	local liblldb_path = codelldb_root .. "lldb/lib/liblldb.so"
 
 	local cfg = require("rustaceanvim.config")
@@ -40,6 +39,7 @@ return {
 		version = "^5", -- Recommended
 		lazy = false, -- This plugin is already lazy
 		ft = "rust",
+		dependencies = { "mason-org/mason-registry" },
 		config = function()
 			rust_tools.setup()
 		end,
