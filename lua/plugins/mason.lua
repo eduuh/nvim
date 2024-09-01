@@ -25,7 +25,6 @@ return {
 		})
 
 		mason_lspconfig.setup({
-			-- list of servers for mason to install
 			ensure_installed = {
 				"tsserver",
 				"html",
@@ -37,7 +36,17 @@ return {
 				"emmet_ls",
 				"prismals",
 				"pyright",
+				"lua_ls",
+				"cmake",
+				"dockerls",
+				"jsonls",
+				"clangd",
+				"jdtls",
 			},
+			auto_update = false,
+			run_on_start = true,
+			start_delay = 0,
+			debounce_hours = 5,
 		})
 
 		mason_tool_installer.setup({

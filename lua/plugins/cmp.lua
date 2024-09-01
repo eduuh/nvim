@@ -126,6 +126,19 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-buffer", -- source for text in buffer
 		"hrsh7th/cmp-path", -- source for file system paths
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-cmdline",
+		"hrsh7th/cmp-calc",
+		"hrsh7th/cmp-nvim-lsp-signature-help",
+		"f3fora/cmp-spell",
+		"L3mon4d3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
+		"rafamadriz/friendly-snippets",
+		"onsails/lspkind.nvim",
+		"p00f/clangd_extensions.nvim",
+		"rcarriga/cmp-dap",
 		{
 			"L3MON4D3/LuaSnip",
 			-- follow latest release.
