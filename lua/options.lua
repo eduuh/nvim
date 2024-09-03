@@ -37,7 +37,7 @@ vim.opt.textwidth = 80
 
 vim.opt.conceallevel = 2
 
-vim.opt.clipboard = { "unnamed", "unnamedplus" }
+vim.opt.clipboard = { "unnamedplus" }
 
 -- Add asterisks in block comments
 vim.opt.formatoptions:append({ "r" })

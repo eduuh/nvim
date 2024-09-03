@@ -7,7 +7,7 @@ return {
 				ensure_installed = {
 					"tsserver",
 					"html",
-					"rust-analyzer",
+					"rust_analyzer",
 					"cssls",
 					"tailwindcss",
 					"svelte",
