@@ -1,5 +1,8 @@
 return {
 	{
+		"sindrets/diffview.nvim",
+	},
+	{
 		"kdheepak/lazygit.nvim",
 		event = "VeryLazy",
 		keys = {
