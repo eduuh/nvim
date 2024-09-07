@@ -14,5 +14,3 @@ return {
 		markdown = true,
 	},
 }
-
---TODO complete this setup

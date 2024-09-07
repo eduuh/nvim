@@ -6,22 +6,15 @@ keymap.set({ "n", "v" }, "<BS>", "<C-^>", { desc = "Alternate File" })
 keymap.set("n", "x", '"_x')
 
 -- Increment/decrement
-keymap.set("n", "+", "<C-a>")
-keymap.set("n", "-", "<C-x>")
+-- keymap.set("n", "+", "<C-a>")
+-- keymap.set("n", "-", "<C-x>")
 
 -- Select all
 keymap.set("n", "<C-a>", "gg<S-v>G")
 
--- Save file and quit
-keymap.set("n", "<Leader>w", ":update<Return>", opts)
-keymap.set("n", "<Leader>q", ":quit<Return>", opts)
-keymap.set("n", "<Leader>Q", ":qa<Return>", opts)
-
 -- Split window
 keymap.set("n", "<leader>h", ":split<Return>", opts)
 keymap.set("n", "<leader>v", ":vsplit<Return>", opts)
-keymap.set("n", ";n", ":cnext<cr>", opts)
-keymap.set("n", ";p", ":cprev<cr>", opts)
 
 -- Move window
 keymap.set("n", "sh", "<C-w>h")

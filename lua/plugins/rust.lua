@@ -3,7 +3,6 @@ local rust_tools = {}
 function rust_tools.setup()
 	local codelldb_root = vim.fn.stdpath("data") .. "/mason" .. "/packages/"
 	local codelldb_path = codelldb_root .. "/codelldb"
-	print(codelldb_root)
 	local liblldb_path = codelldb_root .. "lldb/lib/liblldb.so"
 
 	local cfg = require("rustaceanvim.config")

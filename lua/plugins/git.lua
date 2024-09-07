@@ -41,34 +41,35 @@ return {
 
 					-- Navigation
 
-					map("n", "]g", gs.next_hunk, { desc = "Next Hunk" })
-					map("n", "[g", gs.prev_hunk, { desc = "Prev Hunk" })
+					map("n", "+", gs.next_hunk, { desc = "Next Hunk" })
+					map("n", "-", gs.prev_hunk, { desc = "Prev Hunk" })
 
 					-- Actions
-					map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage Hunk" })
-					map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset Hunk" })
-					map("v", "<leader>hs", function()
+					map("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Stage Hunk" })
+					map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage Hunk" })
+					map("n", "<leader>gS", gs.stage_buffer, { desc = "Stage buffer" })
+					map("n", "<leader>gr", gs.reset_hunk, { desc = "Reset Hunk" })
+					map("v", "<leader>gs", function()
 						gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 					end)
-					map("v", "<leader>hr", function()
+					map("v", "<leader>gr", function()
 						gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 					end, { desc = "Reset Line" })
-					map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
-					map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
-					map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
-					map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
-					map("n", "<leader>hb", function()
+					map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
+					map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset buffer" })
+					map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview hunk" })
+					map("n", "<leader>gb", function()
 						gs.blame_line({ full = true })
 					end, { desc = "Blame Line" })
-					map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame line" })
-					map("n", "<leader>hd", gs.diffthis, { desc = "Open diff" })
-					map("n", "<leader>hD", function()
+					map("n", "<leader>gb", gs.toggle_current_line_blame, { desc = "Toggle blame line" })
+					map("n", "<leader>gd", gs.diffthis, { desc = "Open diff" })
+					map("n", "<leader>gD", function()
 						gs.diffthis("~")
 					end, { desc = "Open buffer diff" })
-					map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle deleted" })
+					map("n", "<leader>gx", gs.toggle_deleted, { desc = "Toggle deleted" })
 
 					-- Text object
-					map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select Hunk (text objects)" })
+					map({ "o", "x" }, "ih", ":<C-U>:itsigns select_hunk<CR>", { desc = "Select Hunk (text objects)" })
 				end,
 			})
 		end,

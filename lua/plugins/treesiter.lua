@@ -30,7 +30,6 @@ return {
 				"xml",
 				"json",
 				"graphql",
-				"http",
 			},
 
 			highlight = { enable = true },
