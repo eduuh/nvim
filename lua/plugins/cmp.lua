@@ -92,11 +92,9 @@ function M.setup()
 			end, { "i", "s" }),
 			["<C-r>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }), -- For some reason this mapping seems to mess with the <Tab> mapping ?!
 			["<C-i>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
-			["<cr>"] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Insert }),
-
-			-- ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-			-- ["<C-f>"] = cmp.mapping.scroll_docs(4),
-			--
+			["<cr>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
+			["<C-b>"] = cmp.mapping.scroll_docs(-4),
+			["<C-f>"] = cmp.mapping.scroll_docs(4),
 			["<C-e>"] = cmp.mapping.abort(),
 		},
 	})

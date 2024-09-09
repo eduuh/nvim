@@ -80,12 +80,8 @@ return {
 
 		-- Enable telescope fzf native, if installed
 		opt.desc = "[/] Fuzzily search in current buffer]"
-		vim.keymap.set("n", "<leader>sr", function()
-			-- You can pass additional configuration to telescope to change theme, layout, etc.
-			require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-				winblend = 10,
-				previewer = true,
-			}))
+		vim.keymap.set("n", "<leader>sb", function()
+			require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes"))
 		end, opt)
 
 		vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })

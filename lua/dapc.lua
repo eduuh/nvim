@@ -1,25 +1,18 @@
+---@diagnostic disable: duplicate-set-field
 local M = {}
 -- custom adapter for running tasks before starting debug
 local dap = require("dap")
 
--- function registerCustomAdapter(custom_adapter, type)
--- 	local dap_l = require("dap")
--- 	dap_l.adapters[custom_adapter] = function(cb, config)
--- 		if config.preLaunchTask then
--- 			local async = require("plenary.async")
--- 			local notify = require("notify").async
---
--- 			async.run(function()
--- 				---@diagnostic disable-next-line: missing-parameter
--- 				notify("Running [" .. config.preLaunchTask .. "]").events.close()
--- 			end, function()
--- 				vim.fn.system(config.preLaunchTask)
--- 				config.type = type
--- 				dap.run(config)
--- 			end)
--- 		end
--- 	end
--- end
+M.vscode_config = function()
+	local vscode = require("dap.ext.vscode")
+	local json = require("plenary.json")
+	vscode.json_decode = function(str)
+		return vim.json.decode(json.json_strip_comments(str))
+	end
+	if vim.fn.filereadable(".vscode/launch.json") then
+		vscode.load_launchjs()
+	end
+end
 
 M.dap_configurations = function()
 	dap.adapters.nlua = function(callback, conf)
@@ -79,64 +72,63 @@ M.dap_configurations = function()
 		},
 	}
 
-	local js_based_languages = { "typescript", "javascript", "typescriptreact" }
+	dap.adapters["node"] = function(cb, config)
+		if config.type == "node" then
+			config.type = "pwa-node"
+		end
+		local nativeAdapter = dap.adapters["pwa-node"]
+		if type(nativeAdapter) == "function" then
+			nativeAdapter(cb, config)
+		else
+			cb(nativeAdapter)
+		end
+	end
+
+	local js_based_languages = {
+		"javascript",
+		"typescriptreact",
+		"typescript",
+		"javascriptreact",
+	}
+
+	local vscode = require("dap.ext.vscode")
+	vscode.type_to_filetypes["node"] = js_based_languages
+	vscode.type_to_filetypes["pwa-node"] = js_based_languages
 
 	for _, language in ipairs(js_based_languages) do
 		require("dap").configurations[language] = {
 			{
-				name = "Debug Typescript File",
 				type = "pwa-node",
 				request = "launch",
+				name = "Launch file",
 				program = "${file}",
-				args = {
-					"${relativeFile}",
-				},
-				runtimeArgs = {
-					"-r",
-					"ts-node/register",
-				},
 				cwd = "${workspaceFolder}",
-				protocol = "inspector",
-				internalConsoleOptions = "openOnSessionStart",
 			},
 			{
-				type = "pwa-node",
-				request = "launch",
-				name = "Node: Launch JS File",
-				cwd = "${workspaceFolder}", -- vim.fn.getcwd(),
-				args = { "${file}" },
-				sourceMaps = true,
-				protocol = "inspector",
-			},
-			-- {
-			-- 	type = "pwa-node",
-			-- 	request = "launch",
-			-- 	name = "Launch Current File (Typescript)",
-			-- 	cwd = "${workspaceFolder}",
-			-- 	runtimeArgs = { "--loader=ts-node/esm" },
-			-- 	program = "${file}",
-			-- 	runtimeExecutable = "ts-node",
-			-- 	-- args = { '${file}' },
-			-- 	sourceMaps = true,
-			-- 	protocol = "inspector",
-			-- 	outFiles = { "${workspaceFolder}/**/**/*", "!**/node_modules/**" },
-			-- 	skipFiles = { "<node_internals>/**", "node_modules/**" },
-			-- 	resolveSourceMapLocations = {
-			-- 		"${workspaceFolder}/**",
-			-- 		"!**/node_modules/**",
-			-- 	},
-			-- },
-			{
-				name = "JNode: Attach to node process",
 				type = "pwa-node",
 				request = "attach",
-				rootPath = "${workspaceFolder}",
+				name = "Attach",
 				processId = require("dap.utils").pick_process,
+				cwd = "${workspaceFolder}",
+			},
+			{
+				type = "pwa-node",
+				request = "launch",
+				name = "Debug Jest Tests",
+				-- trace = true, -- include debugger info
+				runtimeExecutable = "node",
+				runtimeArgs = {
+					"./node_modules/jest/bin/jest.js",
+					"--runInBand",
+				},
+				rootPath = "${workspaceFolder}",
+				cwd = "${workspaceFolder}",
+				console = "integratedTerminal",
+				internalConsoleOptions = "neverOpen",
 			},
 		}
 	end
 
-	--local codelldb_custom = "codelldb_custom"
 	dap.adapters.codelldb = {
 		type = "server",
 		host = "127.0.0.1",
@@ -144,18 +136,13 @@ M.dap_configurations = function()
 		executable = {
 			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/codelldb",
 			args = { "--port", "${port}" },
-
-			-- On windows you may have to uncomment this:
-			-- detached = false,
 		},
 	}
-
-	--registerCustomAdapter(codelldb_custom, "codelldb")
 
 	require("dap").configurations["cpp"] = {
 		{
 			name = "Launch",
-			type = "codelldb", --gdb_custom,
+			type = "codelldb",
 			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
 			request = "launch",
 			program = function()

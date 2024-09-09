@@ -21,6 +21,7 @@ vim.opt.expandtab = true
 vim.opt.scrolloff = 10
 vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
+vim.opt.hlsearch = false
 vim.opt.smarttab = true
 vim.opt.breakindent = true
 vim.opt.shiftwidth = 2

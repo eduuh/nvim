@@ -27,6 +27,3 @@ keymap.set("n", "<C-S-h>", "<C-w><")
 keymap.set("n", "<C-S-l>", "<C-w>>")
 keymap.set("n", "<C-S-k>", "<C-w>+")
 keymap.set("n", "<C-S-j>", "<C-w>-")
-
--- Power moves
-keymap.set("n", "ss", "<cmd>ChatGpt<cr>", opts)

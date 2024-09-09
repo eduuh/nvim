@@ -113,8 +113,8 @@ function identity<T>(arg: T): T {
   return arg;
 }
 
-let output = identity<string>("myString");
-console.log(output);
+let edwin = identity<string>("myString");
+console.log(edwin);
 
 // Generic Interface
 interface GenericIdentityFn<T> {
