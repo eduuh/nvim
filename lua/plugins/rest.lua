@@ -2,8 +2,8 @@
 vim.g.rest_nvim = {}
 
 return {
-	{
-		"rest-nvim/rest.nvim",
-	},
-	"rest-nvim/tree-sitter-http",
+	-- {
+	-- 	"rest-nvim/rest.nvim",
+	-- },
+	-- "rest-nvim/tree-sitter-http",
 }
