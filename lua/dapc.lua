@@ -55,7 +55,8 @@ M.dap_configurations = function()
 			"chrome",
 			"pwa-node",
 			"pwa-chrome",
-			"node",
+			"node-terminal",
+			"pwa-extensionHost",
 		},
 	})
 
@@ -86,16 +87,21 @@ M.dap_configurations = function()
 
 	local js_based_languages = {
 		"javascript",
+		"javascriptreact",
 		"typescriptreact",
 		"typescript",
-		"javascriptreact",
 	}
 
 	local vscode = require("dap.ext.vscode")
 	vscode.type_to_filetypes["node"] = js_based_languages
 	vscode.type_to_filetypes["pwa-node"] = js_based_languages
 
-	for _, language in ipairs(js_based_languages) do
+	local js_languages = {
+		"javascript",
+		"javascriptreact",
+	}
+
+	for _, language in ipairs(js_languages) do
 		require("dap").configurations[language] = {
 			{
 				type = "pwa-node",
@@ -112,6 +118,16 @@ M.dap_configurations = function()
 				cwd = "${workspaceFolder}",
 			},
 			{
+				type = "pwa-chrome",
+				request = "attach",
+				name = "Attach Program (pwa-chrome = { port: 9222 })",
+				program = "${file}",
+				cwd = vim.fn.getcwd(),
+				sourceMaps = true,
+				port = 9222,
+				webRoot = "${workspaceFolder}",
+			},
+			{
 				type = "pwa-node",
 				request = "launch",
 				name = "Debug Jest Tests",
@@ -125,6 +141,74 @@ M.dap_configurations = function()
 				cwd = "${workspaceFolder}",
 				console = "integratedTerminal",
 				internalConsoleOptions = "neverOpen",
+			},
+		}
+	end
+
+	local ts_based_languages = {
+		"typescriptreact",
+		"typescript",
+	}
+
+	for _, language in ipairs(ts_based_languages) do
+		require("dap").configurations[language] = {
+			{
+				{
+					type = "pwa-node",
+					request = "launch",
+					name = "Launch Current File (pwa-node with ts-node)",
+					cwd = vim.fn.getcwd(),
+					runtimeArgs = { "--loader", "ts-node/esm" },
+					runtimeExecutable = "node",
+					args = { "${file}" },
+					sourceMaps = true,
+					protocol = "inspector",
+					skipFiles = { "<node_internals>/**", "node_modules/**" },
+					resolveSourceMapLocations = {
+						"${workspaceFolder}/**",
+						"!**/node_modules/**",
+					},
+				},
+				{
+					type = "pwa-node",
+					request = "launch",
+					name = "Launch Test Current File (pwa-node with jest)",
+					cwd = vim.fn.getcwd(),
+					runtimeArgs = { "${workspaceFolder}/node_modules/.bin/jest" },
+					runtimeExecutable = "node",
+					args = { "${file}", "--coverage", "false" },
+					rootPath = "${workspaceFolder}",
+					sourceMaps = true,
+					console = "integratedTerminal",
+					internalConsoleOptions = "neverOpen",
+					skipFiles = { "<node_internals>/**", "node_modules/**" },
+				},
+				{
+					type = "pwa-node",
+					request = "launch",
+					name = "Launch Current File (pwa-node ts-node-dev)",
+					cwd = vim.fn.getcwd(),
+					runtimeExecutable = "ts-node-dev",
+					runtimeArgs = { "--respawn", "--loader", "ts-node/esm" },
+					args = { "${file}" },
+					sourceMaps = true,
+					protocol = "inspector",
+					skipFiles = { "<node_internals>/**", "node_modules/**" },
+					resolveSourceMapLocations = {
+						"${workspaceFolder}/**",
+						"!**/node_modules/**",
+					},
+				},
+				{
+					type = "pwa-chrome",
+					request = "attach",
+					name = "Attach Program (pwa-chrome = { port: 9222 })",
+					program = "${file}",
+					cwd = vim.fn.getcwd(),
+					sourceMaps = true,
+					port = 9222,
+					webRoot = "${workspaceFolder}",
+				},
 			},
 		}
 	end

@@ -188,6 +188,7 @@ return {
 						},
 					})
 				end,
+				["tsserver"] = function() end,
 			})
 		end,
 	},
