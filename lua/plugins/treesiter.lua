@@ -1,13 +1,10 @@
 return {
 	{
-		"chrisgrieser/nvim-various-textobjs",
-		lazy = true,
-		keys = {
-			-- ...
-		},
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"chrisgrieser/nvim-various-textobjs",
+		},
 		build = ":TSUpdate",
 		config = function()
 			vim.filetype.add({ extension = { mdx = "mdx" } })
@@ -38,6 +35,8 @@ return {
 					"xml",
 					"json",
 					"graphql",
+					"http",
+					"query",
 				},
 
 				highlight = { enable = true },
@@ -45,10 +44,10 @@ return {
 				incremental_selection = {
 					enable = true,
 					keymaps = {
-						init_selection = "<c-space>",
-						node_incremental = "<c-space>",
-						scope_incremental = "<c-s>",
-						node_decremental = "<c-backspace>",
+						-- init_selection = "<c-space>",
+						-- node_incremental = "<c-space>",
+						-- scope_incremental = "<c-s>",
+						-- node_decremental = "<c-backspace>",
 					},
 				},
 				textobjects = {
