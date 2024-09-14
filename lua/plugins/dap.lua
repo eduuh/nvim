@@ -1,5 +1,3 @@
---TODO: Add vscode - config support
-
 ---@param config {args?:string[]|fun():string[]?}
 local function get_args(config)
 	local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}

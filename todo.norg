@@ -9,3 +9,12 @@
 - [] TSToolsGoToSourceDefinition - goes to source definition (available since TS v4.7)
 - [] TSToolsRenameFile - allow to rename current file and apply changes to connected files
 - [] TSToolsFileReferences - find files that reference the current file (available since TS v4.2)
+
+## Plugins to try
+
+ - [ ] https://github.com/stevearc/oil.nvim
+
+
+## Workflow
+
+- Use diffview for pr review 

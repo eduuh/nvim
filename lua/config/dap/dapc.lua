@@ -96,13 +96,20 @@ M.dap_configurations = function()
 	vscode.type_to_filetypes["node"] = js_based_languages
 	vscode.type_to_filetypes["pwa-node"] = js_based_languages
 
-	local js_languages = {
-		"javascript",
-		"javascriptreact",
-	}
-
-	for _, language in ipairs(js_languages) do
+	for _, language in ipairs(js_based_languages) do
 		require("dap").configurations[language] = {
+			{
+				type = "pwa-node",
+				request = "launch",
+				name = "launch typescript file",
+				cwd = vim.fn.getcwd(),
+				runtimeArgs = { "-r", "ts-node/register" },
+				runtimeExecutable = "node",
+				args = { "${relativeFile}" },
+				rootPath = "${workspaceFolder}",
+				console = "integratedTerminal",
+				skipFiles = { "<node_internals>/**", "node_modules/**" },
+			},
 			{
 				type = "pwa-node",
 				request = "launch",
@@ -141,30 +148,6 @@ M.dap_configurations = function()
 				cwd = "${workspaceFolder}",
 				console = "integratedTerminal",
 				internalConsoleOptions = "neverOpen",
-			},
-		}
-	end
-
-	local ts_based_languages = {
-		"typescriptreact",
-		"typescript",
-	}
-
-	for _, language in ipairs(ts_based_languages) do
-		require("dap").configurations[language] = {
-			{
-				{
-					type = "ts-node - Nvim",
-					request = "node",
-					name = "launch typescript file",
-					cwd = vim.fn.getcwd(),
-					runtimeArgs = { "-r", "ts-node/register" },
-					runtimeExecutable = "node",
-					args = { "${relativeFile}" },
-					rootPath = "${workspaceFolder}",
-					console = "integratedTerminal",
-					skipFiles = { "<node_internals>/**", "node_modules/**" },
-				},
 			},
 		}
 	end

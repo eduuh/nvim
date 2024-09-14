@@ -5,6 +5,37 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
+	keys = {
+		-- "Obsidian follow"
+		["<leader>of"] = {
+			action = function()
+				return require("obsidian").util.gf_passthrough()
+			end,
+			opts = { noremap = false, expr = true, buffer = true },
+		},
+		-- Toggle check-boxes "obsidian done"
+		["<leader>od"] = {
+			action = function()
+				return require("obsidian").util.toggle_checkbox()
+			end,
+			opts = { buffer = true },
+		},
+		-- Create a new newsletter issue
+		--
+		["<leader>onn"] = {
+			action = function()
+				return require("obsidian").commands.new_note("Newsletter-Issue")
+			end,
+			opts = { buffer = true },
+		},
+		["<leader>ont"] = {
+			action = function()
+				return require("obsidian").util.insert_template("Newsletter-Issue")
+			end,
+			opts = { buffer = true },
+		},
+	},
+
 	config = function()
 		require("obsidian").setup({
 			workspaces = {
@@ -40,36 +71,6 @@ return {
 					return string.format("[[%s]]", opts.id)
 				end
 			end,
-
-			mappings = {
-				-- "Obsidian follow"
-				["<leader>of"] = {
-					action = function()
-						return require("obsidian").util.gf_passthrough()
-					end,
-					opts = { noremap = false, expr = true, buffer = true },
-				},
-				-- Toggle check-boxes "obsidian done"
-				["<leader>od"] = {
-					action = function()
-						return require("obsidian").util.toggle_checkbox()
-					end,
-					opts = { buffer = true },
-				},
-				-- Create a new newsletter issue
-				["<leader>onn"] = {
-					action = function()
-						return require("obsidian").commands.new_note("Newsletter-Issue")
-					end,
-					opts = { buffer = true },
-				},
-				["<leader>ont"] = {
-					action = function()
-						return require("obsidian").util.insert_template("Newsletter-Issue")
-					end,
-					opts = { buffer = true },
-				},
-			},
 
 			note_frontmatter_func = function(note)
 				-- This is equivalent to the default frontmatter function.

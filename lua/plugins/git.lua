@@ -42,7 +42,7 @@ return {
 
 					-- Navigation
 
-					map("n", "+", gs.next_hunk, { desc = "Next Hunk" })
+					map("n", "+", gs.next_hunk, { desc = "Next Hunk test, yes" })
 					map("n", "-", gs.prev_hunk, { desc = "Prev Hunk" })
 
 					-- Actions
@@ -63,7 +63,8 @@ return {
 						gs.blame_line({ full = true })
 					end, { desc = "Blame Line" })
 					map("n", "<leader>gb", gs.toggle_current_line_blame, { desc = "Toggle blame line" })
-					map("n", "<leader>gd", gs.diffthis, { desc = "Open diff" })
+					map("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Open diff" })
+					map("n", "<leader>gh", "<cmd>DiffviewOpen<cr>", { desc = "Open diff" })
 					map("n", "<leader>gD", function()
 						gs.diffthis("~")
 					end, { desc = "Open buffer diff" })
