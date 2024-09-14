@@ -1,13 +1,10 @@
 return {
 	{
-		"chrisgrieser/nvim-various-textobjs",
-		lazy = true,
-		keys = {
-			-- ...
-		},
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"chrisgrieser/nvim-various-textobjs",
+		},
 		build = ":TSUpdate",
 		config = function()
 			vim.filetype.add({ extension = { mdx = "mdx" } })
@@ -39,6 +36,7 @@ return {
 					"json",
 					"graphql",
 					"http",
+					"query",
 				},
 
 				highlight = { enable = true },
