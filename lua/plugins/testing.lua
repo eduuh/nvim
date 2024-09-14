@@ -4,7 +4,6 @@ function M.setup()
 	require("neotest-gtest").setup({})
 	require("neotest").setup({
 		adapters = {
-			require("neotest-gtest"),
 			require("rustaceanvim.neotest"),
 			require("neotest-jest")({
 				jestCommand = "npm test --",
@@ -29,16 +28,16 @@ end
 
 return {
 	"nvim-neotest/neotest",
+	ft = { "rust", "typescript", "javascript" },
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
-		"antoinemadec/FixCursorHold.nvim",
 		"alfaix/neotest-gtest",
 		"mrcjkb/rustaceanvim",
-		"nvim-neotest/nvim-nio",
 		"nvim-neotest/neotest-jest",
 	},
 	config = function()
+		pcall(require, "nvim-treesitter")
 		M.setup()
 	end,
 	keys = {
