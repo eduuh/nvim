@@ -57,6 +57,7 @@ return {
 	{
 		"jackMort/ChatGPT.nvim",
 		cmd = { "ChatGPT" },
+		enabled = require("config.utils").isMac,
 		config = function()
 			require("chatgpt").setup({
 				api_key_cmd = "op read op://personal/openai/credential --no-newline ",

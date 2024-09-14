@@ -219,8 +219,8 @@ return {
 		},
 		event = "VeryLazy",
 		config = function()
-			require("dapc").vscode_config()
-			require("dapc").dap_configurations()
+			require("config.dap.dapc").vscode_config()
+			require("config.dap.dapc").dap_configurations()
 		end,
 	},
 }
