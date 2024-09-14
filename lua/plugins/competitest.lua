@@ -13,7 +13,6 @@ return {
 					args = { "-std=c++2a", "$(FNAME)", "-o", "$(FNOEXT)" .. ".out", "--debug" },
 				},
 				rust = { exec = "rustc", args = { "$(FNAME)" } },
-				-- Todo add c# + js + ts
 			},
 			compile_directory = ".",
 			running_directory = ".",
@@ -22,6 +21,7 @@ return {
 				cpp = { exec = "./$(FNOEXT)" .. ".out" },
 				rust = { exec = "./$(FNOEXT)" },
 				javascript = { exec = "node", args = { "$(FNAME)" } },
+				typescript = { exec = "ts-node", args = { "$(FNAME)" } },
 			},
 			template_file = {
 				c = "~/.config/nvim/config_test/c++/template.cpp",
