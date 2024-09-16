@@ -28,5 +28,7 @@ keymap.set("n", "<C-S-l>", "<C-w>>")
 keymap.set("n", "<C-S-k>", "<C-w>+")
 keymap.set("n", "<C-S-j>", "<C-w>-")
 
-vim.api.nvim_set_keymap("n", ";", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "s", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "s", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", ";", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", ";", "<Nop>", { noremap = true, silent = true })

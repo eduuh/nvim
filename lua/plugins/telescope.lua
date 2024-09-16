@@ -63,6 +63,7 @@ return {
 		})
 
 		local builtin = require("telescope.builtin")
+		pcall(require("telescope").load_extension("git_worktree"))
 		pcall(require("telescope").load_extension("fzf"))
 		pcall(require("telescope").load_extension("file_browser"))
 

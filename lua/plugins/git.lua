@@ -1,4 +1,51 @@
+--git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+--look at: https://github.com/polarmutex/git-worktree.nvim
 return {
+	{
+		"ThePrimeagen/git-worktree.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("git-worktree").setup({
+				update_on_change = false,
+				autopush = false,
+				update_on_change_command = "if expand('%:t') != '' | e . | endif",
+			})
+
+			local opt = { noremap = true, silent = true }
+
+			opt.desc = "Switch & delete worktrees"
+			-- <Enter> - switches to that worktree
+			-- <c-d> - deletes that worktree
+			-- <c-f> - toggles forcing of the next deletion
+			vim.keymap.set("n", "<leader>sw", function()
+				require("telescope").extensions.git_worktree.git_worktrees()
+			end, opt)
+
+			vim.keymap.set("n", "<leader>cw", function()
+				require("telescope").extensions.git_worktree.create_git_worktree()
+			end, opt)
+
+			local Worktree = require("git-worktree")
+
+			-- op = Operations.Switch, Operations.Create, Operations.Delete
+			-- metadata = table of useful values (structure dependent on op)
+			--      Switch
+			--          path = path you switched to
+			--          prev_path = previous worktree path
+			--      Create
+			--          path = path where worktree created
+			--          branch = branch name
+			--          upstream = upstream remote name
+			--      Delete
+			--          path = path where worktree deleted
+
+			Worktree.on_tree_change(function(op, metadata)
+				if op == Worktree.Operations.Switch then
+					print("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
+				end
+			end)
+		end,
+	},
 	{
 		"sindrets/diffview.nvim",
 	},
