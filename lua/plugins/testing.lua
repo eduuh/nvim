@@ -1,33 +1,20 @@
 local M = {}
 
 function M.setup()
-	require("neotest-gtest").setup({})
 	require("neotest").setup({
+		log_level = vim.log.levels.TRACE,
 		adapters = {
 			require("rustaceanvim.neotest"),
-			require("neotest-jest")({
-				jestCommand = "npm test --",
-				jestConfigFile = function(file)
-					if string.find(file, "/packages/") then
-						return string.match(file, "(.-/[^/]+/)src") .. "jest.config.ts"
-					end
-
-					return vim.fn.getcwd() .. "/jest.config.ts"
-				end,
-				env = { CI = true },
-				cwd = function(file)
-					if string.find(file, "/packages/") then
-						return string.match(file, "(.-/[^/]+/)src")
-					end
-					return vim.fn.getcwd()
-				end,
-			}),
+			require("neotest-plenary"),
+			require("neotest-gtest"),
+			require("neotest-jest"),
 		},
 	})
 end
 
 return {
 	"nvim-neotest/neotest",
+	enabled = false,
 	ft = { "rust", "typescript", "javascript" },
 	dependencies = {
 		"nvim-lua/plenary.nvim",
@@ -35,6 +22,7 @@ return {
 		"alfaix/neotest-gtest",
 		"mrcjkb/rustaceanvim",
 		"nvim-neotest/neotest-jest",
+		"nvim-neotest/neotest-plenary",
 	},
 	config = function()
 		pcall(require, "nvim-treesitter")
@@ -45,6 +33,7 @@ return {
 			"<leader>tt",
 			function()
 				require("neotest").run.run(vim.fn.expand("%"))
+				require("neotest").summary.open()
 			end,
 			desc = "Run File",
 		},
@@ -59,6 +48,7 @@ return {
 			"<leader>tr",
 			function()
 				require("neotest").run.run()
+				require("neotest").summary.open()
 			end,
 			desc = "Run Nearest",
 		},
