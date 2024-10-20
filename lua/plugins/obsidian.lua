@@ -48,16 +48,8 @@ return {
 					path = "~/projects/notes",
 				},
 				{
-					name = "dsa",
-					path = "~/projects/byte_safari/dsa/notes",
-				},
-				{
 					name = "notes",
 					path = "~/projects/byte_safari/notes",
-				},
-				{
-					name = "nvim",
-					path = "~/projects/byte_safari/explores/cpp/the_lang/",
 				},
 			},
 			completion = {

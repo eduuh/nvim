@@ -5,7 +5,6 @@ return {
 			local mason_lspconfig = require("mason-lspconfig")
 			mason_lspconfig.setup({
 				ensure_installed = {
-					"tsserver",
 					"html",
 					"rust_analyzer",
 					"cssls",
@@ -22,6 +21,8 @@ return {
 					"jsonls",
 					"clangd",
 					"jdtls",
+					"eslint",
+					"ts_ls",
 				},
 				auto_update = false,
 				run_on_start = true,

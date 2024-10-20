@@ -188,7 +188,7 @@ return {
 						},
 					})
 				end,
-				["tsserver"] = function() end,
+				["ts_ls"] = function() end,
 			})
 		end,
 	},

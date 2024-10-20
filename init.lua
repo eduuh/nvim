@@ -23,3 +23,5 @@ vim.cmd([[
   nmap <silent> <leader>tl :TestLast<CR>
   nmap <silent> <leader>tv :TestVisit<CR>
 ]])
+
+vim.opt.clipboard = { "unnamedplus" }

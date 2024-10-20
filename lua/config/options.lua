@@ -6,7 +6,6 @@ vim.opt.fileencoding = "utf-8"
 vim.opt.number = true
 vim.opt.relativenumber = false
 
--- Reduce nvim annoying messages
 vim.opt.shortmess:append("cFWaIT")
 
 vim.opt.title = true
@@ -28,8 +27,6 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.wrap = false
 vim.opt.backspace = { "start", "eol", "indent" }
-vim.opt.path:append({ "**" })
-vim.opt.wildignore:append({ "*/node_modules/*" })
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.splitkeep = "cursor"
@@ -38,10 +35,6 @@ vim.opt.textwidth = 80
 
 vim.opt.conceallevel = 2
 
-vim.opt.clipboard = { "unnamedplus" }
-
--- Add asterisks in block comments
-vim.opt.formatoptions:append({ "r" })
 vim.o.signcolumn = "yes"
 vim.opt.swapfile = false
 
