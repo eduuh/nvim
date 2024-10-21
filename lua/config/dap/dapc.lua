@@ -164,9 +164,10 @@ M.dap_configurations = function()
 
 	require("dap").configurations["cpp"] = {
 		{
-			name = "Launch",
+			name = "Launch Cpp",
 			type = "codelldb",
-			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
+			preLaunchTask = "Compile",
+			postDebugTask = "Clean",
 			request = "launch",
 			program = function()
 				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")

@@ -1,1 +1,7 @@
-## Nvim configuration - Customized for Eduuh's needs
+## Eduuh's Nvim Config
+
+### Debugging
+
+### C++ & C Debugging
+
+### Rust Debugging
