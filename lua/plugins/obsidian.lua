@@ -49,7 +49,7 @@ return {
 				},
 				{
 					name = "notes",
-					path = "~/projects/byte_safari/notes",
+					path = "~/projects/byte_safari",
 				},
 			},
 			completion = {
