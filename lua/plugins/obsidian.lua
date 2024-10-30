@@ -6,32 +6,8 @@ return {
 		"nvim-lua/plenary.nvim",
 	},
 	keys = {
-		-- "Obsidian follow"
-		["<leader>of"] = {
-			action = function()
-				return require("obsidian").util.gf_passthrough()
-			end,
-			opts = { noremap = false, expr = true, buffer = true },
-		},
-		-- Toggle check-boxes "obsidian done"
-		["<leader>od"] = {
-			action = function()
-				return require("obsidian").util.toggle_checkbox()
-			end,
-			opts = { buffer = true },
-		},
-		-- Create a new newsletter issue
-		--
-		["<leader>onn"] = {
-			action = function()
-				return require("obsidian").commands.new_note("Newsletter-Issue")
-			end,
-			opts = { buffer = true },
-		},
 		["<leader>ont"] = {
-			action = function()
-				return require("obsidian").util.insert_template("Newsletter-Issue")
-			end,
+			action = function() end,
 			opts = { buffer = true },
 		},
 	},
@@ -39,10 +15,6 @@ return {
 	config = function()
 		require("obsidian").setup({
 			workspaces = {
-				-- {
-				--   name = "OmerVault",
-				--   path = "/Users/omerhamerman/Obsidian/Omervault",
-				-- },
 				{
 					name = "personal",
 					path = "~/projects/notes",
@@ -99,8 +71,23 @@ return {
 			end,
 
 			templates = {
-				subdir = "_templates",
+				subdir = "~/.config/nvim/_templates/",
 			},
 		})
+
+		local keymap = vim.keymap
+		local opt = { noremap = true, silent = true }
+		keymap.set({ "n" }, "<leader>of", function()
+			require("obsidian").util.gf_passthrough()
+		end, opt)
+		keymap.set({ "n" }, "<leader>od", function()
+			return require("obsidian").util.toggle_checkbox()
+		end, opt)
+		keymap.set({ "n" }, "<leader>on", function()
+			require("obsidian").commands.new_note("Newsletter-Issue")
+		end, opt)
+		keymap.set({ "n" }, "<leader>oi", function()
+			require("obsidian").util.insert_template("Newsletter-Issue")
+		end, opt)
 	end,
 }
