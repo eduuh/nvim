@@ -5,12 +5,10 @@ keymap.set({ "n", "v" }, "<BS>", "<C-^>", { desc = "Alternate File" })
 
 keymap.set("n", "x", '"_x')
 
--- Increment/decrement
--- keymap.set("n", "+", "<C-a>")
--- keymap.set("n", "-", "<C-x>")
-
 -- Select all
 keymap.set("n", "<C-a>", "gg<S-v>G")
+vim.api.nvim_set_keymap("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true, silent = true })
 
 -- Split window
 keymap.set("n", "<leader>h", ":split<Return>", opts)
