@@ -1,7 +1,0 @@
-{
-    "diagnostics.disable": [
-        "missing-fields",
-        "missing-parameter",
-        "assign-type-mismatch"
-    ]
-}
