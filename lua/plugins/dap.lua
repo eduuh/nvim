@@ -21,6 +21,7 @@ local dap_icons = {
 return {
 	{
 		"mfussenegger/nvim-dap",
+		event = "VeryLazy",
 		recommended = true,
 		desc = "Debugging support. Requires language specific adapters to be configured. (see lang extras)",
 
@@ -176,6 +177,7 @@ return {
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "nvim-neotest/nvim-nio" },
+		event = "VeryLazy",
 		keys = {
 			{
 				"<leader>du",
@@ -211,11 +213,11 @@ return {
 	},
 	{
 		"mxsdev/nvim-dap-vscode-js",
+		event = "VeryLazy",
 		dependencies = {
 			"mfussenegger/nvim-dap",
 			"microsoft/vscode-js-debug",
 		},
-		event = "VeryLazy",
 		config = function()
 			require("config.dap.dapc").vscode_config()
 			require("config.dap.dapc").dap_configurations()

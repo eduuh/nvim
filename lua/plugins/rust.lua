@@ -45,6 +45,7 @@ return {
 	},
 	{
 		"saecki/crates.nvim",
+		event = "VeryLazy",
 		ft = { "toml" },
 		config = function()
 			require("crates").setup({
@@ -61,6 +62,7 @@ return {
 	},
 	{
 		"rust-lang/rust.vim",
+		event = "VeryLazy",
 		ft = "rust",
 		init = function()
 			vim.g.rustfmt_autosave = 1

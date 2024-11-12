@@ -1,5 +1,6 @@
 return {
 	"epwalsh/obsidian.nvim",
+	event = "VeryLazy",
 	enabled = require("config.utils").isMac or require("config.utils").isLinux,
 	event = "VeryLazy",
 	dependencies = {

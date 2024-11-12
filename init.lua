@@ -5,10 +5,10 @@ require("config.ttconfig")
 require("config.lazy")
 require("config.osconfigs")
 
--- Experimental- tests: Only on mac
-if require("config.utils").isMac then
-	require("config.rocks")
-end
+-- -- Experimental- tests: Only on mac
+-- if require("config.utils").isMac then
+-- 	require("config.rocks")
+-- end
 
 vim.cmd([[
   let test#strategy = {

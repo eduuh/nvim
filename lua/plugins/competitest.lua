@@ -1,5 +1,6 @@
 return {
 	"xeluxee/competitest.nvim",
+	event = "VeryLazy",
 	ft = { "cpp", "c", "cs", "typescript", "javascript", "rs", "rust", "js" },
 	dependencies = "MunifTanjim/nui.nvim",
 	enabled = true,

@@ -1,6 +1,7 @@
 return {
 	{
 		"anuvyklack/pretty-fold.nvim",
+		event = "VeryLazy",
 		config = function()
 			require("pretty-fold").setup({
 				keep_indentation = true,
@@ -22,6 +23,7 @@ return {
 	},
 	{
 		"kevinhwang91/nvim-ufo",
+		event = "VeryLazy",
 		dependencies = "kevinhwang91/promise-async",
 		config = function()
 			vim.o.foldcolumn = "0" -- '0' is not bad

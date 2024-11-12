@@ -1,5 +1,6 @@
 return {
 	"folke/trouble.nvim",
+	event = "VeryLazy",
 	opts = {},
 	keys = {
 		{ "<leader>td", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },

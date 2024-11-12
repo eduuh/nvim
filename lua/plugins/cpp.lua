@@ -220,6 +220,7 @@ end
 return {
 	{
 		"p00f/clangd_extensions.nvim",
+		event = "VeryLazy",
 		dependencies = "neovim/nvim-lspconfig",
 		config = function()
 			M.clangd_setup()
@@ -227,6 +228,7 @@ return {
 	},
 	{
 		"Civitasv/cmake-tools.nvim",
+		event = "VeryLazy",
 		dependencies = { "nvim-lua/plenary.nvim", "stevearc/overseer.nvim", "akinsho/toggleterm.nvim" },
 		config = function()
 			M.cmake_tools_setup()

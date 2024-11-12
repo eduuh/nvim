@@ -1,6 +1,7 @@
 return {
 	{
 		"lvimuser/lsp-inlayhints.nvim",
+		event = "VeryLazy",
 		config = function()
 			require("lsp-inlayhints").setup({
 				inlay_hints = {
@@ -30,7 +31,7 @@ return {
 			})
 		end,
 	},
-	{ "L3MON4D3/LuaSnip" },
+	{ "L3MON4D3/LuaSnip", event = "VeryLazy" },
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },

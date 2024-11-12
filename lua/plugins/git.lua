@@ -48,6 +48,7 @@ return {
 	},
 	{
 		"sindrets/diffview.nvim",
+		event = "VeryLazy",
 	},
 	{
 		"kdheepak/lazygit.nvim",

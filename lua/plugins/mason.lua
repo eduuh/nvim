@@ -1,6 +1,7 @@
 return {
 	{
 		"williamboman/mason-lspconfig.nvim",
+		event = "VeryLazy",
 		config = function()
 			local mason_lspconfig = require("mason-lspconfig")
 			mason_lspconfig.setup({
@@ -33,6 +34,7 @@ return {
 	},
 	{
 		"williamboman/mason.nvim",
+		event = "VeryLazy",
 		dependencies = {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 		},
