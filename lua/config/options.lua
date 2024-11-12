@@ -32,6 +32,8 @@ vim.opt.splitright = true
 vim.opt.splitkeep = "cursor"
 vim.opt.mouse = "a"
 vim.opt.textwidth = 80
+vim.opt.showtabline = 0
+vim.opt.laststatus = 0
 
 vim.opt.conceallevel = 2
 

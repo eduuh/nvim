@@ -2,6 +2,8 @@
 
 ### Debugging
 
-### C++ & C Debugging
+1. C++ & C
 
-### Rust Debugging
+2. Rust
+
+3. JavaScript & Typescript
