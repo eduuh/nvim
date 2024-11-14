@@ -1,6 +1,5 @@
 return {
 	"epwalsh/obsidian.nvim",
-	event = "VeryLazy",
 	enabled = require("config.utils").isMac or require("config.utils").isLinux,
 	event = "VeryLazy",
 	dependencies = {
@@ -17,19 +16,34 @@ return {
 		require("obsidian").setup({
 			workspaces = {
 				{
-					name = "personal",
-					path = "~/projects/notes",
-				},
-				{
 					name = "notes",
 					path = "~/projects/byte_safari/",
+					overrides = {
+						notes_subdir = "inbox",
+					},
+				},
+				{
+					name = "personal",
+					path = "~/projects/notes",
 				},
 			},
 			completion = {
 				nvim_cmp = true,
 				min_chars = 2,
 			},
-			new_notes_location = "current_dir",
+			daily_notes = {
+				-- Optional, if you keep daily notes in a separate directory.
+				folder = "notes/dailies",
+				-- Optional, if you want to change the date format for the ID of daily notes.
+				date_format = "%Y-%m-%d",
+				-- Optional, if you want to change the date format of the default alias of daily notes.
+				alias_format = "%B %-d, %Y",
+				-- Optional, default tags to add to each new daily note created.
+				default_tags = { "daily-notes" },
+				-- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+				template = nil,
+			},
+			new_notes_location = "inbox/",
 			wiki_link_func = function(opts)
 				if opts.id == nil then
 					return string.format("[[%s]]", opts.label)
@@ -72,7 +86,7 @@ return {
 			end,
 
 			templates = {
-				subdir = "~/.config/nvim/_templates/",
+				subdir = "_templates/",
 			},
 		})
 
@@ -84,11 +98,12 @@ return {
 		keymap.set({ "n" }, "<leader>od", function()
 			return require("obsidian").util.toggle_checkbox()
 		end, opt)
-		keymap.set({ "n" }, "<leader>on", function()
-			require("obsidian").commands.new_note("Newsletter-Issue")
-		end, opt)
+		keymap.set({ "n" }, "<leader>on", "<cmd>ObsidianNew<cr>", opt)
 		keymap.set({ "n" }, "<leader>oi", function()
 			require("obsidian").util.insert_template("Newsletter-Issue")
+		end, opt)
+		keymap.set({ "n" }, "<leader>oa", function()
+			require("obsidian").util.smart_action()
 		end, opt)
 	end,
 }
