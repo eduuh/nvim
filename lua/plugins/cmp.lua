@@ -1,13 +1,10 @@
-local set = vim.opt
-
-local M = {}
-
 local function has_words_before()
 	local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-function M.setup()
+local function setup()
+	local set = vim.opt
 	set.completeopt = { "menu", "menuone", "noselect" }
 
 	require("luasnip.loaders.from_vscode").lazy_load()
@@ -37,8 +34,8 @@ function M.setup()
 		}, {}),
 		sorting = {
 			comparators = {
-				-- require("copilot_cmp.comparators").prioritize,
-				-- require("clangd_extensions.cmp_scores"),
+				--require("copilot_cmp.comparators").prioritize,
+				--require("clangd_extensions.cmp_scores"),
 				cmp.config.compare.offset,
 				cmp.config.compare.exact,
 				cmp.config.compare.score,
@@ -120,7 +117,7 @@ end
 
 return {
 	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
+	lazy = false,
 	dependencies = {
 		"hrsh7th/cmp-buffer", -- source for text in buffer
 		"hrsh7th/cmp-path", -- source for file system paths
@@ -149,6 +146,6 @@ return {
 		"onsails/lspkind.nvim", -- vs-code like pictograms
 	},
 	config = function()
-		M.setup()
+		setup()
 	end,
 }
