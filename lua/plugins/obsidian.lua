@@ -71,7 +71,7 @@ return {
 			desc = "Open Workspace",
 		},
 		{
-			"<leader>ot",
+			"<leader>ft",
 			"<cmd>ObsidianTags<cr>",
 			desc = "Open Workspace",
 		},
