@@ -112,11 +112,6 @@ return {
 	end,
 	keys = {
 		{
-			"<leader>fn",
-			"<cmd>ObsidianSearch<cr>",
-			desc = "Find Notes",
-		},
-		{
 			"sn",
 			"<cmd>ObsidianSearch<cr>",
 			desc = "Find Notes",

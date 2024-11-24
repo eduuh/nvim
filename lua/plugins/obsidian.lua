@@ -17,55 +17,65 @@ local function get_available_workspaces(workspaces)
 end
 
 local workspaces = {
-	{ name = "notes", path = "~/projects/byte_safari/" },
-	{ name = "work", path = "~/projects/work-notes/" },
-	{ name = "personal", path = "~/projects/personal-notes/" },
+	{
+		name = "notes",
+		path = "~/projects/byte_safari/",
+		strict = true,
+		overrides = {
+			notes_subdir = "inbox",
+		},
+	},
+	{
+		name = "work",
+		path = "~/projects/work-notes/",
+		strict = true,
+		overrides = {
+			notes_subdir = "inbox",
+		},
+	},
+	{
+		name = "personal",
+		path = "~/projects/personal-notes/",
+		strict = true,
+		overrides = {
+			notes_subdir = "inbox",
+		},
+	},
 }
 
 local valid_workspaces = get_available_workspaces(workspaces)
 
-local keymap = vim.keymap
-local opt = { noremap = true, silent = true }
-
--- Create a function to set the Obsidian keymaps for Markdown files
-local function set_obsidian_keymaps()
-	keymap.set({ "n" }, "<leader>of", function()
-		require("obsidian").util.gf_passthrough()
-	end, opt)
-
-	keymap.set({ "n" }, "<leader>od", function()
-		return require("obsidian").util.toggle_checkbox()
-	end, opt)
-
-	keymap.set({ "n" }, "<leader>on", "<cmd>ObsidianNew<cr>", opt)
-
-	keymap.set({ "n" }, "<leader>oi", function()
-		require("obsidian").util.insert_template("Newsletter-Issue")
-	end, opt)
-
-	keymap.set({ "n" }, "<leader>oa", function()
-		require("obsidian").util.smart_action()
-	end, opt)
-end
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	callback = set_obsidian_keymaps,
-})
-
 return {
 	"epwalsh/obsidian.nvim",
-	event = "VeryLazy",
+	lazy = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
 	keys = {
-		["<leader>ont"] = {
-			action = function() end,
-			opts = { buffer = true },
+		{
+			"<leader>cn",
+			function()
+				vim.cmd("ObsidianNew")
+			end,
+			desc = "Create Note",
+		},
+		-- Open
+		{
+			"<leader>on",
+			"<cmd>ObsidianQuickSwitch<cr>",
+			desc = "Open Note",
+		},
+		{
+			"<leader>ow",
+			"<cmd>ObsidianWorkspace<cr>",
+			desc = "Open Workspace",
+		},
+		{
+			"<leader>ot",
+			"<cmd>ObsidianTags<cr>",
+			desc = "Open Workspace",
 		},
 	},
-
 	config = function()
 		require("obsidian").setup({
 			completion = {
@@ -97,26 +107,28 @@ return {
 			end,
 
 			note_frontmatter_func = function(note)
-				-- This is equivalent to the default frontmatter function.
-				--
-				local out = {
-					id = note.id or "",
+				-- Use existing front matter if it already exists
+				local current_metadata = note.metadata or {}
+
+				-- Define default values for missing fields
+				local default_metadata = {
+					id = note.id or "", -- Generate or assign a unique ID if needed
 					aliases = note.aliases or {},
-					tags = note.tags or {}, -- Default to empty table if not assigned
-					area = note.area or "", -- Default to empty string if not assigned
-					project = note.project or "", -- Default to empty string if not assigned
-					priority = note.priority or "", -- Default to empty string if not assigned
-					related = note.related or {}, -- Default to empty table if not assigned
+					tags = note.tags or { "default-tag" }, -- Default tags
+					area = note.area or "general", -- Default area
+					project = note.project or "none", -- Default project
+					priority = note.priority or "low", -- Default priority
+					related = note.related or {}, -- Default related notes
 				}
 
-				-- `note.metadata` contains any manually added fields in the frontmatter.
-				-- So here we just make sure those fields are kept in the frontmatter.
-				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-					for k, v in pairs(note.metadata) do
-						out[k] = v
+				-- Merge defaults into the existing metadata only for missing keys
+				for key, value in pairs(default_metadata) do
+					if current_metadata[key] == nil then
+						current_metadata[key] = value
 					end
 				end
-				return out
+
+				return current_metadata
 			end,
 
 			note_id_func = function(title)
