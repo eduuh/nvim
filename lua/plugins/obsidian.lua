@@ -1,36 +1,88 @@
+local function get_available_workspaces(workspaces)
+	local function path_exists(path)
+		local expanded_path = vim.fn.expand(path)
+		local ok = vim.loop.fs_stat(expanded_path)
+		return ok ~= nil
+	end
+
+	local available_workspaces = {}
+
+	for _, workspace in ipairs(workspaces) do
+		if path_exists(workspace.path) then
+			table.insert(available_workspaces, workspace)
+		end
+	end
+
+	return available_workspaces
+end
+
+local workspaces = {
+	{
+		name = "notes",
+		path = "~/projects/byte_safari/",
+		strict = true,
+		overrides = {
+			notes_subdir = "inbox",
+		},
+	},
+	{
+		name = "work",
+		path = "~/projects/work-notes/",
+		strict = true,
+		overrides = {
+			notes_subdir = "inbox",
+		},
+	},
+	{
+		name = "personal",
+		path = "~/projects/personal-notes/",
+		strict = true,
+		overrides = {
+			notes_subdir = "inbox",
+		},
+	},
+}
+
+local valid_workspaces = get_available_workspaces(workspaces)
+
 return {
 	"epwalsh/obsidian.nvim",
-	enabled = require("config.utils").isMac or require("config.utils").isLinux,
-	event = "VeryLazy",
+	lazy = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
 	keys = {
-		["<leader>ont"] = {
-			action = function() end,
-			opts = { buffer = true },
+		{
+			"<leader>cn",
+			function()
+				vim.cmd("ObsidianNew")
+			end,
+			desc = "Create Note",
+		},
+		-- Open
+		{
+			"<leader>on",
+			"<cmd>ObsidianQuickSwitch<cr>",
+			desc = "Open Note",
+		},
+		{
+			"<leader>ow",
+			"<cmd>ObsidianWorkspace<cr>",
+			desc = "Open Workspace",
+		},
+		{
+			"<leader>ft",
+			"<cmd>ObsidianTags<cr>",
+			desc = "Open Workspace",
 		},
 	},
-
 	config = function()
 		require("obsidian").setup({
-			workspaces = {
-				{
-					name = "notes",
-					path = "~/projects/byte_safari/",
-					overrides = {
-						notes_subdir = "inbox",
-					},
-				},
-				{
-					name = "personal",
-					path = "~/projects/notes",
-				},
-			},
 			completion = {
 				nvim_cmp = true,
 				min_chars = 2,
 			},
+			workspaces = valid_workspaces,
 			daily_notes = {
 				-- Optional, if you keep daily notes in a separate directory.
 				folder = "notes/dailies",
@@ -55,17 +107,28 @@ return {
 			end,
 
 			note_frontmatter_func = function(note)
-				-- This is equivalent to the default frontmatter function.
-				local out = { id = note.id, aliases = note.aliases, tags = note.tags, area = "", project = "" }
+				-- Use existing front matter if it already exists
+				local current_metadata = note.metadata or {}
 
-				-- `note.metadata` contains any manually added fields in the frontmatter.
-				-- So here we just make sure those fields are kept in the frontmatter.
-				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-					for k, v in pairs(note.metadata) do
-						out[k] = v
+				-- Define default values for missing fields
+				local default_metadata = {
+					id = note.id or "", -- Generate or assign a unique ID if needed
+					aliases = note.aliases or {},
+					tags = note.tags or { "default-tag" }, -- Default tags
+					area = note.area or "general", -- Default area
+					project = note.project or "none", -- Default project
+					priority = note.priority or "low", -- Default priority
+					related = note.related or {}, -- Default related notes
+				}
+
+				-- Merge defaults into the existing metadata only for missing keys
+				for key, value in pairs(default_metadata) do
+					if current_metadata[key] == nil then
+						current_metadata[key] = value
 					end
 				end
-				return out
+
+				return current_metadata
 			end,
 
 			note_id_func = function(title)
@@ -89,21 +152,5 @@ return {
 				subdir = "_templates/",
 			},
 		})
-
-		local keymap = vim.keymap
-		local opt = { noremap = true, silent = true }
-		keymap.set({ "n" }, "<leader>of", function()
-			require("obsidian").util.gf_passthrough()
-		end, opt)
-		keymap.set({ "n" }, "<leader>od", function()
-			return require("obsidian").util.toggle_checkbox()
-		end, opt)
-		keymap.set({ "n" }, "<leader>on", "<cmd>ObsidianNew<cr>", opt)
-		keymap.set({ "n" }, "<leader>oi", function()
-			require("obsidian").util.insert_template("Newsletter-Issue")
-		end, opt)
-		keymap.set({ "n" }, "<leader>oa", function()
-			require("obsidian").util.smart_action()
-		end, opt)
 	end,
 }
