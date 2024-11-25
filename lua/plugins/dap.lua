@@ -111,7 +111,7 @@ M.dap_configurations = function()
 	for _, language in ipairs(js_based_languages) do
 		require("dap").configurations[language] = {
 			{
-				type = "pwa-node",
+				type = "pwa-node (lua config)",
 				request = "launch",
 				name = "launch typescript file",
 				cwd = vim.fn.getcwd(),
@@ -123,21 +123,21 @@ M.dap_configurations = function()
 				skipFiles = { "<node_internals>/**", "node_modules/**" },
 			},
 			{
-				type = "pwa-node",
+				type = "pwa-node (lua config)",
 				request = "launch",
 				name = "Launch file",
 				program = "${file}",
 				cwd = "${workspaceFolder}",
 			},
 			{
-				type = "pwa-node",
+				type = "pwa-node (lua config)",
 				request = "attach",
 				name = "Attach",
 				processId = require("dap.utils").pick_process,
 				cwd = "${workspaceFolder}",
 			},
 			{
-				type = "pwa-chrome",
+				type = "pwa-chrome (lua config)",
 				request = "attach",
 				name = "Attach Program (pwa-chrome = { port: 9222 })",
 				program = "${file}",
@@ -147,7 +147,7 @@ M.dap_configurations = function()
 				webRoot = "${workspaceFolder}",
 			},
 			{
-				type = "pwa-node",
+				type = "pwa-node (lua config)",
 				request = "launch",
 				name = "Debug Jest Tests",
 				-- trace = true, -- include debugger info
@@ -176,7 +176,7 @@ M.dap_configurations = function()
 
 	require("dap").configurations["cpp"] = {
 		{
-			name = "Launch Cpp",
+			name = "Launch cpp (lua Config)",
 			type = "codelldb",
 			preLaunchTask = "Compile",
 			postDebugTask = "Clean",
@@ -184,6 +184,22 @@ M.dap_configurations = function()
 			program = function()
 				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 			end,
+			cwd = "${workspaceFolder}",
+			stop0nEntry = true,
+		},
+	}
+
+	require("dap").configurations["c"] = {
+		{
+			name = "Launch c (lua Config)",
+			type = "codelldb",
+			preLaunchTask = "CompileC",
+			postDebugTask = "CleanC",
+			request = "launch",
+			program = "${workspaceFolder}/${fileBasenameNoExtension}",
+			-- program = function()
+			-- 	return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+			-- end,
 			cwd = "${workspaceFolder}",
 			stop0nEntry = true,
 		},
@@ -216,9 +232,6 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		event = "VeryLazy",
-		recommended = true,
-		desc = "Debugging support. Requires language specific adapters to be configured. (see lang extras)",
-
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
 			{
@@ -229,25 +242,60 @@ return {
 
 		keys = {
 			{
+				"<leader>kd",
+				function()
+					require("dap").terminate()
+				end,
+				desc = "Terminate",
+			},
+			{
+				"<leader>rc",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "Run to Cursor",
+			},
+			{
+				"<leader>rd",
+				function()
+					require("dap").continue()
+				end,
+				desc = "Debug",
+			},
+			{
+				"<leader>sd",
+				function()
+					require("dap").continue()
+				end,
+				desc = "Continue",
+			},
+			{
+				"<leader>ab",
+				function()
+					require("dap").toggle_breakpoint()
+				end,
+				desc = "Add Breakpoint",
+			},
+			{
+				"<leader>si",
+				function()
+					require("dap").step_into()
+				end,
+				desc = "Step Into",
+			},
+			{
+				"<leader>so",
+				function()
+					require("dap").step_over()
+				end,
+				desc = "Step Over",
+			},
+			{
 				"<leader>dB",
 				function()
 					require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 				end,
 				desc = "Breakpoint Condition",
-			},
-			{
-				"<leader>db",
-				function()
-					require("dap").toggle_breakpoint()
-				end,
-				desc = "Toggle Breakpoint",
-			},
-			{
-				"<leader>dc",
-				function()
-					require("dap").continue()
-				end,
-				desc = "Continue",
 			},
 			{
 				"<leader>da",
@@ -257,25 +305,11 @@ return {
 				desc = "Run with Args",
 			},
 			{
-				"<leader>dC",
-				function()
-					require("dap").run_to_cursor()
-				end,
-				desc = "Run to Cursor",
-			},
-			{
 				"<leader>dg",
 				function()
 					require("dap").goto_()
 				end,
 				desc = "Go to Line (No Execute)",
-			},
-			{
-				"<leader>di",
-				function()
-					require("dap").step_into()
-				end,
-				desc = "Step Into",
 			},
 			{
 				"<leader>dj",
@@ -306,13 +340,6 @@ return {
 				desc = "Step Out",
 			},
 			{
-				"<leader>dO",
-				function()
-					require("dap").step_over()
-				end,
-				desc = "Step Over",
-			},
-			{
 				"<leader>dp",
 				function()
 					require("dap").pause()
@@ -334,13 +361,6 @@ return {
 				desc = "Session",
 			},
 			{
-				"<leader>dt",
-				function()
-					require("dap").terminate()
-				end,
-				desc = "Terminate",
-			},
-			{
 				"<leader>dw",
 				function()
 					require("dap.ui.widgets").hover()
@@ -350,6 +370,7 @@ return {
 		},
 
 		config = function()
+			M.dap_configurations()
 			vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
 
 			for name, sign in pairs(dap_icons) do
@@ -365,13 +386,14 @@ return {
 			vscode.json_decode = function(str)
 				return vim.json.decode(json.json_strip_comments(str))
 			end
+
+			require("overseer").enable_dap() -- task runner
 		end,
 	},
 
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "nvim-neotest/nvim-nio" },
-		event = "VeryLazy",
 		keys = {
 			{
 				"<leader>du",
@@ -406,14 +428,12 @@ return {
 	},
 	{
 		"mxsdev/nvim-dap-vscode-js",
-		event = "VeryLazy",
 		dependencies = {
 			"mfussenegger/nvim-dap",
 			"microsoft/vscode-js-debug",
 		},
 		config = function()
 			M.vscode_config()
-			M.dap_configurations()
 		end,
 	},
 }
