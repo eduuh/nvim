@@ -13,19 +13,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = {
-		{ import = "plugins" },
 		{ "folke/neoconf.nvim", cmd = "Neoconf" },
 		"folke/neodev.nvim",
-		{ dir = "~/projects/local_plugins/rest.nvim", dependencies = { "j-hui/fidget.nvim" } },
-	},
-	dev = {
-		path = "~/projects/local_plugins/",
-		pattern = { "rest" },
+		{ import = "plugins" },
 	},
 	checker = { enabled = false },
 	performance = {
 		rtp = {
-			-- disable some rtp plugins
 			disabled_plugins = {
 				"gzip",
 				"matchit",

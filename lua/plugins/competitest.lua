@@ -4,6 +4,23 @@ return {
 	ft = { "cpp", "c", "cs", "typescript", "javascript", "rs", "rust", "js" },
 	dependencies = "MunifTanjim/nui.nvim",
 	enabled = true,
+	keys = {
+		{
+			"<leader>bc",
+			"<cmd>CompetiTest run<cr>",
+			desc = "Build Code",
+		},
+		{
+			";r",
+			"<cmd>CompetiTest run<cr>",
+			desc = "Build Code",
+		},
+		{
+			"<leader>at",
+			"<cmd>CompetiTest add_testcase<cr>",
+			desc = "Add TestCase",
+		},
+	},
 	config = function()
 		require("competitest").setup({
 			testcases_use_single_file = true,
@@ -33,9 +50,5 @@ return {
 				interface = "popup",
 			},
 		})
-
-		local map = vim.keymap.set
-		map({ "n", "v" }, "<leader>rc", "<cmd>CompetiTest run<cr>", { desc = "Run Code" })
-		map({ "n", "v" }, "<leader>at", "<cmd>CompetiTest add_testcase<cr>", { desc = "Add Test cases" })
 	end,
 }

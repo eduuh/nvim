@@ -34,6 +34,7 @@ vim.opt.mouse = "a"
 vim.opt.textwidth = 80
 vim.opt.showtabline = 0
 vim.opt.laststatus = 0
+vim.o.scrolloff = 5
 
 vim.opt.conceallevel = 2
 
@@ -56,3 +57,6 @@ vim.cmd([[
 ]])
 
 vim.opt.fillchars = { eob = " " }
+
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.clipboard = { "unnamedplus" }
