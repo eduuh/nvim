@@ -10,4 +10,4 @@
 
 ## Dependencies
 
-1. [fd](https://github.com/sharkdp/fd). Faster telescope browse
+1. [fd](https://github.com/sharkdp/fd). Faster telescope brows

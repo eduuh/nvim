@@ -12,8 +12,6 @@ end
 
 ---@diagnostic disable: duplicate-set-field
 local M = {}
--- custom adapter for running tasks before starting debug
-local dap = require("dap")
 
 M.vscode_config = function()
 	local vscode = require("dap.ext.vscode")
@@ -27,6 +25,7 @@ M.vscode_config = function()
 end
 
 M.dap_configurations = function()
+	local dap = require("dap")
 	dap.adapters.nlua = function(callback, conf)
 		local adapter = {
 			type = "server",
@@ -413,6 +412,7 @@ return {
 		},
 		opts = {},
 		config = function(_, opts)
+			local dap = require("dap")
 			local dapui = require("dapui")
 			dapui.setup(opts)
 			dap.listeners.after.event_initialized["dapui_config"] = function()
@@ -427,6 +427,7 @@ return {
 		end,
 	},
 	{
+		"mfussenegger/nvim-dap",
 		"mxsdev/nvim-dap-vscode-js",
 		dependencies = {
 			"mfussenegger/nvim-dap",
