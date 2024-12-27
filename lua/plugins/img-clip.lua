@@ -1,6 +1,8 @@
+-- https://github.com/HakonHarnes/img-clip.nvim
+
 return {
 	"HakonHarnes/img-clip.nvim",
-	enabled = false,
+	enabled = require("config.utils").isMac,
 	event = "VeryLazy",
 	opts = {
 		-- add options here
@@ -107,7 +109,129 @@ return {
 		},
 	},
 	keys = {
-		-- suggested keymap
-		{ "<leader>v", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+		-- Image Section Keymaps
+
+		-- Paste Image
+		{
+			"<C-a>",
+			function()
+				local pasted_image = require("img-clip").paste_image()
+				if pasted_image then
+					vim.cmd("update")
+					print("Image pasted and file saved")
+					vim.cmd([[lua require("image").clear()]])
+					vim.cmd("edit!")
+					vim.cmd("stopinsert")
+				else
+					print("No image pasted. File not updated.")
+				end
+			end,
+			desc = "Paste image from system clipboard",
+		},
+
+		-- Open Image in Preview (macOS)
+		{
+			"<leader>io",
+			function()
+				local function get_image_path()
+					local line = vim.api.nvim_get_current_line()
+					return string.match(line, "%[.-%]%((.-)%)")
+				end
+				local image_path = get_image_path()
+				if image_path then
+					if image_path:sub(1, 4) == "http" then
+						print("URL image, use 'gx' to open it in the default browser.")
+					else
+						local absolute_image_path = vim.fn.expand("%:p:h") .. "/" .. image_path
+						if os.execute("open -a Preview " .. vim.fn.shellescape(absolute_image_path)) then
+							print("Opened image in Preview: " .. absolute_image_path)
+						else
+							print("Failed to open image in Preview: " .. absolute_image_path)
+						end
+					end
+				else
+					print("No image found under the cursor")
+				end
+			end,
+			desc = "(macOS) Open image under cursor in Preview",
+		},
+
+		-- Open Image in Finder (macOS)
+		{
+			"<leader>if",
+			function()
+				local function get_image_path()
+					local line = vim.api.nvim_get_current_line()
+					return string.match(line, "%[.-%]%((.-)%)")
+				end
+				local image_path = get_image_path()
+				if image_path then
+					if image_path:sub(1, 4) == "http" then
+						print("URL image, use 'gx' to open it in the default browser.")
+					else
+						local absolute_image_path = vim.fn.expand("%:p:h") .. "/" .. image_path
+						if vim.fn.system("open -R " .. vim.fn.shellescape(absolute_image_path)) == 0 then
+							print("Opened image in Finder: " .. absolute_image_path)
+						else
+							print("Failed to open image in Finder: " .. absolute_image_path)
+						end
+					end
+				else
+					print("No image found under the cursor")
+				end
+			end,
+			desc = "(macOS) Open image under cursor in Finder",
+		},
+
+		-- Delete Image File (macOS)
+		{
+			"<leader>id",
+			function()
+				local function get_image_path()
+					local line = vim.api.nvim_get_current_line()
+					return string.match(line, "%[.-%]%((.-)%)")
+				end
+				local image_path = get_image_path()
+				if image_path then
+					if image_path:sub(1, 4) == "http" then
+						vim.api.nvim_echo({ { "URL image cannot be deleted from disk.", "WarningMsg" } }, false, {})
+					else
+						local absolute_image_path = vim.fn.expand("%:p:h") .. "/" .. image_path
+						if vim.fn.executable("trash") == 0 then
+							vim.api.nvim_echo({
+								{ "- Trash utility not installed. Install with `brew install trash`.\n", "ErrorMsg" },
+							}, false, {})
+							return
+						end
+						vim.ui.input({ prompt = "Delete image file? (y/n) " }, function(input)
+							if input == "y" or input == "Y" then
+								if
+									pcall(function()
+										vim.fn.system({ "trash", vim.fn.fnameescape(absolute_image_path) })
+									end)
+								then
+									vim.api.nvim_echo({
+										{ "Image file deleted from disk:\n", "Normal" },
+										{ absolute_image_path, "Normal" },
+									}, false, {})
+									vim.cmd([[lua require("image").clear()]])
+									vim.cmd("edit!")
+								else
+									vim.api.nvim_echo({
+										{ "Failed to delete image file:\n", "ErrorMsg" },
+										{ absolute_image_path, "ErrorMsg" },
+									}, false, {})
+								end
+							else
+								vim.api.nvim_echo({ { "Image deletion canceled.", "Normal" } }, false, {})
+							end
+						end)
+					end
+				else
+					vim.api.nvim_echo({ { "No image found under the cursor", "WarningMsg" } }, false, {})
+				end
+			end,
+			desc = "(macOS) Delete image file under cursor",
+		},
 	},
 }

@@ -36,7 +36,7 @@ vim.opt.showtabline = 0
 vim.opt.laststatus = 0
 vim.o.scrolloff = 5
 
-vim.opt.conceallevel = 2
+vim.opt.conceallevel = 0
 
 vim.o.signcolumn = "yes"
 vim.opt.swapfile = false
@@ -49,14 +49,8 @@ vim.keymap.set("n", "]b", "<cmd>bnext<cr>", {
 	desc = "Next buffer",
 })
 
-vim.cmd([[
-  augroup PopupInsertMode
-    autocmd!
-    autocmd FileType popupmenu inoremap <buffer> <C-q> <C-\><C-n>
-  augroup END
-]])
-
 vim.opt.fillchars = { eob = " " }
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.clipboard = { "unnamedplus" }
+vim.o.foldenable = false

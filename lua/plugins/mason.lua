@@ -17,7 +17,6 @@ return {
 					"prismals",
 					"pyright",
 					"lua_ls",
-					"cmake",
 					"dockerls",
 					"jsonls",
 					"clangd",

@@ -1,4 +1,4 @@
-## Eduuh's Nvim Config
+## eduuh's Nvim Config
 
 ### Debugging
 
@@ -8,6 +8,8 @@
 
 3. JavaScript & Typescript
 
-## Dependencies
+### Main Workflow Device (Mac)
 
-1. [fd](https://github.com/sharkdp/fd). Faster telescope brows
+1. Note Taking with Obsidian plugin.
+2. Support for Mermaid rendering , Image pasting & Preview in NVIM.
+   - This needs kitty terminal & magic
