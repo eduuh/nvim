@@ -14,7 +14,6 @@ end
 return {
 	"nvim-telescope/telescope.nvim",
 	event = "VeryLazy",
-	branch = "0.1.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
@@ -76,7 +75,9 @@ return {
 	keys = {
 		{
 			"<leader>ff",
-			require("telescope.builtin").find_files,
+			function()
+				require("telescope.builtin").find_files()
+			end,
 			desc = "Find Files",
 		},
 		{
@@ -86,12 +87,16 @@ return {
 		},
 		{
 			"<leader>ob",
-			require("telescope.builtin").buffers,
+			function()
+				require("telescope.builtin").buffers()
+			end,
 			desc = "Open Buffer",
 		},
 		{
 			"<leader>ir",
-			require("telescope.builtin").registers,
+			function()
+				require("telescope.builtin").registers()
+			end,
 			desc = "Open Buffer",
 		},
 		{
