@@ -42,6 +42,13 @@ return {
 		})
 
 		telescope.setup({
+			extensions = {
+				file_browser = {
+					hijack_netrw = true,
+					git_status = false,
+					theme = "dropdown",
+				},
+			},
 			defaults = {
 				path_display = { "smart" },
 				mappings = {
