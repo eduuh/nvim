@@ -47,6 +47,7 @@ local valid_workspaces = get_available_workspaces(workspaces)
 
 return {
 	"epwalsh/obsidian.nvim",
+	enabled = not require("config.utils").isCodeSpace,
 	lazy = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",

@@ -11,6 +11,20 @@ local yank_path = function()
 	vim.notify("File path copied: " .. entry.path)
 end
 
+local function get_cwd()
+	local active_path = os.getenv("ACTIVE_PATH")
+
+	if active_path and active_path ~= "" then
+		local current_dir = vim.fn.getcwd()
+
+		if string.find(current_dir, active_path, 1, true) then
+			return active_path
+		end
+	end
+
+	return vim.fn.getcwd()
+end
+
 return {
 	"nvim-telescope/telescope.nvim",
 	event = "VeryLazy",
@@ -76,7 +90,7 @@ return {
 		{
 			"<leader>ff",
 			function()
-				require("telescope.builtin").find_files()
+				require("telescope.builtin").find_files({ cmd = get_cwd() })
 			end,
 			desc = "Find Files",
 		},
@@ -86,14 +100,14 @@ return {
 			desc = "Find Todos",
 		},
 		{
-			"<leader>ob",
+			"<leader>fb",
 			function()
 				require("telescope.builtin").buffers()
 			end,
 			desc = "Open Buffer",
 		},
 		{
-			"<leader>ir",
+			"<leader>fr",
 			function()
 				require("telescope.builtin").registers()
 			end,
@@ -106,6 +120,7 @@ return {
 				builtin.find_files({
 					no_ignore = false,
 					hidden = true,
+					cmd = get_cwd(),
 				})
 			end,
 			desc = "Lists files in your current working directory, respects .gitignore",
@@ -114,7 +129,7 @@ return {
 			"<leader>fw",
 			function()
 				local builtin = require("telescope.builtin")
-				builtin.grep_string()
+				builtin.grep_string({ cmd = get_cwd() })
 			end,
 			desc = "Find Word",
 		},
@@ -130,7 +145,7 @@ return {
 			";w",
 			function()
 				local builtin = require("telescope.builtin")
-				builtin.live_grep()
+				builtin.live_grep({ cmd = get_cwd() })
 			end,
 			desc = "Find string",
 		},
@@ -146,7 +161,7 @@ return {
 			"<leader>fd",
 			function()
 				local builtin = require("telescope.builtin")
-				builtin.diagnostics()
+				builtin.diagnostics({ cmd = get_cwd() })
 			end,
 			desc = "Lists Diagnostics for all open buffers or a specific buffer",
 		},
@@ -179,6 +194,24 @@ return {
 				})
 			end,
 			desc = "Open File Browser with the path of the current buffer",
+		},
+		{
+			";h",
+			function()
+				local telescope = require("telescope")
+
+				telescope.extensions.file_browser.file_browser({
+					path = "%:p:h",
+					cwd = get_cwd(),
+					respect_gitignore = false,
+					hidden = true,
+					grouped = true,
+					previewer = false,
+					initial_mode = "normal",
+					layout_config = { height = 40 },
+				})
+			end,
+			desc = "Open File Browser with the active path",
 		},
 	},
 }

@@ -23,6 +23,8 @@ return {
 					"jdtls",
 					"eslint",
 					"ts_ls",
+					"bashls",
+					"dockerls",
 				},
 				auto_update = false,
 				run_on_start = true,
