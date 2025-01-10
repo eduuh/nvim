@@ -197,7 +197,7 @@ M.dap_configurations = function()
 			request = "launch",
 			program = "${workspaceFolder}/${fileBasenameNoExtension}",
 			-- program = function()
-			-- 	return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+			--  return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 			-- end,
 			cwd = "${workspaceFolder}",
 			stop0nEntry = true,
@@ -241,49 +241,49 @@ return {
 
 		keys = {
 			{
-				"<leader>kd",
+				"<leader>dt",
 				function()
 					require("dap").terminate()
 				end,
 				desc = "Terminate",
 			},
 			{
-				"<leader>rc",
+				"<leader>dl",
 				function()
 					require("dap").run_to_cursor()
 				end,
 				desc = "Run to Cursor",
 			},
 			{
-				"<leader>rd",
+				"<leader>dd",
 				function()
 					require("dap").continue()
 				end,
 				desc = "Debug",
 			},
 			{
-				"<leader>sd",
+				"<leader>dc",
 				function()
 					require("dap").continue()
 				end,
 				desc = "Continue",
 			},
 			{
-				"<leader>ab",
+				"<leader>db",
 				function()
 					require("dap").toggle_breakpoint()
 				end,
 				desc = "Add Breakpoint",
 			},
 			{
-				"<leader>si",
+				"<leader>di",
 				function()
 					require("dap").step_into()
 				end,
 				desc = "Step Into",
 			},
 			{
-				"<leader>so",
+				"<leader>do",
 				function()
 					require("dap").step_over()
 				end,
