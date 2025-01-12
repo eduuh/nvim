@@ -19,7 +19,7 @@ end
 local workspaces = {
 	{
 		name = "notes",
-		path = "~/projects/byte_safari/",
+		path = "~/projects/byte_safari/content/",
 		strict = true,
 		overrides = {
 			notes_subdir = "inbox",
@@ -85,7 +85,7 @@ return {
 			workspaces = valid_workspaces,
 			daily_notes = {
 				-- Optional, if you keep daily notes in a separate directory.
-				folder = "notes/dailies",
+				folder = "inbox",
 				-- Optional, if you want to change the date format for the ID of daily notes.
 				date_format = "%Y-%m-%d",
 				-- Optional, if you want to change the date format of the default alias of daily notes.
@@ -112,13 +112,13 @@ return {
 
 				-- Define default values for missing fields
 				local default_metadata = {
-					id = note.id or "", -- Generate or assign a unique ID if needed
-					aliases = note.aliases or {},
-					tags = note.tags or { "default-tag" }, -- Default tags
-					area = note.area or "general", -- Default area
-					project = note.project or "none", -- Default project
-					priority = note.priority or "low", -- Default priority
-					related = note.related or {}, -- Default related notes
+					id = note.id or "",
+					title = note.title or "",
+					tags = note.tags or "default-tag",
+					date = note.date or "general", -- Default area
+					excerpt = note.excerpt or "description", -- Default project
+					image = note.image or "image path", -- Default priority
+					status = note.status or "draft", -- Default related notes
 				}
 
 				-- Merge defaults into the existing metadata only for missing keys
