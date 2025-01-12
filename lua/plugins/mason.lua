@@ -1,3 +1,19 @@
+local ensure_installed = {
+	"html",
+	"cssls",
+	"tailwindcss",
+	"lua_ls",
+	"emmet_ls",
+	"jsonls",
+	"bashls",
+	"ts_ls",
+	"rust_analyzer",
+	"dockerls",
+	"clangd",
+	"eslint",
+	"bashls",
+}
+
 return {
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -5,25 +21,7 @@ return {
 		config = function()
 			local mason_lspconfig = require("mason-lspconfig")
 			mason_lspconfig.setup({
-				ensure_installed = {
-					"html",
-					"rust_analyzer",
-					"cssls",
-					"tailwindcss",
-					"svelte",
-					"lua_ls",
-					"graphql",
-					"emmet_ls",
-					"prismals",
-					"pyright",
-					"lua_ls",
-					"dockerls",
-					"jsonls",
-					"clangd",
-					"jdtls",
-					"eslint",
-					"ts_ls",
-				},
+				ensure_installed = ensure_installed,
 				auto_update = false,
 				run_on_start = true,
 				start_delay = 0,
@@ -58,18 +56,13 @@ return {
 
 			mason_tool_installer.setup({
 				ensure_installed = {
-					"prettier", -- prettier formatter
-					"stylua", -- lua formatter
-					"isort", -- python formatter
-					"black", -- python formatter
-					"pylint",
+					"prettier",
+					"stylua",
 					"eslint_d",
 					"vim-language-server",
-					"prettier",
 					"prettierd",
 					"clang-format",
 					"js-debug-adapter",
-					"stylua",
 					"chrome-debug-adapter",
 					"codelldb",
 					"cpptools",
