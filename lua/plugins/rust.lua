@@ -20,8 +20,8 @@ function rust_tools.setup()
 		},
 		server = {
 			on_attach = function(client, bufnr)
-				require("lsp-inlayhints").on_attach(client, bufnr)
-				-- vim.lsp.inlay_hint(bufnr, true)
+				-- require("lsp-inlayhints").on_attach(client, bufnr)
+				-- -- vim.lsp.inlay_hint(bufnr, true)
 			end,
 			["rust-analyzer"] = {
 				checkOnSave = {
