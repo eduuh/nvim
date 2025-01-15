@@ -18,9 +18,6 @@ return {
 				rust = { "rustfmt" },
 				html = { "prettier" },
 			},
-			formatters = {
-				rustfmt = { command = "cargo fmt" },
-			},
 			format_on_save = {
 				timeout_ms = 500,
 				lsp_fallback = true,

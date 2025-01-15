@@ -79,6 +79,9 @@ return {
 	},
 	config = function()
 		require("obsidian").setup({
+			ui = {
+				enable = false,
+			},
 			completion = {
 				nvim_cmp = true,
 				min_chars = 2,
