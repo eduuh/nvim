@@ -29,3 +29,5 @@ keymap.set("n", "<C-S-j>", "<C-w>-")
 
 vim.api.nvim_set_keymap("v", ";", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", ";", "<Nop>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<leader>uu", "<cmd>UndotreeToggle<cr>", { silent = true })
