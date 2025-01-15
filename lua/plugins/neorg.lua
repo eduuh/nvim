@@ -1,6 +1,19 @@
 return {
 	"nvim-neorg/neorg",
-	enabled = false,
+	enabled = true,
 	event = "VeryLazy",
-	opt = {},
+	config = function()
+		require("neorg").setup({
+			load = {
+				["core.defaults"] = {},
+				["core.dirman"] = {
+					config = {
+						workspaces = {
+							notes = "~/projects/byte_safari/content/",
+						},
+					},
+				},
+			},
+		})
+	end,
 }
