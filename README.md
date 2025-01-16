@@ -1,4 +1,4 @@
-# 💤 LazyVim
+## Lazyvim
 
 ## WSL
 
