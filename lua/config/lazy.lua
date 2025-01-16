@@ -13,8 +13,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = {
-		{ "folke/neoconf.nvim", cmd = "Neoconf" },
-		"folke/neodev.nvim",
+		{ "lazyvim/lazyvim", import = "lazyvim.plugins" },
+		{ import = "lazyvim.plugins.extras.linting.eslint" },
 		{ import = "plugins" },
 	},
 	checker = { enabled = false },

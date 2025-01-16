@@ -1,6 +1,7 @@
 return {
 	{
 		"navarasu/onedark.nvim",
+		enabled = true,
 		config = function()
 			require("onedark").setup({
 				style = "warmer",

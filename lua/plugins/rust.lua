@@ -51,12 +51,9 @@ return {
 			require("crates").setup({
 				completion = {
 					cmp = {
-						enabled = true,
+						enabled = false,
 					},
 				},
-			})
-			require("cmp").setup.buffer({
-				sources = { { name = "crates" } },
 			})
 		end,
 	},
