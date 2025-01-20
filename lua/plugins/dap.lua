@@ -106,6 +106,7 @@ M.dap_configurations = function()
   local vscode = require("dap.ext.vscode")
   vscode.type_to_filetypes["node"] = js_based_languages
   vscode.type_to_filetypes["pwa-node"] = js_based_languages
+  vscode.type_to_filetypes["pwa-chrome"] = js_based_languages
 
   for _, language in ipairs(js_based_languages) do
     require("dap").configurations[language] = {
