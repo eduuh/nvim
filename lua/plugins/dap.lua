@@ -241,60 +241,25 @@ return {
 
 		keys = {
 			{
-				"<leader>dt",
+				"<leader>dB",
 				function()
-					require("dap").terminate()
+					require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 				end,
-				desc = "Terminate",
-			},
-			{
-				"<leader>dl",
-				function()
-					require("dap").run_to_cursor()
-				end,
-				desc = "Run to Cursor",
-			},
-			{
-				"<leader>dd",
-				function()
-					require("dap").continue()
-				end,
-				desc = "Debug",
-			},
-			{
-				"<leader>dc",
-				function()
-					require("dap").continue()
-				end,
-				desc = "Continue",
+				desc = "Breakpoint Condition",
 			},
 			{
 				"<leader>db",
 				function()
 					require("dap").toggle_breakpoint()
 				end,
-				desc = "Add Breakpoint",
+				desc = "Toggle Breakpoint",
 			},
 			{
-				"<leader>di",
+				"<leader>dc",
 				function()
-					require("dap").step_into()
+					require("dap").continue()
 				end,
-				desc = "Step Into",
-			},
-			{
-				"<leader>do",
-				function()
-					require("dap").step_over()
-				end,
-				desc = "Step Over",
-			},
-			{
-				"<leader>dB",
-				function()
-					require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
-				end,
-				desc = "Breakpoint Condition",
+				desc = "Run/Continue",
 			},
 			{
 				"<leader>da",
@@ -304,11 +269,25 @@ return {
 				desc = "Run with Args",
 			},
 			{
+				"<leader>dC",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "Run to Cursor",
+			},
+			{
 				"<leader>dg",
 				function()
 					require("dap").goto_()
 				end,
 				desc = "Go to Line (No Execute)",
+			},
+			{
+				"<leader>di",
+				function()
+					require("dap").step_into()
+				end,
+				desc = "Step Into",
 			},
 			{
 				"<leader>dj",
@@ -339,7 +318,14 @@ return {
 				desc = "Step Out",
 			},
 			{
-				"<leader>dp",
+				"<leader>dO",
+				function()
+					require("dap").step_over()
+				end,
+				desc = "Step Over",
+			},
+			{
+				"<leader>dP",
 				function()
 					require("dap").pause()
 				end,
@@ -358,6 +344,13 @@ return {
 					require("dap").session()
 				end,
 				desc = "Session",
+			},
+			{
+				"<leader>dt",
+				function()
+					require("dap").terminate()
+				end,
+				desc = "Terminate",
 			},
 			{
 				"<leader>dw",

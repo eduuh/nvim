@@ -67,7 +67,16 @@ return {
 			"chrisgrieser/nvim-various-textobjs",
 		},
 		build = ":TSUpdate",
-		config = function()
+    init = function(plugin)
+      -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
+      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
+      -- no longer trigger the **nvim-treesitter** module to be loaded in time.
+      -- Luckily, the only things that those plugins need are the custom queries, which we make available
+      -- during startup.
+      require("lazy.core.loader").add_to_rtp(plugin)
+      require("nvim-treesitter.query_predicates")
+    end,
+          config = function()
 			vim.filetype.add({ extension = { mdx = "mdx" } })
 			vim.treesitter.language.register("markdown", "mdx")
 
@@ -97,6 +106,30 @@ return {
 					"graphql",
 					"http",
 					"query",
+          "bash",
+        "c",
+        "diff",
+        "html",
+        "javascript",
+        "jsdoc",
+        "json",
+        "jsonc",
+        "lua",
+        "luadoc",
+        "luap",
+        "markdown",
+        "markdown_inline",
+        "printf",
+        "python",
+        "query",
+        "regex",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "xml",
+        "yaml"
 				},
 
 				highlight = { enable = true },

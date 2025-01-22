@@ -1,7 +1,5 @@
 local ensure_installed = {
-	"html",
 	"cssls",
-	"tailwindcss",
 	"lua_ls",
 	"emmet_ls",
 	"jsonls",
@@ -12,6 +10,8 @@ local ensure_installed = {
 	"clangd",
 	"eslint",
 	"bashls",
+	"marksman",
+	"sqlls",
 }
 
 return {
@@ -26,8 +26,37 @@ return {
 				run_on_start = true,
 				start_delay = 0,
 				debounce_hours = 5,
+				handlers = {
+					function(server)
+						local lspconfig = require("lspconfig")
+						local capabilities = require("blink.cmp").get_lsp_capabilities()
+						lspconfig[server].setup({
+							capabilities = capabilities,
+						})
+					end,
+				},
 			})
 		end,
+	},
+	{
+		"jay-babu/mason-nvim-dap.nvim",
+		dependencies = "mason.nvim",
+		cmd = { "DapInstall", "DapUninstall" },
+		opts = {
+			automatic_installation = true,
+
+			handlers = {},
+
+			ensure_installed = {
+				"js",
+				"cppdbg",
+				"node2",
+				"chrome",
+				"codelldb",
+				"bash",
+			},
+		},
+		config = function() end,
 	},
 	{
 		"williamboman/mason.nvim",

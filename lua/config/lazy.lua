@@ -13,16 +13,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = {
-		{ "lazyvim/lazyvim", import = "lazyvim.plugins" },
-		{ import = "lazyvim.plugins.extras.linting.eslint" },
-		{ import = "lazyvim.plugins.extras.lang.typescript" },
-		{ import = "lazyvim.plugins.extras.lang.json" },
-		{ import = "lazyvim.plugins.extras.lang.rust" },
-		{ import = "lazyvim.plugins.extras.coding.luasnip" },
-		{ import = "lazyvim.plugins.extras.lang.docker" },
-		{ import = "lazyvim.plugins.extras.lang.yaml" },
-		{ import = "lazyvim.plugins.extras.util.dot" },
-		{ import = "lazyvim.plugins.extras.vscode" },
+		{ "lazyvim/lazyvim" },
 		{ import = "plugins" },
 	},
 	checker = { enabled = false },
