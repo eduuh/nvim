@@ -12,6 +12,7 @@ local ensure_installed = {
 	"bashls",
 	"marksman",
 	"sqlls",
+	"omnisharp",
 }
 
 return {
@@ -47,14 +48,7 @@ return {
 
 			handlers = {},
 
-			ensure_installed = {
-				"js",
-				"cppdbg",
-				"node2",
-				"chrome",
-				"codelldb",
-				"bash",
-			},
+			ensure_installed = {},
 		},
 		config = function() end,
 	},
@@ -95,6 +89,13 @@ return {
 					"chrome-debug-adapter",
 					"codelldb",
 					"cpptools",
+					"netcoredbg",
+					"js",
+					"cppdbg",
+					"node2",
+					"chrome",
+					"bash",
+					"netcoredbg",
 				},
 			})
 		end,

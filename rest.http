@@ -1,2 +1,6 @@
+# @name MY_REQUEST_NAME1
 GET https://api.sampleapis.com/wines/reds
+
+# @name MY_REQUEST_NAME
+GET http://example.com
 

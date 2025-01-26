@@ -1,232 +1,3 @@
----@param config {args?:string[]|fun():string[]?}
-local function get_args(config)
-	local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
-	config = vim.deepcopy(config)
-	---@cast args string[]
-	config.args = function()
-		local new_args = vim.fn.input("Run with args: ", table.concat(args, " ")) --[[@as string]]
-		return vim.split(vim.fn.expand(new_args) --[[@as string]], " ")
-	end
-	return config
-end
-
----@diagnostic disable: duplicate-set-field
-local M = {}
-
-M.vscode_config = function()
-	local vscode = require("dap.ext.vscode")
-	local json = require("plenary.json")
-	vscode.json_decode = function(str)
-		return vim.json.decode(json.json_strip_comments(str))
-	end
-	if vim.fn.filereadable(".vscode/launch.json") then
-		vscode.load_launchjs()
-	end
-end
-
-M.dap_configurations = function()
-	local dap = require("dap")
-	dap.adapters.nlua = function(callback, conf)
-		local adapter = {
-			type = "server",
-			host = conf.host or "127.0.0.1",
-			port = conf.port or 8086,
-		}
-		if conf.start_neovim then
-			local dap_run = dap.run
-			dap.run = function(c)
-				adapter.port = c.port
-				adapter.host = c.host
-			end
-			require("osv").run_this()
-			dap.run = dap_run
-		end
-		callback(adapter)
-	end
-
-	dap.configurations.lua = {
-		{
-			type = "nlua",
-			request = "attach",
-			name = "Run this file",
-			start_neovim = {},
-		},
-		{
-			type = "nlua",
-			request = "attach",
-			name = "Attach to running Neovim instance (port = 8086)",
-			port = 8086,
-		},
-	}
-	require("dap-vscode-js").setup({
-		node_path = "node",
-		debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-		debugger_cmd = { "js-debug-adapter" },
-		adapters = {
-			"chrome",
-			"pwa-node",
-			"pwa-chrome",
-			"node-terminal",
-			"pwa-extensionHost",
-		},
-	})
-
-	require("dap").adapters["pwa-node"] = {
-		type = "server",
-		host = "localhost",
-		port = "${port}",
-		executable = {
-			command = "node",
-			args = {
-				vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
-				"${port}",
-			},
-		},
-	}
-
-	dap.adapters["node"] = function(cb, config)
-		if config.type == "node" then
-			config.type = "pwa-node"
-		end
-		local nativeAdapter = dap.adapters["pwa-node"]
-		if type(nativeAdapter) == "function" then
-			nativeAdapter(cb, config)
-		else
-			cb(nativeAdapter)
-		end
-	end
-
-	local js_based_languages = {
-		"javascript",
-		"javascriptreact",
-		"typescriptreact",
-		"typescript",
-	}
-
-	local vscode = require("dap.ext.vscode")
-	vscode.type_to_filetypes["node"] = js_based_languages
-	vscode.type_to_filetypes["pwa-node"] = js_based_languages
-
-	for _, language in ipairs(js_based_languages) do
-		require("dap").configurations[language] = {
-			{
-				type = "pwa-node (lua config)",
-				request = "launch",
-				name = "launch typescript file",
-				cwd = vim.fn.getcwd(),
-				runtimeArgs = { "-r", "ts-node/register" },
-				runtimeExecutable = "node",
-				args = { "${relativeFile}" },
-				rootPath = "${workspaceFolder}",
-				console = "integratedTerminal",
-				skipFiles = { "<node_internals>/**", "node_modules/**" },
-			},
-			{
-				type = "pwa-node (lua config)",
-				request = "launch",
-				name = "Launch file",
-				program = "${file}",
-				cwd = "${workspaceFolder}",
-			},
-			{
-				type = "pwa-node (lua config)",
-				request = "attach",
-				name = "Attach",
-				processId = require("dap.utils").pick_process,
-				cwd = "${workspaceFolder}",
-			},
-			{
-				type = "pwa-chrome (lua config)",
-				request = "attach",
-				name = "Attach Program (pwa-chrome = { port: 9222 })",
-				program = "${file}",
-				cwd = vim.fn.getcwd(),
-				sourceMaps = true,
-				port = 9222,
-				webRoot = "${workspaceFolder}",
-			},
-			{
-				type = "pwa-node (lua config)",
-				request = "launch",
-				name = "Debug Jest Tests",
-				-- trace = true, -- include debugger info
-				runtimeExecutable = "node",
-				runtimeArgs = {
-					"./node_modules/jest/bin/jest.js",
-					"--runInBand",
-				},
-				rootPath = "${workspaceFolder}",
-				cwd = "${workspaceFolder}",
-				console = "integratedTerminal",
-				internalConsoleOptions = "neverOpen",
-			},
-		}
-	end
-
-	dap.adapters.codelldb = {
-		type = "server",
-		host = "127.0.0.1",
-		port = "${port}",
-		executable = {
-			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/codelldb",
-			args = { "--port", "${port}" },
-		},
-	}
-
-	require("dap").configurations["cpp"] = {
-		{
-			name = "Launch cpp (lua Config)",
-			type = "codelldb",
-			preLaunchTask = "Compile",
-			postDebugTask = "Clean",
-			request = "launch",
-			program = function()
-				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			end,
-			cwd = "${workspaceFolder}",
-			stop0nEntry = true,
-		},
-	}
-
-	require("dap").configurations["c"] = {
-		{
-			name = "Launch c (lua Config)",
-			type = "codelldb",
-			preLaunchTask = "CompileC",
-			postDebugTask = "CleanC",
-			request = "launch",
-			program = "${workspaceFolder}/${fileBasenameNoExtension}",
-			-- program = function()
-			--  return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			-- end,
-			cwd = "${workspaceFolder}",
-			stop0nEntry = true,
-		},
-	}
-
-	require("dap").configurations["rust"] = {
-		{
-			name = "Launch",
-			type = "codelldb", --gdb_custom,
-			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
-			request = "launch",
-			program = function()
-				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			end,
-			cwd = "${workspaceFolder}",
-			stop0nEntry = true,
-		},
-	}
-end
-
-local dap_icons = {
-	Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
-	Breakpoint = " ",
-	BreakpointCondition = " ",
-	BreakpointRejected = { " ", "DiagnosticError" },
-	LogPoint = ".>",
-}
-
 return {
 	{
 		"mfussenegger/nvim-dap",
@@ -260,13 +31,6 @@ return {
 					require("dap").continue()
 				end,
 				desc = "Run/Continue",
-			},
-			{
-				"<leader>da",
-				function()
-					require("dap").continue({ before = get_args })
-				end,
-				desc = "Run with Args",
 			},
 			{
 				"<leader>dC",
@@ -362,7 +126,13 @@ return {
 		},
 
 		config = function()
-			M.dap_configurations()
+			local dap_icons = {
+				Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+				Breakpoint = " ",
+				BreakpointCondition = " ",
+				BreakpointRejected = { " ", "DiagnosticError" },
+				LogPoint = ".>",
+			}
 			vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
 
 			for name, sign in pairs(dap_icons) do
@@ -373,11 +143,17 @@ return {
 				)
 			end
 
-			local vscode = require("dap.ext.vscode")
 			local json = require("plenary.json")
+
+			local vscode = require("dap.ext.vscode")
 			vscode.json_decode = function(str)
 				return vim.json.decode(json.json_strip_comments(str))
 			end
+
+			require("config.dap.codelldb").register_codelldb_dap()
+			require("config.dap.dotnet").register_net_dap()
+			require("config.dap.jsandts").register_jsandts_dap()
+			require("config.dap.lua").register_lua_dap()
 
 			require("overseer").enable_dap() -- task runner
 		end,
@@ -427,7 +203,14 @@ return {
 			"microsoft/vscode-js-debug",
 		},
 		config = function()
-			M.vscode_config()
+			local vscode = require("dap.ext.vscode")
+			local json = require("plenary.json")
+			vscode.json_decode = function(str)
+				return vim.json.decode(json.json_strip_comments(str))
+			end
+			if vim.fn.filereadable(".vscode/launch.json") then
+				vscode.load_launchjs()
+			end
 		end,
 	},
 }

@@ -9,12 +9,29 @@ return {
 		},
 	},
 	{
+		"mistweaverco/kulala.nvim",
+		opts = {},
+		keys = {
+			{ "<leader>rr", "<cmd>lua require('kulala').run()<cr>", desc = "Run request" },
+			{ "<leader>rp", "<cmd>lua require('kulala').jump_prev()<cr>", desc = "Run request" },
+			{ "<leader>rn", "<cmd>lua require('kulala').jump_next()<cr>", desc = "Run request" },
+			{ "<leader>ri", "<cmd>lua require('kulala').inspect()<cr>", desc = "Run request" },
+			{ "<leader>rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Run request" },
+			{ "<leader>rc", "<cmd>lua require('kulala').copy()<cr>", desc = "Run request" },
+			{ "<leader>ri", "<cmd>lua require('kulala').from_curl()<cr>", desc = "Run request" },
+		},
+	},
+	{
 		"rest-nvim/rest.nvim",
-		enabled = require("config.utils").isMac,
+		enabled = false,
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			opts = function(_, opts)
+				opts.ensure_installed = opts.ensure_installed or {}
+				table.insert(opts.ensure_installed, "http")
+			end,
+		},
 		ft = "http",
-		config = function()
-			require("telescope").load_extension("rest")
-		end,
 		keys = {
 			{
 				"<leader>rr",
