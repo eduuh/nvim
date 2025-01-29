@@ -151,10 +151,6 @@ return {
 				end
 				return tostring(os.time()) .. "-" .. suffix
 			end,
-
-			templates = {
-				subdir = "_templates/",
-			},
 		})
 	end,
 }

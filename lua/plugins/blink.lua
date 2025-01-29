@@ -32,8 +32,17 @@ return {
 				nerd_font_variant = "mono",
 			},
 
+			completion = {
+				menu = {
+					auto_show = true,
+				},
+				documentation = { auto_show = true, auto_show_delay_ms = 500 },
+				ghost_text = { enabled = true },
+			},
+			signature = { enabled = true },
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "crates", "easy-dotnet" },
+				cmdline = {},
 				providers = {
 					crates = {
 						name = "crates",

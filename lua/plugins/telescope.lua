@@ -62,6 +62,16 @@ return {
 					theme = "dropdown",
 				},
 			},
+			pickers = {
+				find_files = {
+					case_mode = "ignore_case",
+				},
+				live_grep = {
+					additional_args = function()
+						return { "--ignore-case" }
+					end,
+				},
+			},
 			defaults = {
 				path_display = { "smart" },
 				mappings = {
