@@ -19,7 +19,7 @@ end
 local workspaces = {
 	{
 		name = "notes",
-		path = "~/projects/byte_safari",
+		path = "~/projects/byte_safari/",
 		strict = true,
 		overrides = {
 			notes_subdir = "inbox",
@@ -27,7 +27,7 @@ local workspaces = {
 	},
 	{
 		name = "work",
-		path = "~/projects/work-notes/",
+		path = "~/projects/work/",
 		strict = true,
 		overrides = {
 			notes_subdir = "inbox",
@@ -35,7 +35,7 @@ local workspaces = {
 	},
 	{
 		name = "personal",
-		path = "~/projects/private-notes/",
+		path = "~/projects/personal/",
 		strict = true,
 		overrides = {
 			notes_subdir = "inbox",

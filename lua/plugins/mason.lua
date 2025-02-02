@@ -4,7 +4,6 @@ local ensure_installed = {
 	"emmet_ls",
 	"jsonls",
 	"bashls",
-	"ts_ls",
 	"rust_analyzer",
 	"dockerls",
 	"clangd",
@@ -12,6 +11,7 @@ local ensure_installed = {
 	"bashls",
 	"marksman",
 	"sqlls",
+	"tsserver",
 	"omnisharp",
 }
 
