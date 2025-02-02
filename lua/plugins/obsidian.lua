@@ -19,7 +19,7 @@ end
 local workspaces = {
 	{
 		name = "notes",
-		path = "~/projects/byte_safari/content/",
+		path = "~/projects/byte_safari",
 		strict = true,
 		overrides = {
 			notes_subdir = "inbox",
@@ -151,10 +151,6 @@ return {
 				end
 				return tostring(os.time()) .. "-" .. suffix
 			end,
-
-			templates = {
-				subdir = "_templates/",
-			},
 		})
 	end,
 }
