@@ -35,7 +35,7 @@ local workspaces = {
 	},
 	{
 		name = "personal",
-		path = "~/projects/private/",
+		path = "~/projects/personal/",
 		strict = true,
 		overrides = {
 			notes_subdir = "inbox",
