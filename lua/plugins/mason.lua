@@ -7,7 +7,7 @@ local ensure_installed = {
 	"rust_analyzer",
 	"dockerls",
 	"clangd",
-	"eslint",
+	-- "eslint",
 	"bashls",
 	"marksman",
 	"sqlls",

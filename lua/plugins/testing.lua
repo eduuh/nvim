@@ -16,6 +16,7 @@ return {
 	"tpope/vim-dispatch",
 	{
 		"vim-test/vim-test",
+		enabled = true,
 		ft = { "rust", "typescript", "javascript" },
 		event = "VeryLazy",
 		config = function()

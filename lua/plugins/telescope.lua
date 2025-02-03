@@ -11,18 +11,24 @@ local yank_path = function()
 	vim.notify("File path copied: " .. entry.path)
 end
 
+local function is_subpath(basepath, subpath)
+	local normalized_base = basepath:gsub("/+$", "")
+	local normalized_sub = subpath:gsub("/+$", "")
+	return normalized_sub:find("^" .. normalized_base) ~= nil
+end
+
 local function get_cwd()
-	local active_path = os.getenv("ACTIVE_PATH")
+	local active_path = os.getenv("ACTIVE_PATH") or ""
+	local base_dir = vim.fn.getcwd()
 
-	if active_path and active_path ~= "" then
-		local current_dir = vim.fn.getcwd()
+	local isSubpath = is_subpath(base_dir, active_path)
 
-		if string.find(current_dir, active_path, 1, true) then
-			return active_path
-		end
+	if isSubpath then
+		print("ACTIVE_PATH: is set -> ", active_path)
+		return active_path
+	else
+		return base_dir
 	end
-
-	return vim.fn.getcwd()
 end
 
 return {
@@ -64,6 +70,7 @@ return {
 			},
 			pickers = {
 				find_files = {
+					cmd = get_cwd(),
 					case_mode = "ignore_case",
 				},
 				live_grep = {
@@ -100,7 +107,7 @@ return {
 		{
 			"<leader>ff",
 			function()
-				require("telescope.builtin").find_files({ cmd = get_cwd() })
+				require("telescope.builtin").find_files()
 			end,
 			desc = "Find Files",
 		},
