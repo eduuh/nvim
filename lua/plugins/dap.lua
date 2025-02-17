@@ -151,7 +151,6 @@ return {
 			end
 
 			require("config.dap.codelldb").register_codelldb_dap()
-			require("config.dap.dotnet").register_net_dap()
 			require("config.dap.jsandts").register_jsandts_dap()
 			require("config.dap.lua").register_lua_dap()
 
