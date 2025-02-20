@@ -55,51 +55,43 @@ return {
 						end
 					end
 
-					-- set keybinds
-					opts.desc = "Show LSP references"
-					keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+					-- Define a local helper for setting keymaps with descriptions
+					local function map(mode, keys, action, desc)
+						vim.keymap.set(mode, keys, action, { desc = desc, noremap = true, silent = true })
+					end
 
-					opts.desc = "Go to declaration"
-					keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+					-- LSP keybindings
+					map("n", "gr", vim.lsp.buf.references, "Show LSP references")
+					map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+					map("n", "gd", vim.lsp.buf.definition, "Show LSP definitions")
+					map("n", "gi", vim.lsp.buf.implementation, "Show LSP implementations")
+					map("n", "gt", vim.lsp.buf.type_definition, "Show LSP type definitions")
+					map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "See available code actions")
+					map("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
+					map("n", "K", vim.lsp.buf.hover, "Show documentation for what is under cursor")
 
-					opts.desc = "Show LSP definitions"
-					keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+					-- Diagnostics keybindings
+					map("n", "<leader>D", vim.diagnostic.setloclist, "Show buffer diagnostics")
+					map("n", "<leader>dl", vim.diagnostic.open_float, "Show line diagnostics")
+					map("n", "[d", vim.diagnostic.goto_prev, "Go to previous diagnostic")
+					map("n", "]d", vim.diagnostic.goto_next, "Go to next diagnostic")
 
-					opts.desc = "Show LSP implementations"
-					keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+					-- Error & Warning navigation
+					map("n", "]e", function()
+						diagnostic_goto(true, "ERROR")
+					end, "Next Error")
+					map("n", "[e", function()
+						diagnostic_goto(false, "ERROR")
+					end, "Previous Error")
+					map("n", "]w", function()
+						diagnostic_goto(true, "WARN")
+					end, "Next Warning")
+					map("n", "[w", function()
+						diagnostic_goto(false, "WARN")
+					end, "Previous Warning")
 
-					opts.desc = "Show LSP type definitions"
-					keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
-
-					opts.desc = "See available code actions"
-					keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-
-					opts.desc = "Smart rename"
-					keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
-
-					opts.desc = "Show buffer diagnostics"
-					keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
-
-					opts.desc = "Show line diagnostics"
-					keymap.set("n", "<leader>dl", vim.diagnostic.open_float, opts) -- show diagnostics for line
-
-					opts.desc = "Go to previous diagnostic"
-					keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
-
-					opts.desc = "Go to next diagnostic"
-					keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
-
-					opts.desc = "Show documentation for what is under cursor"
-					keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-
-					opts.desc = "Restart LSP"
-					keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
-
-					local map = vim.keymap.set
-					map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-					map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-					map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
-					map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
+					-- LSP actions
+					map("n", "<leader>rs", ":LspRestart<CR>", "Restart LSP")
 				end,
 			})
 
