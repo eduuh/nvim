@@ -4,7 +4,7 @@ local ensure_installed = {
 	"emmet_ls",
 	"jsonls",
 	"rust_analyzer",
-	"ts_ls",
+	"tsserver",
 	-- "eslint",
 	"bashls",
 	"marksman",

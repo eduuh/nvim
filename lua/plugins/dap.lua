@@ -4,10 +4,10 @@ return {
 		event = "VeryLazy",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
-			{
-				"theHamsta/nvim-dap-virtual-text",
-				opts = {},
-			},
+			-- {
+			-- 	"theHamsta/nvim-dap-virtual-text",
+			-- 	opts = {},
+			-- },
 		},
 
 		keys = {
@@ -150,11 +150,10 @@ return {
 				return vim.json.decode(json.json_strip_comments(str))
 			end
 
+			require("overseer").enable_dap() -- task runner
 			require("config.dap.codelldb").register_codelldb_dap()
 			require("config.dap.jsandts").register_jsandts_dap()
 			require("config.dap.lua").register_lua_dap()
-
-			require("overseer").enable_dap() -- task runner
 		end,
 	},
 
