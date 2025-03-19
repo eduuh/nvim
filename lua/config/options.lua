@@ -50,9 +50,11 @@ vim.opt.fillchars = { eob = " " }
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.conceallevel = 0
 vim.o.foldenable = false
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
 
 -- Highlighting & Transparency
-vim.cmd [[
+vim.cmd([[
     hi NonText ctermbg=none guibg=NONE
     hi Normal guibg=NONE ctermbg=NONE
     hi NormalNC guibg=NONE ctermbg=NONE
@@ -61,4 +63,4 @@ vim.cmd [[
     hi FloatBorder ctermbg=NONE ctermfg=NONE guibg=NONE
     hi NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE
     hi TabLine ctermbg=None ctermfg=None guibg=None
-]]
+]])

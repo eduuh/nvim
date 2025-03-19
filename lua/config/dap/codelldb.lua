@@ -12,7 +12,9 @@ M.register_codelldb_dap = function()
 			args = { "--port", "${port}" },
 		},
 	}
+end
 
+M.register_inline_config = function()
 	require("dap").configurations["cpp"] = {
 		{
 			name = "cpp (lua Config)",

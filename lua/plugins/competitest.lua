@@ -11,7 +11,7 @@ return {
 			desc = "Build Code",
 		},
 		{
-			";r",
+			"<leader>r",
 			"<cmd>CompetiTest run<cr>",
 			desc = "Build Code",
 		},

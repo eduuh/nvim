@@ -1,5 +1,3 @@
---git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
---look at: https://github.com/polarmutex/git-worktree.nvim
 return {
 	{
 		"sindrets/diffview.nvim",
@@ -16,7 +14,6 @@ return {
 				noremap = true,
 			},
 		},
-		-- optional for floating window border decoration
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
@@ -72,9 +69,6 @@ return {
 						gs.diffthis("~")
 					end, { desc = "Open buffer diff" })
 					map("n", "<leader>gx", gs.toggle_deleted, { desc = "Toggle deleted" })
-
-					-- Text object
-					map({ "o", "x" }, "ih", ":<C-U>:itsigns select_hunk<CR>", { desc = "Select Hunk (text objects)" })
 				end,
 			})
 		end,

@@ -12,42 +12,49 @@ return {
 
 		keys = {
 			{
-				"<leader>dB",
+				"<leader>dr",
+				function()
+					require("dap").repl.toggle()
+				end,
+				desc = "Toggle REPL",
+			},
+			{
+				";B",
 				function()
 					require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 				end,
 				desc = "Breakpoint Condition",
 			},
 			{
-				"<leader>db",
+				";b",
 				function()
 					require("dap").toggle_breakpoint()
 				end,
 				desc = "Toggle Breakpoint",
 			},
 			{
-				"<leader>dc",
+				";r",
 				function()
 					require("dap").continue()
 				end,
 				desc = "Run/Continue",
 			},
 			{
-				"<leader>dC",
+				";l",
 				function()
 					require("dap").run_to_cursor()
 				end,
 				desc = "Run to Cursor",
 			},
 			{
-				"<leader>dg",
+				";o",
 				function()
-					require("dap").goto_()
+					require("dap").step_over()
 				end,
-				desc = "Go to Line (No Execute)",
+				desc = "Step Over",
 			},
 			{
-				"<leader>di",
+				"<leader>;i",
 				function()
 					require("dap").step_into()
 				end,
@@ -59,6 +66,13 @@ return {
 					require("dap").down()
 				end,
 				desc = "Down",
+			},
+			{
+				"<leader>dg",
+				function()
+					require("dap").goto_()
+				end,
+				desc = "Go to Line (No Execute)",
 			},
 			{
 				"<leader>dk",
@@ -82,25 +96,11 @@ return {
 				desc = "Step Out",
 			},
 			{
-				"<leader>dO",
-				function()
-					require("dap").step_over()
-				end,
-				desc = "Step Over",
-			},
-			{
 				"<leader>dP",
 				function()
 					require("dap").pause()
 				end,
 				desc = "Pause",
-			},
-			{
-				"<leader>dr",
-				function()
-					require("dap").repl.toggle()
-				end,
-				desc = "Toggle REPL",
 			},
 			{
 				"<leader>ds",
@@ -110,14 +110,14 @@ return {
 				desc = "Session",
 			},
 			{
-				"<leader>dt",
+				";k",
 				function()
 					require("dap").terminate()
 				end,
 				desc = "Terminate",
 			},
 			{
-				"<leader>dw",
+				";h",
 				function()
 					require("dap.ui.widgets").hover()
 				end,
@@ -208,6 +208,9 @@ return {
 			end
 			if vim.fn.filereadable(".vscode/launch.json") then
 				vscode.load_launchjs()
+			else
+				require("config.dap.jsandts").setup_if_no_vscode_config()
+				require("config.dap.codelldb").register_codelldb_dap()
 			end
 		end,
 	},

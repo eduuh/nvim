@@ -1,14 +1,14 @@
 local M = {}
 
+local js_based_languages = {
+	"javascript",
+	"javascriptreact",
+	"typescriptreact",
+	"typescript",
+}
+
 M.register_jsandts_dap = function()
 	local dap = require("dap")
-
-	local js_based_languages = {
-		"javascript",
-		"javascriptreact",
-		"typescriptreact",
-		"typescript",
-	}
 
 	require("dap-vscode-js").setup({
 		node_path = "node",
@@ -23,7 +23,7 @@ M.register_jsandts_dap = function()
 		},
 	})
 
-	require("dap").adapters["pwa-node"] = {
+	dap.adapters["pwa-node"] = {
 		type = "server",
 		host = "localhost",
 		port = "${port}",
@@ -51,7 +51,9 @@ M.register_jsandts_dap = function()
 	local vscode = require("dap.ext.vscode")
 	vscode.type_to_filetypes["node"] = js_based_languages
 	vscode.type_to_filetypes["pwa-node"] = js_based_languages
+end
 
+M.setup_if_no_vscode_config = function()
 	for _, language in ipairs(js_based_languages) do
 		require("dap").configurations[language] = {
 			{
