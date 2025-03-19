@@ -1,3 +1,0 @@
-## Motions
-
-- Square Bracket movement
