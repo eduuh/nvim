@@ -13,7 +13,7 @@ return {
 
 		vim.api.nvim_set_keymap(
 			"n",
-			"<C-p>",
+			"<leader>ff",
 			"<cmd>lua require'fzf-lua'.files()<CR>",
 			{ noremap = true, silent = true }
 		)

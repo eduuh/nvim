@@ -21,6 +21,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.splitkeep = "cursor"
 vim.opt.signcolumn = "yes"
+vim.o.cmdheight = 2
 
 -- Mouse & Clipboard
 vim.opt.mouse = "a"

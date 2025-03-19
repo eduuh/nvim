@@ -5,6 +5,11 @@ return {
 		config = true,
 	},
 	{
+		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+	{
 		"navarasu/onedark.nvim",
 		enabled = true,
 		config = function()

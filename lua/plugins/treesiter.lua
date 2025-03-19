@@ -19,7 +19,6 @@ return {
 					"javascript",
 					"typescript",
 					"rust",
-					"html",
 				},
 				highlight = { enable = true },
 				indent = { enable = true },
