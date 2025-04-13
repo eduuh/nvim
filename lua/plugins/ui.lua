@@ -26,8 +26,6 @@ return {
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		-- i don't think lazy will be able to guess
-		-- `ibl` is the main module, so set it manually
 		main = "ibl",
 		opts = {
 			enabled = true,
@@ -53,15 +51,10 @@ return {
 			notifier = { enabled = true },
 			scope = { enabled = true },
 			scroll = { enabled = true },
-			statuscolumn = { enabled = false }, -- we set this in options.lua
+			statuscolumn = { enabled = false },
 			words = { enabled = true },
 			picker = { enabled = true },
 		},
-    -- stylua: ignore
-    keys = {
-      { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
-      { "<leader>un", function() Snacks.notifier.hide() end,         desc = "Dismiss All Notifications" },
-    },
 	},
 	{
 		"MagicDuck/grug-far.nvim",

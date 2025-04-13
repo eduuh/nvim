@@ -1,16 +1,50 @@
 return {
 	{
-		"zbirenbaum/copilot.lua",
-		enabled = false,
+		"CopilotC-Nvim/CopilotChat.nvim",
+		lazy = false,
+		enabled = true,
+		branch = "main",
 		dependencies = {
-			"zbirenbaum/copilot-cmp",
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
+		build = "make tiktoken", -- Only on MacOS or Linux
+		opts = {
+			agent = "copilot",
+			debug = false, -- Enable debugging
+			model = "claude-3.5-sonnet",
+			question_header = "## User ", -- Header to use for user questions
+			answer_header = "## Copilot ", -- Header to use for AI answers
+			error_header = "## Error ", -- Header to use for errors
+		},
+		keys = {
+			{ "<leader>c", ":CopilotChatToggle<CR>", desc = "Copilot toggle" },
+			{ "<leader>cc", ":CopilotChatCommitStaged<CR>", desc = "Copilot create staged" },
+			{ "<leader>co", ":CopilotChatOptimize<CR>", desc = "Copilot create staged" },
+			{ "<leader>cr", ":CopilotChatReview<CR>", desc = "Copilot create staged" },
+			{ "<leader>ce", ":CopilotChatExplain<CR>", desc = "Copilot create staged" },
+			{
+				"<leader>cq",
+				function()
+					local input = vim.fn.input("Quick Chat: ")
+					if input ~= "" then
+						require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
+					end
+				end,
+				desc = "CopilotChat - Quick chat selected",
+				mode = { "v" },
+			},
+		},
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		enabled = true,
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
 			require("copilot").setup({
 				panel = {
-					enabled = false,
+					enabled = true,
 					auto_refresh = false,
 					keymap = {
 						jump_prev = "[[",
@@ -51,8 +85,6 @@ return {
 				copilot_node_command = "node",
 				server_opts_overrides = {},
 			})
-
-			require("copilot_cmp").setup()
 		end,
 	},
 	{

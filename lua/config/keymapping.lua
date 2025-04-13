@@ -12,5 +12,3 @@ map({ "i", "n" }, "<C-s>", "<Esc>:w<CR>", opts)
 -- Split window
 keymap("n", "<leader>h", ":split<Return>", opts)
 keymap("n", "<leader>v", ":vsplit<Return>", opts)
-
-keymap("n", "<leader>uu", "<cmd>UndotreeToggle<cr>", opts)
