@@ -1,7 +1,7 @@
 return {
 	{
 		"mfussenegger/nvim-dap",
-		event = "VeryLazy",
+		-- Remove VeryLazy and only use keys for more targeted loading
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
 			-- {
