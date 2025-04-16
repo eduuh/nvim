@@ -61,7 +61,10 @@ return {
 		-- uncomment this if you don't want mcp-hub to be available globally or can't use -g
 		-- build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
 		config = function()
-			require("mcphub").setup()
+			require("mcphub").setup({
+				port = 37373,
+				config = vim.fn.expand("~/.config/mcphub/servers.json"),
+			})
 		end,
 	},
 	{

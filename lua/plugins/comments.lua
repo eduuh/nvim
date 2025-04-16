@@ -1,6 +1,6 @@
 return {
 	"numToStr/Comment.nvim",
-	event = "VeryLazy",
+	keys = { "gc", "gb", "gcc", "gbc" },
 	config = function()
 		require("Comment").setup()
 	end,

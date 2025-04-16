@@ -1,7 +1,7 @@
 return {
 	{
 		"kdheepak/lazygit.nvim",
-		event = "VeryLazy",
+		cmd = "LazyGit",
 		keys = {
 			{
 				";c",
@@ -13,7 +13,7 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		event = "VeryLazy",
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			require("gitsigns").setup({
 				signs = {

@@ -1,7 +1,8 @@
 return {
 	{
 		"akinsho/toggleterm.nvim",
-		event = "VeryLazy",
+		keys = [[<c-n>]],
+		cmd = { "ToggleTerm", "TermExec" },
 		version = "*",
 		config = function()
 			require("toggleterm").setup({
