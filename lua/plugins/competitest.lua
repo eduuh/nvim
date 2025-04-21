@@ -1,27 +1,11 @@
 return {
 	"xeluxee/competitest.nvim",
-	event = "VeryLazy",
-	ft = { "cpp", "c", "cs", "typescript", "javascript", "rs", "rust", "js" },
+	ft = { "cpp", "c" },
 	dependencies = "MunifTanjim/nui.nvim",
-	enabled = true,
-	keys = {
-		{
-			"<leader>bc",
-			"<cmd>CompetiTest run<cr>",
-			desc = "Build Code",
-		},
-		{
-			"<leader>r",
-			"<cmd>CompetiTest run<cr>",
-			desc = "Build Code",
-		},
-		{
-			"<leader>at",
-			"<cmd>CompetiTest add_testcase<cr>",
-			desc = "Add TestCase",
-		},
-	},
 	config = function()
+		vim.api.nvim_set_keymap("n", ";a", "<cmd>CompetiTest run<cr>", { desc = "Build Code" })
+		vim.api.nvim_set_keymap("n", ";t", "<cmd>CompetiTest add_testcase<cr>", { desc = "Add TestCase" })
+
 		require("competitest").setup({
 			testcases_use_single_file = true,
 			compile_command = {

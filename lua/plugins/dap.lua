@@ -1,13 +1,12 @@
 return {
 	{
 		"mfussenegger/nvim-dap",
-		-- Remove VeryLazy and only use keys for more targeted loading
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
-			-- {
-			-- 	"theHamsta/nvim-dap-virtual-text",
-			-- 	opts = {},
-			-- },
+			{
+				"theHamsta/nvim-dap-virtual-text",
+				opts = {},
+			},
 		},
 
 		keys = {
