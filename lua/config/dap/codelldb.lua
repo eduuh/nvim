@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 local M = {}
 
 M.register_codelldb_dap = function()
@@ -49,7 +50,7 @@ M.register_inline_config = function()
 	require("dap").configurations["rust"] = {
 		{
 			name = "Rust (lua config)",
-			type = "codelldb", --gdb_custom,
+			type = "codelldb",
 			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
 			request = "launch",
 			program = function()

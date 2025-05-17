@@ -43,8 +43,6 @@ return {
 				callback = function()
 					local map = require("config.utils").map
 					local mapMany = require("config.utils").mapMany
-
-					--Most Usefull keybinding
 					map("n", "gr", "<cmd>lua require'fzf-lua'.lsp_references()<CR>")
 					map("n", "gi", "<cmd>lua require'fzf-lua'.lsp_implementations()<CR>")
 					map("n", "gd", "<cmd>lua require'fzf-lua'.lsp_definitions()<CR>")
@@ -53,13 +51,10 @@ return {
 					map("n", "K", vim.lsp.buf.hover, "Show documentation for what is under cursor")
 					map("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
 					map("n", "<leader>lr", ":LspRestart<CR>", "Restart LSP")
-					--Most Usefull keybinding
-
 					map("n", "[d", vim.diagnostic.goto_prev, "Go to previous diagnostic")
 					map("n", "]d", vim.diagnostic.goto_next, "Go to next diagnostic")
 				end,
 			})
-
 			local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 			for type, icon in pairs(signs) do
 				local hl = "DiagnosticSign" .. type

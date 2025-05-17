@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
 	{
 		"zbirenbaum/copilot.lua",
@@ -53,13 +54,10 @@ return {
 	{
 		"ravitemer/mcphub.nvim",
 		dependencies = {
-			"nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
+			"nvim-lua/plenary.nvim",
 		},
-		-- comment the following line to ensure hub will be ready at the earliest
-		cmd = "MCPHub", -- lazy load by default
-		build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
-		-- uncomment this if you don't want mcp-hub to be available globally or can't use -g
-		-- build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+		cmd = "MCPHub",
+		build = "npm install -g mcp-hub@latest",
 		config = function()
 			require("mcphub").setup({
 				port = 37373,
@@ -90,17 +88,17 @@ return {
 		enabled = true,
 		branch = "main",
 		dependencies = {
-			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+			{ "zbirenbaum/copilot.lua" },
+			{ "nvim-lua/plenary.nvim" },
 		},
-		build = "make tiktoken", -- Only on MacOS or Linux
+		build = "make tiktoken",
 		opts = {
 			agent = "copilot",
-			debug = false, -- Enable debugging
-			model = "claude-3.5-sonnet",
-			question_header = "## User ", -- Header to use for user questions
-			answer_header = "## Copilot ", -- Header to use for AI answers
-			error_header = "## Error ", -- Header to use for errors
+			debug = false,
+			model = "claude-3.7-sonnet",
+			question_header = "## User ",
+			answer_header = "## Copilot ",
+			error_header = "## Error ",
 		},
 		keys = {
 			{ "<leader>c", ":CopilotChatToggle<CR>", desc = "Copilot toggle" },
@@ -119,31 +117,6 @@ return {
 				desc = "CopilotChat - Quick chat selected",
 				mode = { "v" },
 			},
-		},
-	},
-	{
-		"jackMort/ChatGPT.nvim",
-		cmd = { "ChatGPT" },
-		enabled = false,
-		config = function()
-			require("chatgpt").setup({
-				api_key_cmd = "op read op://personal/openai/credential --no-newline ",
-				openai_params = {
-					model = "chatgpt-4o-latest",
-					frequency_penalty = 0,
-					presence_penalty = 0,
-					max_tokens = 3000,
-					temperature = 0,
-					top_p = 1,
-					n = 1,
-				},
-			})
-		end,
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"folke/trouble.nvim",
-			"nvim-telescope/telescope.nvim",
 		},
 	},
 }

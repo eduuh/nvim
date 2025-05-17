@@ -5,11 +5,8 @@ local ensure_installed = {
 	"jsonls",
 	"rust_analyzer",
 	"ts_ls",
-	-- "eslint",
 	"bashls",
 	"marksman",
-	-- "tsserver",
-	-- "omnisharp",
 }
 
 return {
@@ -42,9 +39,7 @@ return {
 		cmd = { "DapInstall", "DapUninstall" },
 		opts = {
 			automatic_installation = true,
-
 			handlers = {},
-
 			ensure_installed = {},
 		},
 		config = function() end,
@@ -68,7 +63,6 @@ return {
 					},
 				},
 			})
-
 			mason_tool_installer.setup({
 				ensure_installed = {
 					"prettier",
@@ -81,14 +75,6 @@ return {
 					"chrome-debug-adapter",
 					"codelldb",
 					"cpptools",
-					"netcoredbg",
-					"js",
-					"cppdbg",
-					"node2",
-					"chrome",
-					"bash",
-					"netcoredbg",
-					"shfmt",
 				},
 			})
 		end,

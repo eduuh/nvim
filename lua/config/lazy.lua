@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
@@ -18,21 +19,19 @@ require("lazy").setup({
 	},
 	checker = { enabled = false },
 	change_detection = {
-		-- Set to false to disable checking for file changes
 		enabled = false,
 		notify = false,
 	},
 	install = {
-		-- Don't automatically install missing plugins
 		missing = false,
 	},
 	performance = {
 		cache = {
 			enabled = true,
 		},
-		reset_packpath = true, -- Reset the package path to improve startup time
+		reset_packpath = true,
 		rtp = {
-			reset = true, -- Reset the runtime path to improve startup time
+			reset = true,
 			disabled_plugins = {
 				"gzip",
 				"matchit",

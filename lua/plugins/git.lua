@@ -26,8 +26,6 @@ return {
 				},
 				on_attach = function()
 					local map = require("config.utils").map
-
-					--Most Usefull keybinding
 					map("n", "<leader>gc", "<cmd>lua require'fzf-lua'.git_commits()<CR>")
 					map("n", "<leader>gb", "<cmd>lua require'fzf-lua'.git_branches()<CR>")
 					map("n", "<leader>gs", "<cmd>lua require'fzf-lua'.git_stash()<CR>")
@@ -40,7 +38,6 @@ return {
 					map("n", "gu", "<cmd>Gitsigns undo_stage_hunk<cr>")
 					map("n", "gx", "<cmd>Gitsigns toggle_deleted<cr>")
 					map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>")
-					--Most Usefull keybinding
 				end,
 			})
 		end,

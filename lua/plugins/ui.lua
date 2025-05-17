@@ -1,4 +1,28 @@
+---@diagnostic disable: undefined-global
+local keymap = vim.keymap.set
+local opts = { noremap = true, silent = true }
+keymap("n", "<leader>uu", "<cmd>UndotreeToggle<cr>", opts)
+
 return {
+	{
+		"stevearc/overseer.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("overseer").setup()
+		end,
+	},
+	{
+		"echasnovski/mini.pairs",
+		event = "VeryLazy",
+		opts = {
+			modes = { insert = true, command = true, terminal = false },
+			skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+			skip_ts = { "string" },
+			skip_unbalanced = true,
+			markdown = true,
+		},
+	},
+	{ "mbbill/undotree" },
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",

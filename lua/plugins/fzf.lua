@@ -7,10 +7,7 @@ return {
 	},
 	config = function()
 		local fzf = require("fzf-lua")
-
 		fzf.setup()
-
-		--Most Usefull keybinding
 		local map = require("config.utils").map
 		map("n", "<leader>fs", "<cmd>lua require'fzf-lua'.lsp_document_symbols()<CR>")
 		map("n", "<leader>ts", "<cmd>lua require'fzf-lua'.treesitter()<CR>")
@@ -21,7 +18,6 @@ return {
 		map("n", "<leader>fo", "<cmd>lua require'fzf-lua'.oldfiles()<CR>")
 		map("n", "<leader>fr", "<cmd>lua require'fzf-lua'.registers()<CR>")
 		map("n", "<leader>fb", "<cmd>lua require'fzf-lua'.buffers()<CR>")
-		--Most usefull keybiding
 
 		map("n", "<leader>ql", "<cmd>lua require'fzf-lua'.quickfix()<CR>")
 		map("n", "<leader>qs", "<cmd>lua require'fzf-lua'.quickfix_stack()<CR>")

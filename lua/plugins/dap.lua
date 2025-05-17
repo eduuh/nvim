@@ -1,15 +1,9 @@
 return {
 	{
 		"mfussenegger/nvim-dap",
-		-- Remove VeryLazy and only use keys for more targeted loading
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
-			-- {
-			-- 	"theHamsta/nvim-dap-virtual-text",
-			-- 	opts = {},
-			-- },
 		},
-
 		keys = {
 			{
 				";d",
@@ -157,7 +151,7 @@ return {
 				return vim.json.decode(json.json_strip_comments(str))
 			end
 
-			require("overseer").enable_dap() -- task runner
+			require("overseer").enable_dap()
 			require("config.dap.codelldb").register_codelldb_dap()
 			require("config.dap.jsandts").register_jsandts_dap()
 			require("config.dap.lua").register_lua_dap()
