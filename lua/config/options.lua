@@ -44,3 +44,14 @@ vim.opt.conceallevel = 0
 vim.opt.foldenable = false
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
+
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.showbreak = "↪\\"
+vim.opt.breakindent = true
+vim.opt.breakindentopt = "shift:2"
+
+vim.api.nvim_create_autocmd("VimResized", {
+  pattern = "*",
+  command = "wincmd ="
+})
