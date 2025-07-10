@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "git": {
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "~/projects/git-mcp"
+      ],
+      "command": "uvx"
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env": {
+        "DEFAULT_MINIMUM_TOKENS": "20"
+      }
+    }
+  },
+  "nativeMCPServers": [
+    
+  ]
+}
