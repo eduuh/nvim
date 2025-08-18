@@ -2,8 +2,6 @@
 
 ### Discovery
 
-Using can load plugin since they are pre-registered `keys=`
-
 ## Workflow
 
 - Search via LSP first (slow). Then pattern matching with fzf.
