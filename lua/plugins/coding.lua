@@ -64,6 +64,7 @@ return {
     dependencies = {
       "j-hui/fidget.nvim",
       "ravitemer/codecompanion-history.nvim",
+      "Davidyz/VectorCode"
     },
     opts = {
       extensions = {
