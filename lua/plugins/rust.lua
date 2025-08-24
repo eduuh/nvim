@@ -17,7 +17,6 @@ function rust_tools.setup()
       },
     },
     server = {
-      on_attach = function(client, bufnr) end,
       ["rust-analyzer"] = {
         checkOnSave = {
           command = "clippy",
