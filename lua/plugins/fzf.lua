@@ -29,11 +29,10 @@ return {
     local map = require("config.utils").map
     map("n", "<leader>wd", "<cmd>lua require'fzf-lua'.diagnostics_workspace()<CR>")
     map("n", "<C-p>", "<cmd>lua require'fzf-lua'.global({ resume = false })<CR>")
-    map("n", "<leader>ff", "<cmd>lua require'fzf-lua'.global({ resume = true })<CR>")
+    map("n", "<leader>ff", "<cmd>lua require'fzf-lua'.global({ resume = false })<CR>")
     map("n", "<leader>fw", "<cmd>lua require'fzf-lua'.live_grep()<CR>")
     map("n", "<leader>fo", "<cmd>lua require'fzf-lua'.oldfiles()<CR>")
     map("n", "<leader>fr", "<cmd>lua require'fzf-lua'.registers()<CR>")
-
     map("n", "<leader>ql", "<cmd>lua require'fzf-lua'.quickfix()<CR>")
     map("n", "<leader>qs", "<cmd>lua require'fzf-lua'.quickfix_stack()<CR>")
   end,

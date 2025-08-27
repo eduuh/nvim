@@ -1,25 +1,36 @@
 {
   "mcpServers": {
-    "git": {
-      "args": [
-        "mcp-server-git",
-        "--repository",
-        "~/projects/git-mcp"
-      ],
-      "command": "uvx"
-    },
     "context7": {
-      "command": "npx",
       "args": [
         "-y",
         "@upstash/context7-mcp"
       ],
+      "command": "npx",
       "env": {
         "DEFAULT_MINIMUM_TOKENS": "20"
       }
+    },
+    "fetch": {
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "command": "uvx"
+    },
+    "postgres": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${POSTGRESQL_URL}"
+      ],
+      "command": "npx"
+    },
+    "sequentialthinking": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "command": "npx"
     }
   },
-  "nativeMCPServers": [
-    
-  ]
+  "nativeMCPServers": []
 }

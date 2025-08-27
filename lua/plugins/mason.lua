@@ -5,6 +5,7 @@ local ensure_installed = {
   "ts_ls",
   "bashls",
   "marksman",
+  "omnisharp",
 }
 
 return {

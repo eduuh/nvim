@@ -24,9 +24,9 @@ return {
         typescript = { exec = "ts-node", args = { "$(FNAME)" } },
       },
       template_file = {
-        c = "~/.config/nvim/config_test/c++/template.cpp",
-        cpp = "~/.config/nvim/config_test/c++/template.cpp",
-        rust = "~/.config/nvim/config_test/rust/template.rs",
+        c = "~/.config/nvim/template/c.c",
+        cpp = "~/.config/nvim/template/cpp.cpp",
+        rust = "~/.config/nvim/template/rs.rs",
       },
       runner_ui = {
         interface = "popup",
