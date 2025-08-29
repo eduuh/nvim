@@ -1,229 +1,141 @@
 return {
-  {
-    "mfussenegger/nvim-dap",
-    dependencies = {
-      "rcarriga/nvim-dap-ui",
-    },
-    keys = {
-      {
-        ";d",
-        function()
-          require("fzf-lua").dap_commands()
-        end,
-        desc = "dap commands",
-      },
-      {
-        "<leader>db",
-        function()
-          require("fzf-lua").dap_breakpoints()
-        end,
-        desc = "dap commands",
-      },
-      {
-        "<leader>dr",
-        function()
-          require("dap").repl.toggle()
-        end,
-        desc = "Toggle REPL",
-      },
-      {
-        ";b",
-        function()
-          require("dap").toggle_breakpoint()
-        end,
-        desc = "Toggle REPL",
-      },
-      {
-        ";r",
-        function()
-          require("dap").continue()
-        end,
-        desc = "Run/Continue",
-      },
-      {
-        ";l",
-        function()
-          require("dap").run_to_cursor()
-        end,
-        desc = "Run to Cursor",
-      },
-      {
-        ";o",
-        function()
-          require("dap").step_over()
-        end,
-        desc = "Step Over",
-      },
-      {
-        "<leader>;i",
-        function()
-          require("dap").step_into()
-        end,
-        desc = "Step Into",
-      },
-      {
-        "<leader>dj",
-        function()
-          require("dap").down()
-        end,
-        desc = "Down",
-      },
-      {
-        "<leader>dg",
-        function()
-          require("dap").goto_()
-        end,
-        desc = "Go to Line (No Execute)",
-      },
-      {
-        "<leader>dk",
-        function()
-          require("dap").up()
-        end,
-        desc = "Up",
-      },
-      {
-        "<leader>dl",
-        function()
-          require("dap").run_last()
-        end,
-        desc = "Run Last",
-      },
-      {
-        "<leader>do",
-        function()
-          require("dap").step_out()
-        end,
-        desc = "Step Out",
-      },
-      {
-        "<leader>dP",
-        function()
-          require("dap").pause()
-        end,
-        desc = "Pause",
-      },
-      {
-        "<leader>ds",
-        function()
-          require("dap").session()
-        end,
-        desc = "Session",
-      },
-      {
-        ";k",
-        function()
-          require("dap").terminate()
-        end,
-        desc = "Terminate",
-      },
-      {
-        ";h",
-        function()
-          require("dap.ui.widgets").hover()
-        end,
-        desc = "Widgets",
-      },
-    },
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"rcarriga/nvim-dap-ui",
+		},
+		keys = {
+			{
+				";b",
+				function()
+					require("dap").toggle_breakpoint()
+				end,
+				desc = "Toggle breakpoint",
+			},
+			{
+				";d",
+				function()
+					require("dap").continue()
+				end,
+				desc = "Run/Continue",
+			},
+			{
+				";o",
+				function()
+					require("dap").step_over()
+				end,
+				desc = "Step Over",
+			},
+			{
+				";i",
+				function()
+					require("dap").step_into()
+				end,
+				desc = "Step Into",
+			},
 
-    config = function()
-      local dap_icons = {
-        Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
-        Breakpoint = " ",
-        BreakpointCondition = " ",
-        BreakpointRejected = { " ", "DiagnosticError" },
-        LogPoint = ".>",
-      }
-      vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+			{
+				"<leader>d",
+				function()
+					require("fzf-lua").dap_commands()
+				end,
+				desc = "dap commands",
+			},
+			{
+				";t",
+				function()
+					require("dap").terminate()
+				end,
+				desc = "dap terminate",
+			},
+		},
+		config = function()
+			local json = require("plenary.json")
 
+			local vscode = require("dap.ext.vscode")
+			vscode.json_decode = function(str)
+				return vim.json.decode(json.json_strip_comments(str))
+			end
 
+			require("overseer").enable_dap()
+			require("config.dap.codelldb").register_codelldb_dap()
+			require("config.dap.jsandts").register_jsandts_dap()
+			require("config.dap.lua").register_lua_dap()
+		end,
+	},
 
-      vim.diagnostic.config({
-        signs = {
-          text = {
-            Error = " ",
-            Warn = " ",
-            Info = " ",
-            Hint = " ",
-          },
-          texthl = {
-            Error = "DiagnosticSignError",
-            Warn = "DiagnosticSignWarn",
-            Info = "DiagnosticSignInfo",
-            Hint = "DiagnosticSignHint",
-          },
-        },
-      })
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = { "nvim-neotest/nvim-nio" },
+		config = function(_, opts)
+			local function set_dap_keymaps()
+				local dap = require("dap")
+				local opts = { buffer = true }
+				vim.keymap.set("n", "<Down>", dap.step_over, vim.tbl_extend("force", opts, { desc = "DAP: Step Over" }))
+				vim.keymap.set(
+					"n",
+					"<Right>",
+					dap.step_into,
+					vim.tbl_extend("force", opts, { desc = "DAP: Step Into" })
+				)
+				vim.keymap.set("n", "<Left>", dap.step_out, vim.tbl_extend("force", opts, { desc = "DAP: Step Out" }))
+				vim.keymap.set(
+					"n",
+					"<Up>",
+					dap.restart_frame,
+					vim.tbl_extend("force", opts, { desc = "DAP: Restart Frame" })
+				)
+			end
 
-      local json = require("plenary.json")
+			-- remove mappings when DAP session ends
+			local function unset_dap_keymaps()
+				vim.keymap.del("n", "<Down>")
+				vim.keymap.del("n", "<Right>")
+				vim.keymap.del("n", "<Left>")
+				vim.keymap.del("n", "<Up>")
+			end
 
-      local vscode = require("dap.ext.vscode")
-      vscode.json_decode = function(str)
-        return vim.json.decode(json.json_strip_comments(str))
-      end
+			local dap = require("dap")
+			local dapui = require("dapui")
+			dapui.setup(opts)
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				set_dap_keymaps()
+				dapui.open({})
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				unset_dap_keymaps()
+				dapui.close({})
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				unset_dap_keymaps()
+				dapui.close({})
+			end
 
-      require("overseer").enable_dap()
-      require("config.dap.codelldb").register_codelldb_dap()
-      require("config.dap.jsandts").register_jsandts_dap()
-      require("config.dap.lua").register_lua_dap()
-    end,
-  },
-
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "nvim-neotest/nvim-nio" },
-    keys = {
-      {
-        "<leader>du",
-        function()
-          require("dapui").toggle({})
-        end,
-        desc = "Dap UI",
-      },
-      {
-        "<leader>de",
-        function()
-          require("dapui").eval()
-        end,
-        desc = "Eval",
-        mode = { "n", "v" },
-      },
-    },
-    opts = {},
-    config = function(_, opts)
-      local dap = require("dap")
-      local dapui = require("dapui")
-      dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({})
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close({})
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close({})
-      end
-    end,
-  },
-  {
-    "mfussenegger/nvim-dap",
-    "mxsdev/nvim-dap-vscode-js",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "microsoft/vscode-js-debug",
-    },
-    config = function()
-      local vscode = require("dap.ext.vscode")
-      local json = require("plenary.json")
-      vscode.json_decode = function(str)
-        return vim.json.decode(json.json_strip_comments(str))
-      end
-      if vim.fn.filereadable(".vscode/launch.json") then
-        vscode.load_launchjs()
-      else
-        require("config.dap.jsandts").setup_if_no_vscode_config()
-        require("config.dap.codelldb").register_codelldb_dap()
-      end
-    end,
-  },
+			dap.listeners.before.disconnect["dap_keymaps"] = function()
+				unset_dap_keymaps()
+				dapui.close({})
+			end
+		end,
+	},
+	{
+		"mfussenegger/nvim-dap",
+		"mxsdev/nvim-dap-vscode-js",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"microsoft/vscode-js-debug",
+		},
+		config = function()
+			local vscode = require("dap.ext.vscode")
+			local json = require("plenary.json")
+			vscode.json_decode = function(str)
+				return vim.json.decode(json.json_strip_comments(str))
+			end
+			if vim.fn.filereadable(".vscode/launch.json") then
+				vscode.load_launchjs()
+			else
+				require("config.dap.jsandts").setup_if_no_vscode_config()
+				require("config.dap.codelldb").register_codelldb_dap()
+			end
+		end,
+	},
 }
