@@ -30,10 +30,11 @@
 
 ### Secondary Keymappings (leader) : Semi Collon
 
-- ;; -> File Manager
+- ;; -> File Manager (oil)
 - ;c -> Lazy Git (commit)
 - ;r -> Competitest run (c++, c, cs, ts, js ,rs)
 - ;a -> Competitest add test cases
+- ;s -> scratch notes
 
 > dap
 
