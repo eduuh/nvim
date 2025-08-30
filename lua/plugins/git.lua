@@ -25,7 +25,7 @@ return {
 					untracked = { text = "┆" },
 				},
 				on_attach = function()
-					local map = require("config.utils").map
+					local map = vim.keymap.set
 					map("n", "<leader>gc", "<cmd>lua require'fzf-lua'.git_commits()<CR>")
 					map("n", "<leader>gb", "<cmd>lua require'fzf-lua'.git_branches()<CR>")
 					map("n", "<leader>gs", "<cmd>lua require'fzf-lua'.git_stash()<CR>")

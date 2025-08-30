@@ -41,41 +41,34 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 				callback = function()
-					local map = require("config.utils").map
-					local mapMany = require("config.utils").mapMany
-					map("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
-					map("n", "gr", "<cmd>lua require'fzf-lua'.lsp_references()<CR>")
-					map("n", "gd", "<cmd>lua require'fzf-lua'.lsp_definitions()<CR>")
-					map("n", "gD", "<cmd>lua require'fzf-lua'.lsp_declarations()<CR>")
-					map("n", "gt", "<cmd>lua require'fzf-lua'.lsp_typedefs()<CR>")
-					map("n", "gi", "<cmd>lua require'fzf-lua'.lsp_implementations()<CR>")
-					map("n", "gs", "<cmd>lua require'fzf-lua'.lsp_workspace_symbols()<CR>")
-					map("n", "gS", "<cmd>lua require'fzf-lua'.lsp_document_symbols()<CR>")
-					map("n", "gS", "<cmd>lua require'fzf-lua'.lsp_document_diagnostics()<CR>")
-					mapMany({ "n", "v" }, "<leader>ca", "<cmd>lua require'fzf-lua'.lsp_code_actions()<CR>")
+					local map = vim.keymap.set
+					local fzf = require("fzf-lua")
 
-					map("n", "K", vim.lsp.buf.hover, "Show documentation for what is under cursor")
+					-- LSP core
+					map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename" })
+					map("n", "K", vim.lsp.buf.hover, { desc = "Show documentation" })
+					map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+					map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+					map("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "Restart LSP" })
 
-					map("n", "<leader>lr", ":LspRestart<CR>", "Restart LSP")
-					map(
-						"n",
-						"ge",
-						"<cmd>lua require'fzf-lua'.lsp_workspace_diagnostics()<CR>",
-						"Go to previous diagnostic"
-					)
+					-- FZF-Lua LSP pickers
+					map("n", "gr", fzf.lsp_references, { desc = "LSP References" })
+					map("n", "gd", fzf.lsp_definitions, { desc = "LSP Definitions" })
+					map("n", "gD", fzf.lsp_declarations, { desc = "LSP Declarations" })
+					map("n", "gt", fzf.lsp_typedefs, { desc = "LSP Type Definitions" })
+					map("n", "gi", fzf.lsp_implementations, { desc = "LSP Implementations" })
+					map("n", "gs", fzf.lsp_workspace_symbols, { desc = "Workspace Symbols" })
+					map("n", "gS", fzf.lsp_document_symbols, { desc = "Document Symbols" })
 
-					map(
-						"n",
-						"gE",
-						"<cmd>lua require'fzf-lua'.lsp_documents_diagnostics()<CR>",
-						"Go to previous diagnostic"
-					)
+					-- Diagnostics via FZF-Lua
+					map("n", "ge", fzf.lsp_workspace_diagnostics, { desc = "Workspace Diagnostics" })
+					map("n", "gE", fzf.lsp_document_diagnostics, { desc = "Document Diagnostics" })
+					map("n", "<leader>gd", fzf.lsp_document_diagnostics, { desc = "Document Diagnostics" })
+					map("n", "<leader>gw", fzf.lsp_workspace_diagnostics, { desc = "Workspace Diagnostics" })
 
-					map("n", "[d", vim.diagnostic.goto_next, "Go to next diagnostic")
-					map("n", "]d", vim.diagnostic.goto_prev, "Go to prev diagnostic")
-
-					map("n", "<leader>gd", "<cmd>lua require'fzf-lua'.lsp_document_diagnostics()<CR>")
-					map("n", "<leader>gw", "<cmd>lua require'fzf-lua'.lsp_workspace_diagnostics()<CR>")
+					-- Code actions
+					map("n", "<leader>ca", fzf.lsp_code_actions, { desc = "Code Action" })
+					map("v", "<leader>ca", fzf.lsp_code_actions, { desc = "Code Action (Visual)" })
 				end,
 			})
 		end,

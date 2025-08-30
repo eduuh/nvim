@@ -67,7 +67,7 @@ return {
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "nvim-neotest/nvim-nio" },
-		config = function(_, opts)
+		config = function(_, _)
 			local function set_dap_keymaps()
 				local dap = require("dap")
 				local opts = { buffer = true }
@@ -97,7 +97,7 @@ return {
 
 			local dap = require("dap")
 			local dapui = require("dapui")
-			dapui.setup(opts)
+			dapui.setup({})
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				set_dap_keymaps()
 				dapui.open({})

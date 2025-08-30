@@ -77,7 +77,6 @@ function M.cmake_tools_setup()
 		},
 		cmake_executor = {
 			name = "quickfix",
-			opts = {},
 			default_opts = {
 				quickfix = {
 					show = "always",
@@ -121,7 +120,6 @@ function M.cmake_tools_setup()
 		},
 		cmake_runner = {
 			name = "quickfix",
-			opts = {},
 			default_opts = {
 				quickfix = {
 					show = "always",

@@ -6,12 +6,10 @@ return {
 		{
 			"windwp/nvim-ts-autotag",
 			event = "VeryLazy",
-			opts = {},
 		},
 		{
 			"folke/ts-comments.nvim",
 			event = "VeryLazy",
-			opts = {},
 		},
 	},
 	config = function()
