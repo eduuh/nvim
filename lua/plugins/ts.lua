@@ -12,7 +12,5 @@ return {
 			event = "VeryLazy",
 		},
 	},
-	config = function()
-		require("typescript-tools").setup({})
-	end,
+	opts = {},
 }

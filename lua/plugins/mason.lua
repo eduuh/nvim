@@ -5,6 +5,12 @@ return {
 		config = function()
 			local mason_lspconfig = require("mason-lspconfig")
 			mason_lspconfig.setup({
+				automatic_enable = {
+					exclude = {
+						"rust_analyzer",
+						"ts_ls",
+					},
+				},
 				ensure_installed = {
 					"cssls",
 					"lua_ls",
@@ -18,15 +24,6 @@ return {
 				run_on_start = true,
 				start_delay = 0,
 				debounce_hours = 5,
-				handlers = {
-					function(server)
-						local lspconfig = require("lspconfig")
-						local capabilities = require("blink.cmp").get_lsp_capabilities()
-						lspconfig[server].setup({
-							capabilities = capabilities,
-						})
-					end,
-				},
 			})
 		end,
 	},

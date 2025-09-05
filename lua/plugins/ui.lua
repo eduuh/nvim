@@ -7,25 +7,25 @@ return {
 			require("overseer").setup()
 		end,
 	},
-	{
-		"vim-test/vim-test",
-		ft = { "rust", "typescript", "javascript" },
-		event = "VeryLazy",
-		config = function()
-			vim.cmd([[
-      let test#strategy = {
-      \ 'nearest': 'neovim',
-      \ 'file':    'dispatch',
-      \ 'suite':   'basic',
-    \}
-      nmap <silent> <leader>tt :TestNearest<CR>
-      nmap <silent> <leader>tT :TestFile<CR>
-      nmap <silent> <leader>ta :TestSuite<CR>
-      nmap <silent> <leader>tl :TestLast<CR>
-      nmap <silent> <leader>tv :TestVisit<CR>
-    ]])
-		end,
-	},
+	-- {
+	-- 	"vim-test/vim-test",
+	-- 	ft = { "rust", "typescript", "javascript" },
+	-- 	event = "VeryLazy",
+	-- 	config = function()
+	-- 		vim.cmd([[
+	--      let test#strategy = {
+	--      \ 'nearest': 'neovim',
+	--      \ 'file':    'dispatch',
+	--      \ 'suite':   'basic',
+	--    \}
+	--      nmap <silent> <leader>tt :TestNearest<CR>
+	--      nmap <silent> <leader>tT :TestFile<CR>
+	--      nmap <silent> <leader>ta :TestSuite<CR>
+	--      nmap <silent> <leader>tl :TestLast<CR>
+	--      nmap <silent> <leader>tv :TestVisit<CR>
+	--    ]])
+	-- 	end,
+	-- },
 	{
 		"echasnovski/mini.pairs",
 		opts = {
