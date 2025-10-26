@@ -48,15 +48,7 @@ return {
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 	},
-	{
-		"navarasu/onedark.nvim",
-		config = function()
-			require("onedark").setup({
-				style = "warmer",
-			})
-			require("onedark").load()
-		end,
-	},
+	{ "miikanissi/modus-themes.nvim", priority = 1001 },
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
