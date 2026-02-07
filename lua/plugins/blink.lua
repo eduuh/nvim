@@ -37,9 +37,6 @@ return {
 		signature = { enabled = false },
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
-			per_filetype = {
-				codecompanion = { "codecompanion" },
-			},
 		},
 	},
 	opts_extend = { "sources.default" },

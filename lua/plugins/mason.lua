@@ -18,7 +18,6 @@ return {
 					"ts_ls",
 					"bashls",
 					"marksman",
-					"omnisharp",
 				},
 				auto_update = false,
 				run_on_start = true,
@@ -54,10 +53,6 @@ return {
 					"vim-language-server",
 					"prettierd",
 					"clang-format",
-					"js-debug-adapter",
-					"chrome-debug-adapter",
-					"codelldb",
-					"cpptools",
 				},
 			})
 		end,

@@ -10,10 +10,9 @@ vim.opt.relativenumber = false
 
 vim.opt.showcmd = true
 vim.opt.cmdheight = 2
-vim.opt.laststatus = 0
-vim.opt.showtabline = 0
+vim.opt.laststatus = 3
+vim.opt.showtabline = 2
 
-vim.opt.wrap = false
 vim.opt.textwidth = 80
 vim.opt.scrolloff = 5
 vim.opt.splitbelow = true
@@ -33,7 +32,6 @@ vim.opt.tabstop = 2
 vim.opt.smartindent = true
 vim.opt.autoindent = true
 vim.opt.smarttab = true
-vim.opt.breakindent = true
 vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.shortmess:append("cFWaIT")
 vim.opt.swapfile = false

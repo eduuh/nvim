@@ -1,5 +1,5 @@
 return {
-	"tpope/vim-dispatch",
+	{ "tpope/vim-dispatch", cmd = { "Dispatch", "Make", "Focus", "Start" } },
 	{
 		"stevearc/overseer.nvim",
 		event = "VeryLazy",
@@ -44,13 +44,10 @@ return {
 			keymap("n", "<leader>uu", "<cmd>UndotreeToggle<cr>", opts)
 		end,
 	},
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-	},
 	{ "miikanissi/modus-themes.nvim", priority = 1001 },
 	{
 		"lukas-reineke/indent-blankline.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		main = "ibl",
 		opts = {
 			enabled = true,
@@ -64,6 +61,7 @@ return {
 	},
 	{
 		"kylechui/nvim-surround",
+		event = "VeryLazy",
 	},
 	{
 		"MagicDuck/grug-far.nvim",
