@@ -3,29 +3,8 @@ return {
 	{
 		"stevearc/overseer.nvim",
 		event = "VeryLazy",
-		config = function()
-			require("overseer").setup()
-		end,
+		opts = {},
 	},
-	-- {
-	-- 	"vim-test/vim-test",
-	-- 	ft = { "rust", "typescript", "javascript" },
-	-- 	event = "VeryLazy",
-	-- 	config = function()
-	-- 		vim.cmd([[
-	--      let test#strategy = {
-	--      \ 'nearest': 'neovim',
-	--      \ 'file':    'dispatch',
-	--      \ 'suite':   'basic',
-	--    \}
-	--      nmap <silent> <leader>tt :TestNearest<CR>
-	--      nmap <silent> <leader>tT :TestFile<CR>
-	--      nmap <silent> <leader>ta :TestSuite<CR>
-	--      nmap <silent> <leader>tl :TestLast<CR>
-	--      nmap <silent> <leader>tv :TestVisit<CR>
-	--    ]])
-	-- 	end,
-	-- },
 	{
 		"echasnovski/mini.pairs",
 		opts = {
@@ -38,11 +17,9 @@ return {
 	},
 	{
 		"mbbill/undotree",
-		config = function()
-			local keymap = vim.keymap.set
-			local opts = { noremap = true, silent = true }
-			keymap("n", "<leader>uu", "<cmd>UndotreeToggle<cr>", opts)
-		end,
+		keys = {
+			{ "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Toggle undo tree" },
+		},
 	},
 	{
 		"catppuccin/nvim",

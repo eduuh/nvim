@@ -16,7 +16,7 @@ return {
 				persist_size = false,
 				direction = "float",
 				close_on_exit = true,
-				shell = "bash",
+				shell = "zsh",
 				float_opts = {
 					border = "rounded",
 					winblend = 0,
