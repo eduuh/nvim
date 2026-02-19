@@ -10,13 +10,12 @@ return {
 		local actions = require("fzf-lua").actions
 
 		fzf.setup({
-			winopts = {
-				ui_select = true,
-			},
 			keymap = {
 				fzf = {
 					["ctrl-q"] = "select-all+accept",
 				},
+			},
+			actions = {
 				files = {
 					["enter"] = actions.file_edit_or_qf,
 					["ctrl-s"] = actions.file_split,
@@ -27,8 +26,8 @@ return {
 		})
 		local map = vim.keymap.set
 		map("n", "<leader>wd", "<cmd>lua require'fzf-lua'.diagnostics_workspace()<CR>")
-		map("n", "<C-p>", "<cmd>lua require'fzf-lua'.global({ resume = false })<CR>")
-		map("n", "<leader>ff", "<cmd>lua require'fzf-lua'.global({ resume = false })<CR>")
+		map("n", "<C-p>", "<cmd>lua require'fzf-lua'.files()<CR>")
+		map("n", "<leader>ff", "<cmd>lua require'fzf-lua'.files()<CR>")
 		map("n", "<leader>fw", "<cmd>lua require'fzf-lua'.live_grep()<CR>")
 		map("n", "<leader>fo", "<cmd>lua require'fzf-lua'.oldfiles()<CR>")
 		map("n", "<leader>fr", "<cmd>lua require'fzf-lua'.registers()<CR>")

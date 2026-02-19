@@ -2,7 +2,6 @@ return {
 	{
 		"mrcjkb/rustaceanvim",
 		version = "^5",
-		lazy = false,
 		ft = "rust",
 		dependencies = {
 			"mason-org/mason-registry",

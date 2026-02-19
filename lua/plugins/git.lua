@@ -24,20 +24,21 @@ return {
 					changedelete = { text = "~" },
 					untracked = { text = "┆" },
 				},
-				on_attach = function()
+				on_attach = function(bufnr)
 					local map = vim.keymap.set
-					map("n", "<leader>gc", "<cmd>lua require'fzf-lua'.git_commits()<CR>")
-					map("n", "<leader>gb", "<cmd>lua require'fzf-lua'.git_branches()<CR>")
-					map("n", "<leader>gs", "<cmd>lua require'fzf-lua'.git_stash()<CR>")
-					map("n", "gb", "<cmd>Gitsigns blame_line<cr>")
-					map("n", "gB", "<cmd>Gitsigns blame<cr>")
-					map("n", "gn", "<cmd>Gitsigns next_hunk<cr>")
-					map("n", "gp", "<cmd>Gitsigns next_prev<cr>")
-					map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>")
-					map("n", "gs", "<cmd>Gitsigns stage_hunk<cr>")
-					map("n", "gu", "<cmd>Gitsigns undo_stage_hunk<cr>")
-					map("n", "gx", "<cmd>Gitsigns toggle_deleted<cr>")
-					map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>")
+					local buf = { buffer = bufnr }
+					map("n", "<leader>gc", "<cmd>lua require'fzf-lua'.git_commits()<CR>", buf)
+					map("n", "<leader>gb", "<cmd>lua require'fzf-lua'.git_branches()<CR>", buf)
+					map("n", "<leader>gs", "<cmd>lua require'fzf-lua'.git_stash()<CR>", buf)
+					map("n", "gb", "<cmd>Gitsigns blame_line<cr>", buf)
+					map("n", "gB", "<cmd>Gitsigns blame<cr>", buf)
+					map("n", "gn", "<cmd>Gitsigns next_hunk<cr>", buf)
+					map("n", "gp", "<cmd>Gitsigns prev_hunk<cr>", buf)
+					map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", buf)
+					map("n", "gs", "<cmd>Gitsigns stage_hunk<cr>", buf)
+					map("n", "gu", "<cmd>Gitsigns undo_stage_hunk<cr>", buf)
+					map("n", "gx", "<cmd>Gitsigns toggle_deleted<cr>", buf)
+					map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", buf)
 				end,
 			})
 		end,

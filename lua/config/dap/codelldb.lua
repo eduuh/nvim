@@ -27,7 +27,7 @@ M.register_inline_config = function()
 				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 			end,
 			cwd = "${workspaceFolder}",
-			stop0nEntry = true,
+			stopOnEntry = true,
 		},
 	}
 
@@ -43,7 +43,7 @@ M.register_inline_config = function()
 			--  return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 			-- end,
 			cwd = "${workspaceFolder}",
-			stop0nEntry = true,
+			stopOnEntry = true,
 		},
 	}
 
@@ -57,7 +57,7 @@ M.register_inline_config = function()
 				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 			end,
 			cwd = "${workspaceFolder}",
-			stop0nEntry = true,
+			stopOnEntry = true,
 		},
 	}
 end

@@ -11,7 +11,7 @@ vim.opt.relativenumber = false
 vim.opt.showcmd = true
 vim.opt.cmdheight = 2
 vim.opt.laststatus = 3
-vim.opt.showtabline = 2
+vim.opt.showtabline = 1
 
 vim.opt.textwidth = 80
 vim.opt.scrolloff = 5

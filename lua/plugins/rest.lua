@@ -1,12 +1,5 @@
 return {
 	{
-		"vhyrro/luarocks.nvim",
-		priority = 1001,
-		opts = {
-			rocks = { "tree-sitter-http" },
-		},
-	},
-	{
 		"mistweaverco/kulala.nvim",
 		keys = {
 			{ "<leader>rr", "<cmd>lua require('kulala').run()<cr>", desc = "Run request" },
