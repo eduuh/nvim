@@ -1,17 +1,5 @@
 return {
 	{
-		"kdheepak/lazygit.nvim",
-		cmd = "LazyGit",
-		keys = {
-			{
-				";c",
-				":LazyGit<Return>",
-				silent = true,
-				noremap = true,
-			},
-		},
-	},
-	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
