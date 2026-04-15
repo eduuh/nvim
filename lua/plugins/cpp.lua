@@ -96,7 +96,7 @@ function M.cmake_tools_setup()
 						strategy = {
 							"toggleterm",
 							direction = "horizontal",
-							autos_croll = true,
+							auto_scroll = true,
 							quit_on_exit = false,
 						},
 					},
@@ -139,7 +139,7 @@ function M.cmake_tools_setup()
 						strategy = {
 							"toggleterm",
 							direction = "horizontal",
-							autos_croll = true,
+							auto_scroll = true,
 							quit_on_exit = false,
 						},
 					},

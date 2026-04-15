@@ -51,21 +51,17 @@ return {
 			},
 		},
 		config = function()
-			local json = require("plenary.json")
-
-			local vscode = require("dap.ext.vscode")
-			vscode.json_decode = function(str)
-				return vim.json.decode(json.json_strip_comments(str))
-			end
-
 			require("overseer").enable_dap()
 			require("config.dap.codelldb").register_codelldb_dap()
 			require("config.dap.jsandts").register_jsandts_dap()
 			require("config.dap.lua").register_lua_dap()
 
-			if vim.fn.filereadable(".vscode/launch.json") == 1 then
-				vscode.load_launchjs()
-			else
+			-- .vscode/launch.json is auto-loaded on-demand by nvim-dap's
+			-- built-in dap.providers.configs["dap.launch.json"] provider, and
+			-- Nvim 0.12's vim.json.decode natively handles the JSONC comments.
+			-- Only register the hand-written JS/TS fallback configs when the
+			-- project has no launch.json.
+			if vim.fn.filereadable(".vscode/launch.json") ~= 1 then
 				require("config.dap.jsandts").setup_if_no_vscode_config()
 			end
 		end,
