@@ -1,35 +1,57 @@
--- Build hooks: run post-install/update steps for plugins that need compilation.
+-- ─────────────────────────────────────────────────────────────────────────────
+-- vim.pack-managed plugins.
+--
+-- Plugins here are eagerly loaded at startup because they either have no
+-- meaningful lazy-loading value (always needed, colorscheme, libraries) or are
+-- dependencies of plugins still managed by lazy.nvim. Everything else lives in
+-- lua/plugins/*.lua (lazy.nvim).
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- ─── Build hooks ─────────────────────────────────────────────────────────────
+-- Post-install/update steps for plugins that need compilation. Registered
+-- before vim.pack.add so it fires on the very first install.
 vim.api.nvim_create_autocmd("PackChanged", {
   callback = function(ev)
     local name = ev.data.spec.name
     local kind = ev.data.kind
-    if kind ~= "install" and kind ~= "update" then return end
+    if kind ~= "install" and kind ~= "update" then
+      return
+    end
     if name == "LuaSnip" then
       vim.system({ "make", "install_jsregexp" }, { cwd = ev.data.path }):wait()
     elseif name == "nvim-treesitter" then
-      if not ev.data.active then vim.cmd.packadd("nvim-treesitter") end
+      if not ev.data.active then
+        vim.cmd.packadd("nvim-treesitter")
+      end
       vim.cmd("TSUpdate")
     end
   end,
 })
 
+-- ─── Specs ───────────────────────────────────────────────────────────────────
+-- Order matters: plugins that are required by later setups (luasnip before
+-- blink, treesitter before textobjects, mason before mason-tool-installer)
+-- must appear first in the list.
 vim.pack.add({
+  -- Colorscheme
   { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
 
-  -- Shared dependency libraries (consumed by many lazy.nvim plugins via `require`).
+  -- Shared libraries consumed by many lazy.nvim plugins via `require`.
   "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/nvim-lua/plenary.nvim",
   "https://github.com/MunifTanjim/nui.nvim",
   "https://github.com/rafamadriz/friendly-snippets",
 
-  -- Completion stack: LuaSnip before blink.cmp (blink uses the luasnip preset).
-  { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("v2") },
-  -- blink.cmp needs a tagged release so its prebuilt fuzzy-matching binary
+  -- Completion stack. LuaSnip is listed first because blink uses the luasnip
+  -- preset and requires the module to be on rtp before its setup runs.
+  -- blink.cmp is pinned to a v1.x tag so its prebuilt fuzzy-matching binary
   -- gets downloaded; the default branch expects you to `cargo build` yourself.
+  { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("v2") },
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
 
-  -- Treesitter: pinned to master (the new `main` branch is a breaking rewrite
-  -- without the .configs module our setup uses).
+  -- Treesitter is pinned to master. The new `main` branch is a breaking
+  -- rewrite without the .configs module our setup uses. Upstream plans to
+  -- archive master, so a follow-up migration is on the horizon.
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "master" },
 
@@ -40,7 +62,7 @@ vim.pack.add({
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/stevearc/conform.nvim",
 
-  -- Small VeryLazy quality-of-life plugins (effectively eager after VimEnter).
+  -- Small VeryLazy quality-of-life plugins; effectively eager after VimEnter.
   "https://github.com/echasnovski/mini.pairs",
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/overseer.nvim",
@@ -49,6 +71,7 @@ vim.pack.add({
   "https://github.com/folke/ts-comments.nvim",
 })
 
+-- ─── Colorscheme ─────────────────────────────────────────────────────────────
 require("catppuccin").setup({
   flavour = "mocha",
   integrations = {
@@ -62,13 +85,14 @@ require("catppuccin").setup({
   },
 })
 
+-- ─── Completion stack ────────────────────────────────────────────────────────
 require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
 
 require("blink.cmp").setup({
   completion = {
     menu = {
-      -- border handled by global 'pumborder' option (Nvim 0.12)
+      -- border comes from the global 'pumborder' option (Nvim 0.12).
       winblend = 10,
       max_height = 15,
       draw = {
@@ -87,15 +111,14 @@ require("blink.cmp").setup({
     preset = "enter",
     ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
   },
-  appearance = {
-    nerd_font_variant = "mono",
-  },
+  appearance = { nerd_font_variant = "mono" },
   signature = { enabled = false },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
   },
 })
 
+-- ─── Treesitter ──────────────────────────────────────────────────────────────
 require("nvim-treesitter.configs").setup({
   ensure_installed = {
     "c",
@@ -141,6 +164,7 @@ require("nvim-treesitter.configs").setup({
   },
 })
 
+-- ─── Mason ───────────────────────────────────────────────────────────────────
 require("mason").setup({
   ui = {
     icons = {
@@ -167,6 +191,7 @@ require("mason-tool-installer").setup({
   },
 })
 
+-- ─── Fzf-lua ─────────────────────────────────────────────────────────────────
 do
   local fzf = require("fzf-lua")
   local actions = fzf.actions
@@ -199,6 +224,7 @@ do
   map("<leader>qs", fzf.quickfix_stack, "Quickfix stack")
 end
 
+-- ─── Statusline ──────────────────────────────────────────────────────────────
 require("lualine").setup({
   options = {
     theme = "auto",
@@ -222,6 +248,7 @@ require("lualine").setup({
   },
 })
 
+-- ─── Formatter ───────────────────────────────────────────────────────────────
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
@@ -242,6 +269,7 @@ require("conform").setup({
   },
 })
 
+-- ─── Small QoL plugins ───────────────────────────────────────────────────────
 require("mini.pairs").setup({
   modes = { insert = true, command = true, terminal = false },
   skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
