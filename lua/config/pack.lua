@@ -84,6 +84,7 @@ require("catppuccin").setup({
     which_key = true,
   },
 })
+vim.cmd.colorscheme("catppuccin")
 
 -- ─── Completion stack ────────────────────────────────────────────────────────
 require("luasnip.loaders.from_vscode").lazy_load()

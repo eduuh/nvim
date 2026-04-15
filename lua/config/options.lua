@@ -43,6 +43,9 @@ vim.opt.completeopt = { "menu", "menuone", "noselect", "popup" }
 vim.opt.confirm = true
 vim.opt.updatetime = 250
 
+-- Preserve viewport when jumping through the jumplist (Nvim 0.11+).
+vim.opt.jumpoptions:append("view")
+
 -- Load project-local .nvim.lua from the current dir and any ancestor (Nvim 0.12).
 vim.opt.exrc = true
 
