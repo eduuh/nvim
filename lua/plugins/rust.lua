@@ -15,9 +15,9 @@ return {
 			},
 		},
 		config = function()
-			local codelldb_root = vim.fn.stdpath("data") .. "/mason" .. "/packages/"
-			local codelldb_path = codelldb_root .. "/codelldb"
-			local liblldb_path = codelldb_root .. "lldb/lib/liblldb.so"
+			local mason_packages = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages")
+			local codelldb_path = vim.fs.joinpath(mason_packages, "codelldb")
+			local liblldb_path = vim.fs.joinpath(mason_packages, "lldb", "lib", "liblldb.so")
 			local cfg = require("rustaceanvim.config")
 
 			vim.g.rustaceanvim = {

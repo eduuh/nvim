@@ -9,55 +9,8 @@ M.register_codelldb_dap = function()
 		host = "127.0.0.1",
 		port = "${port}",
 		executable = {
-			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/codelldb",
+			command = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "codelldb", "codelldb"),
 			args = { "--port", "${port}" },
-		},
-	}
-end
-
-M.register_inline_config = function()
-	require("dap").configurations["cpp"] = {
-		{
-			name = "cpp (lua Config)",
-			type = "codelldb",
-			preLaunchTask = "Compile",
-			postDebugTask = "Clean",
-			request = "launch",
-			program = function()
-				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			end,
-			cwd = "${workspaceFolder}",
-			stopOnEntry = true,
-		},
-	}
-
-	require("dap").configurations["c"] = {
-		{
-			name = "c (lua Config)",
-			type = "codelldb",
-			preLaunchTask = "CompileC",
-			postDebugTask = "CleanC",
-			request = "launch",
-			program = "${workspaceFolder}/${fileBasenameNoExtension}",
-			-- program = function()
-			--  return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			-- end,
-			cwd = "${workspaceFolder}",
-			stopOnEntry = true,
-		},
-	}
-
-	require("dap").configurations["rust"] = {
-		{
-			name = "Rust (lua config)",
-			type = "codelldb",
-			--preLaunchTask = { "clang++ -std=c++2a ${file} --debug" },
-			request = "launch",
-			program = function()
-				return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			end,
-			cwd = "${workspaceFolder}",
-			stopOnEntry = true,
 		},
 	}
 end

@@ -30,22 +30,9 @@ require("lazy").setup({
     cache = {
       enabled = true,
     },
-    reset_packpath = true,
+    reset_packpath = false,
     rtp = {
-      reset = true,
-      disabled_plugins = {
-        "gzip",
-        "matchit",
-        "matchparen",
-        "netrwPlugin",
-        "tarPlugin",
-        "tutor",
-        "zipPlugin",
-        "shada",
-        "rplugin",
-        "spellfile",
-        "man",
-      },
+      reset = false,
     },
   },
 })

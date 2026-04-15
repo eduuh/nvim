@@ -9,9 +9,9 @@ return {
 		},
 	},
 	keys = {
-		{ "<leader>vd", "<cmd>DiffviewOpen<cr>", desc = "Diffview: open" },
-		{ "<leader>vh", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: file history" },
-		{ "<leader>vb", "<cmd>DiffviewFileHistory<cr>", desc = "Diffview: branch history" },
-		{ "<leader>vc", "<cmd>DiffviewClose<cr>", desc = "Diffview: close" },
+		{ "<leader>vd", function() vim.cmd.DiffviewOpen() end, desc = "Diffview: open" },
+		{ "<leader>vh", function() vim.cmd.DiffviewFileHistory("%") end, desc = "Diffview: file history" },
+		{ "<leader>vb", function() vim.cmd.DiffviewFileHistory() end, desc = "Diffview: branch history" },
+		{ "<leader>vc", function() vim.cmd.DiffviewClose() end, desc = "Diffview: close" },
 	},
 }
