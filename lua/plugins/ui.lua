@@ -16,12 +16,6 @@ return {
 		},
 	},
 	{
-		"mbbill/undotree",
-		keys = {
-			{ "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Toggle undo tree" },
-		},
-	},
-	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1001,
