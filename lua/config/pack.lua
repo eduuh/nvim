@@ -71,6 +71,9 @@ vim.pack.add({
   "https://github.com/folke/ts-comments.nvim",
 })
 
+-- ─── Icons (needed by fzf-lua, lualine, oil, etc.) ──────────────────────────
+require("nvim-web-devicons").setup()
+
 -- ─── Colorscheme ─────────────────────────────────────────────────────────────
 require("catppuccin").setup({
   flavour = "mocha",
