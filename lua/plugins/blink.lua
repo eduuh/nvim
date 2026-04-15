@@ -9,7 +9,7 @@ return {
 	opts = {
 		completion = {
 			menu = {
-				border = "rounded",
+				-- border handled by global 'pumborder' option (Nvim 0.12)
 				winblend = 10,
 				max_height = 15,
 				draw = {

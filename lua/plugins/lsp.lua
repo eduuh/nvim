@@ -10,6 +10,14 @@ return {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 				callback = function(args)
 					vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client and client:supports_method("textDocument/codeLens") then
+						vim.lsp.codelens.refresh({ bufnr = args.buf })
+						vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+							buffer = args.buf,
+							callback = function() vim.lsp.codelens.refresh({ bufnr = args.buf }) end,
+						})
+					end
 					local map = vim.keymap.set
 					local fzf = require("fzf-lua")
 					local buf = { buffer = args.buf }
@@ -20,6 +28,7 @@ return {
 					map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, vim.tbl_extend("force", buf, { desc = "Previous diagnostic" }))
 					map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, vim.tbl_extend("force", buf, { desc = "Next diagnostic" }))
 					map("n", "<leader>lr", "<cmd>LspRestart<CR>", vim.tbl_extend("force", buf, { desc = "Restart LSP" }))
+					map("n", "<leader>gW", vim.lsp.buf.workspace_diagnostics, vim.tbl_extend("force", buf, { desc = "Workspace pull diagnostics" }))
 
 					-- FZF-Lua LSP pickers
 					map("n", "gr", fzf.lsp_references, vim.tbl_extend("force", buf, { desc = "LSP References" }))
