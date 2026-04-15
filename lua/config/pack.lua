@@ -37,6 +37,14 @@ vim.pack.add({
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/stevearc/conform.nvim",
+
+  -- Small VeryLazy quality-of-life plugins (effectively eager after VimEnter).
+  "https://github.com/echasnovski/mini.pairs",
+  "https://github.com/kylechui/nvim-surround",
+  "https://github.com/stevearc/overseer.nvim",
+  "https://github.com/lukas-reineke/indent-blankline.nvim",
+  "https://github.com/windwp/nvim-ts-autotag",
+  "https://github.com/folke/ts-comments.nvim",
 })
 
 require("catppuccin").setup({
@@ -226,3 +234,23 @@ require("conform").setup({
     lsp_fallback = true,
   },
 })
+
+require("mini.pairs").setup({
+  modes = { insert = true, command = true, terminal = false },
+  skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+  skip_ts = { "string" },
+  skip_unbalanced = true,
+  markdown = true,
+})
+
+require("nvim-surround").setup()
+require("overseer").setup()
+
+require("ibl").setup({
+  enabled = true,
+  scope = { enabled = false },
+  indent = { char = "▏" },
+})
+
+require("nvim-ts-autotag").setup()
+require("ts-comments").setup()
