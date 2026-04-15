@@ -3,6 +3,7 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
+			"jbyuki/one-small-step-for-vimkind",
 		},
 		keys = {
 			{
@@ -61,6 +62,12 @@ return {
 			require("config.dap.codelldb").register_codelldb_dap()
 			require("config.dap.jsandts").register_jsandts_dap()
 			require("config.dap.lua").register_lua_dap()
+
+			if vim.fn.filereadable(".vscode/launch.json") == 1 then
+				vscode.load_launchjs()
+			else
+				require("config.dap.jsandts").setup_if_no_vscode_config()
+			end
 		end,
 	},
 
@@ -118,24 +125,10 @@ return {
 		end,
 	},
 	{
-		"mfussenegger/nvim-dap",
 		"mxsdev/nvim-dap-vscode-js",
 		dependencies = {
 			"mfussenegger/nvim-dap",
 			"microsoft/vscode-js-debug",
 		},
-		config = function()
-			local vscode = require("dap.ext.vscode")
-			local json = require("plenary.json")
-			vscode.json_decode = function(str)
-				return vim.json.decode(json.json_strip_comments(str))
-			end
-			if vim.fn.filereadable(".vscode/launch.json") then
-				vscode.load_launchjs()
-			else
-				require("config.dap.jsandts").setup_if_no_vscode_config()
-				require("config.dap.codelldb").register_codelldb_dap()
-			end
-		end,
 	},
 }

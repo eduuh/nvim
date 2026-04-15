@@ -1,16 +1,16 @@
 return {
-	"pmizio/typescript-tools.nvim",
-	event = "VeryLazy",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		{
-			"windwp/nvim-ts-autotag",
-			event = "VeryLazy",
-		},
-		{
-			"folke/ts-comments.nvim",
-			event = "VeryLazy",
-		},
+	{
+		"pmizio/typescript-tools.nvim",
+		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {},
 	},
-	opts = {},
+	{
+		"windwp/nvim-ts-autotag",
+		event = "VeryLazy",
+	},
+	{
+		"folke/ts-comments.nvim",
+		event = "VeryLazy",
+	},
 }

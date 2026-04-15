@@ -1,12 +1,5 @@
 return {
 	{
-		"numToStr/Comment.nvim",
-		keys = { "gc", "gb", "gcc", "gbc" },
-		config = function()
-			require("Comment").setup()
-		end,
-	},
-	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
 		---@type Flash.Config
@@ -121,6 +114,29 @@ return {
 				end,
 			},
 		},
+		keys = {
+			{
+				"<C-a>",
+				"<cmd>CodeCompanionActions<CR>",
+				desc = "Open the action palette",
+				mode = { "n", "v" },
+			},
+			{
+				"<Leader>a",
+				"<cmd>CodeCompanionChat Toggle<CR>",
+				desc = "Toggle a chat buffer",
+				mode = { "n", "v" },
+			},
+			{
+				"<LocalLeader>a",
+				"<cmd>CodeCompanionChat Add<CR>",
+				desc = "Add code to a chat buffer",
+				mode = { "v" },
+			},
+		},
+		init = function()
+			vim.cmd([[cab cc CodeCompanion]])
+		end,
 		opts = {
 			extensions = {
 				history = {
@@ -151,204 +167,73 @@ return {
 					},
 				},
 			},
-			adapters = {
-				-- anthropic = function()
-				-- 	return require("codecompanion.adapters").extend("anthropic", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/Anthropic_API/credential --no-newline",
-				-- 		},
-				-- 	})
-				-- end,
-				-- deepseek = function()
-				-- 	return require("codecompanion.adapters").extend("deepseek", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/DeepSeek_API/credential --no-newline",
-				-- 		},
-				-- 	})
-				-- end,
-				-- gemini = function()
-				-- 	return require("codecompanion.adapters").extend("gemini", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/Gemini_API/credential --no-newline",
-				-- 		},
-				-- 	})
-				-- end,
-				-- mistral = function()
-				-- 	return require("codecompanion.adapters").extend("mistral", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/Mistral_API/credential --no-newline",
-				-- 		},
-				-- 	})
-				-- end,
-				-- novita = function()
-				-- 	return require("codecompanion.adapters").extend("novita", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/Novita_API/credential --no-newline",
-				-- 		},
-				-- 		schema = {
-				-- 			model = {
-				-- 				default = function()
-				-- 					return "meta-llama/llama-3.1-8b-instruct"
-				-- 				end,
-				-- 			},
-				-- 		},
-				-- 	})
-				-- end,
-				-- ollama = function()
-				-- 	return require("codecompanion.adapters").extend("ollama", {
-				-- 		schema = {
-				-- 			model = {
-				-- 				default = "qwen3:latest",
-				-- 			},
-				-- 			num_ctx = {
-				-- 				default = 20000,
-				-- 			},
-				-- 		},
-				-- 	})
-				-- end,
-				-- openai = function()
-				-- 	return require("codecompanion.adapters").extend("openai", {
-				-- 		opts = {
-				-- 			stream = true,
-				-- 		},
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/OpenAI_API/credential --no-newline",
-				-- 		},
-				-- 		schema = {
-				-- 			model = {
-				-- 				default = function()
-				-- 					return "gpt-4.1"
-				-- 				end,
-				-- 			},
-				-- 		},
-				-- 	})
-				-- end,
-				-- xai = function()
-				-- 	return require("codecompanion.adapters").extend("xai", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/xAI_API/credential --no-newline",
-				-- 		},
-				-- 	})
-				-- end,
-				-- tavily = function()
-				-- 	return require("codecompanion.adapters").extend("tavily", {
-				-- 		env = {
-				-- 			api_key = "cmd:op read op://personal/Tavily_API/credential --no-newline",
-				-- 		},
-				-- 	})
-				-- end,
-			},
-			prompt_library = {
-				["Edwin workflows"] = {
-					strategy = "workflow",
-					description = "Use a workflow to test the plugin",
-					opts = {
-						index = 4,
+
+			strategies = {
+				chat = {
+					adapter = {
+						name = "copilot",
+						model = "claude-sonnet-4",
 					},
-					prompts = {
-						{
-							-- {
-							--   {
-							--     role = "user",
-							--     content = "Create a TypeScript interface for a complex e-commerce shopping cart system",
-							--     opts = {
-							--       auto_submit = true,
-							--     },
-							--   },
-							-- },
+					roles = {
+						user = "eduuh",
+					},
+					keymaps = {
+						send = {
+							modes = {
+								i = { "<C-CR>", "<C-s>" },
+							},
+						},
+						completion = {
+							modes = {
+								i = "<C-x>",
+							},
 						},
 					},
-				},
-				strategies = {
-					chat = {
-						adapter = {
-							name = "copilot",
-							model = "claude-sonnet-4",
-						},
-						roles = {
-							user = "eduuh",
-						},
-						keymaps = {
-							send = {
+					slash_commands = {
+						["buffer"] = {
+							keymaps = {
 								modes = {
-									i = { "<C-CR>", "<C-s>" },
+									i = "<C-b>",
 								},
 							},
-							completion = {
+						},
+						["fetch"] = {
+							keymaps = {
 								modes = {
-									i = "<C-x>",
+									i = "<C-f>",
 								},
 							},
 						},
-						slash_commands = {
-							["buffer"] = {
-								keymaps = {
-									modes = {
-										i = "<C-b>",
-									},
-								},
+						["help"] = {
+							opts = {
+								max_lines = 1000,
 							},
-							["fetch"] = {
-								keymaps = {
-									modes = {
-										i = "<C-f>",
-									},
-								},
-							},
-							["help"] = {
-								opts = {
-									max_lines = 1000,
-								},
-							},
-						},
-					},
-					inline = {
-						adapter = {
-							name = "copilot",
-							model = "gpt-4.1",
 						},
 					},
 				},
-				display = {
-					action_palette = {
-						provider = "default",
+				inline = {
+					adapter = {
+						name = "copilot",
+						model = "gpt-4.1",
 					},
-					chat = {
-						icons = {
-							tool_success = "󰸞",
-						},
-					},
-					diff = {
-						provider = "mini_diff",
-					},
-				},
-				opts = {
-					log_level = "DEBUG",
 				},
 			},
-			keys = {
-				{
-					"<C-a>",
-					"<cmd>CodeCompanionActions<CR>",
-					desc = "Open the action palette",
-					mode = { "n", "v" },
+			display = {
+				action_palette = {
+					provider = "default",
 				},
-				{
-					"<Leader>a",
-					"<cmd>CodeCompanionChat Toggle<CR>",
-					desc = "Toggle a chat buffer",
-					mode = { "n", "v" },
+				chat = {
+					icons = {
+						tool_success = "󰸞",
+					},
 				},
-				{
-					"<LocalLeader>a",
-					"<cmd>CodeCompanionChat Add<CR>",
-					desc = "Add code to a chat buffer",
-					mode = { "v" },
+				diff = {
+					provider = "mini_diff",
 				},
 			},
-			init = function()
-				vim.cmd([[cab cc CodeCompanion]])
-			end,
+			opts = {
+				log_level = "DEBUG",
+			},
 		},
 	},
 }

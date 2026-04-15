@@ -11,7 +11,7 @@ vim.opt.relativenumber = false
 vim.opt.showcmd = true
 vim.opt.cmdheight = 2
 vim.opt.laststatus = 3
-vim.opt.showtabline = 2
+vim.opt.showtabline = 1
 
 vim.opt.textwidth = 80
 vim.opt.scrolloff = 5
@@ -37,7 +37,18 @@ vim.opt.shortmess:append("cFWaIT")
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.fillchars = { eob = " " }
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.completeopt = { "menu", "menuone", "noselect", "popup" }
+
+-- Nvim 0.12: unified float borders + native popup menu styling
+vim.opt.winborder = "rounded"
+vim.opt.pumborder = "rounded"
+vim.opt.pummaxwidth = 80
+
+-- Word-level inline diff highlights (indent-heuristic + inline:char are now default)
+vim.opt.diffopt:append("inline:word")
+
+-- Show LSP progress in cmdline message area
+vim.opt.messagesopt = "hit-enter,history:500,progress:c"
 vim.opt.conceallevel = 0
 vim.opt.foldenable = false
 vim.opt.undofile = true
