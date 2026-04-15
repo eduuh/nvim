@@ -6,6 +6,9 @@ vim.api.nvim_create_autocmd("PackChanged", {
     if kind ~= "install" and kind ~= "update" then return end
     if name == "LuaSnip" then
       vim.system({ "make", "install_jsregexp" }, { cwd = ev.data.path }):wait()
+    elseif name == "nvim-treesitter" then
+      if not ev.data.active then vim.cmd.packadd("nvim-treesitter") end
+      vim.cmd("TSUpdate")
     end
   end,
 })
@@ -22,6 +25,11 @@ vim.pack.add({
   -- Completion stack: LuaSnip before blink.cmp (blink uses the luasnip preset).
   { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("v2") },
   "https://github.com/saghen/blink.cmp",
+
+  -- Treesitter: pinned to master (the new `main` branch is a breaking rewrite
+  -- without the .configs module our setup uses).
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "master" },
 
   -- Core tooling & UI (always-needed; no lazy-loading value).
   "https://github.com/williamboman/mason.nvim",
@@ -75,6 +83,51 @@ require("blink.cmp").setup({
   signature = { enabled = false },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
+  },
+})
+
+require("nvim-treesitter.configs").setup({
+  ensure_installed = {
+    "c",
+    "lua",
+    "vim",
+    "vimdoc",
+    "query",
+    "markdown",
+    "markdown_inline",
+    "javascript",
+    "typescript",
+    "rust",
+  },
+  highlight = { enable = true },
+  indent = { enable = true },
+  textobjects = {
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        ["]f"] = "@function.outer",
+        ["]c"] = "@class.outer",
+        ["]a"] = "@parameter.inner",
+      },
+      goto_previous_start = {
+        ["[f"] = "@function.outer",
+        ["[c"] = "@class.outer",
+        ["[a"] = "@parameter.inner",
+      },
+    },
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
+      },
+    },
   },
 })
 
