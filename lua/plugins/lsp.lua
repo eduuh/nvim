@@ -31,25 +31,27 @@ return {
 					if client and client:supports_method("textDocument/codeLens") then
 						vim.lsp.codelens.enable(true, { bufnr = args.buf })
 					end
-					local map = vim.keymap.set
+
 					local fzf = require("fzf-lua")
-					local buf = { buffer = args.buf }
+					local function map(lhs, rhs, desc, mode)
+						vim.keymap.set(mode or "n", lhs, rhs, { buffer = args.buf, desc = desc })
+					end
 
-					map("n", "<leader>lr", "<cmd>LspRestart<CR>", vim.tbl_extend("force", buf, { desc = "Restart LSP" }))
-					map("n", "<leader>gW", vim.lsp.buf.workspace_diagnostics, vim.tbl_extend("force", buf, { desc = "Workspace pull diagnostics" }))
+					map("<leader>lr", "<cmd>LspRestart<CR>", "LSP: restart")
+					map("<leader>gW", vim.lsp.buf.workspace_diagnostics, "LSP: workspace pull diagnostics")
 
-					map("n", "gr", fzf.lsp_references, vim.tbl_extend("force", buf, { desc = "LSP References" }))
-					map("n", "gd", fzf.lsp_definitions, vim.tbl_extend("force", buf, { desc = "LSP Definitions" }))
-					map("n", "gD", fzf.lsp_declarations, vim.tbl_extend("force", buf, { desc = "LSP Declarations" }))
-					map("n", "gt", fzf.lsp_typedefs, vim.tbl_extend("force", buf, { desc = "LSP Type Definitions" }))
-					map("n", "gi", fzf.lsp_implementations, vim.tbl_extend("force", buf, { desc = "LSP Implementations" }))
-					map("n", "gS", fzf.lsp_document_symbols, vim.tbl_extend("force", buf, { desc = "Document Symbols" }))
-					map("n", "<leader>ws", fzf.lsp_workspace_symbols, vim.tbl_extend("force", buf, { desc = "Workspace Symbols" }))
+					map("gr", fzf.lsp_references, "LSP: references")
+					map("gd", fzf.lsp_definitions, "LSP: definitions")
+					map("gD", fzf.lsp_declarations, "LSP: declarations")
+					map("gt", fzf.lsp_typedefs, "LSP: type definitions")
+					map("gi", fzf.lsp_implementations, "LSP: implementations")
+					map("gS", fzf.lsp_document_symbols, "LSP: document symbols")
+					map("<leader>ws", fzf.lsp_workspace_symbols, "LSP: workspace symbols")
 
-					map("n", "ge", fzf.lsp_workspace_diagnostics, vim.tbl_extend("force", buf, { desc = "Workspace Diagnostics" }))
-					map("n", "gE", fzf.lsp_document_diagnostics, vim.tbl_extend("force", buf, { desc = "Document Diagnostics" }))
-					map("n", "<leader>gd", fzf.lsp_document_diagnostics, vim.tbl_extend("force", buf, { desc = "Document Diagnostics" }))
-					map("n", "<leader>gw", fzf.lsp_workspace_diagnostics, vim.tbl_extend("force", buf, { desc = "Workspace Diagnostics" }))
+					map("ge", fzf.lsp_workspace_diagnostics, "LSP: workspace diagnostics")
+					map("gE", fzf.lsp_document_diagnostics, "LSP: document diagnostics")
+					map("<leader>gd", fzf.lsp_document_diagnostics, "LSP: document diagnostics")
+					map("<leader>gw", fzf.lsp_workspace_diagnostics, "LSP: workspace diagnostics")
 				end,
 			})
 		end,
