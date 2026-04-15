@@ -167,31 +167,36 @@ require("mason-tool-installer").setup({
   },
 })
 
-require("fzf-lua").setup({
-  keymap = {
-    fzf = {
-      ["ctrl-q"] = "select-all+accept",
-    },
-  },
-  actions = {
-    files = {
-      ["enter"] = require("fzf-lua").actions.file_edit_or_qf,
-      ["ctrl-s"] = require("fzf-lua").actions.file_split,
-      ["ctrl-v"] = require("fzf-lua").actions.file_vsplit,
-      ["ctrl-h"] = require("fzf-lua").actions.toggle_hidden,
-    },
-  },
-})
 do
-  local map = vim.keymap.set
-  map("n", "<leader>wd", "<cmd>lua require'fzf-lua'.diagnostics_workspace()<CR>")
-  map("n", "<C-p>", "<cmd>lua require'fzf-lua'.files()<CR>")
-  map("n", "<leader>ff", "<cmd>lua require'fzf-lua'.files()<CR>")
-  map("n", "<leader>fw", "<cmd>lua require'fzf-lua'.live_grep()<CR>")
-  map("n", "<leader>fo", "<cmd>lua require'fzf-lua'.oldfiles()<CR>")
-  map("n", "<leader>fr", "<cmd>lua require'fzf-lua'.registers()<CR>")
-  map("n", "<leader>ql", "<cmd>lua require'fzf-lua'.quickfix()<CR>")
-  map("n", "<leader>qs", "<cmd>lua require'fzf-lua'.quickfix_stack()<CR>")
+  local fzf = require("fzf-lua")
+  local actions = fzf.actions
+  fzf.setup({
+    keymap = {
+      fzf = {
+        ["ctrl-q"] = "select-all+accept",
+      },
+    },
+    actions = {
+      files = {
+        ["enter"] = actions.file_edit_or_qf,
+        ["ctrl-s"] = actions.file_split,
+        ["ctrl-v"] = actions.file_vsplit,
+        ["ctrl-h"] = actions.toggle_hidden,
+      },
+    },
+  })
+
+  local function map(lhs, rhs, desc)
+    vim.keymap.set("n", lhs, rhs, { desc = desc })
+  end
+  map("<C-p>", fzf.files, "Files")
+  map("<leader>ff", fzf.files, "Files")
+  map("<leader>fw", fzf.live_grep, "Live grep")
+  map("<leader>fo", fzf.oldfiles, "Recent files")
+  map("<leader>fr", fzf.registers, "Registers")
+  map("<leader>wd", fzf.diagnostics_workspace, "Workspace diagnostics")
+  map("<leader>ql", fzf.quickfix, "Quickfix list")
+  map("<leader>qs", fzf.quickfix_stack, "Quickfix stack")
 end
 
 require("lualine").setup({

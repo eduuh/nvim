@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 vim.g.mapleader = " "
 
 vim.scriptencoding = "utf-8"
@@ -34,11 +33,11 @@ vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.shortmess:append("cFWaIT")
 vim.opt.swapfile = false
 vim.opt.fillchars = {
-  eob = " ",
-  fold = " ",
-  foldopen = "▾",
-  foldclose = "▸",
-  foldsep = " ",
+	eob = " ",
+	fold = " ",
+	foldopen = "▾",
+	foldclose = "▸",
+	foldsep = " ",
 }
 vim.opt.completeopt = { "menu", "menuone", "noselect", "popup" }
 vim.opt.confirm = true
@@ -78,22 +77,22 @@ vim.opt.breakindentopt = "shift:2"
 -- Diagnostics: virtual lines on the current diagnostic's row is a big
 -- readability win over default virtual_text. Toggle with <leader>ud.
 vim.diagnostic.config({
-  virtual_lines = { current_line = true },
-  virtual_text = false,
-  severity_sort = true,
-  update_in_insert = false,
-  float = { border = "rounded", source = true },
+	virtual_lines = { current_line = true },
+	virtual_text = false,
+	severity_sort = true,
+	update_in_insert = false,
+	float = { border = "rounded", source = true },
 })
 
 -- Per-filetype textwidth instead of forcing 80 cols on every buffer.
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "gitcommit", "text" },
-  callback = function()
-    vim.opt_local.textwidth = 80
-  end,
+	pattern = { "markdown", "gitcommit", "text" },
+	callback = function()
+		vim.opt_local.textwidth = 80
+	end,
 })
 
 vim.api.nvim_create_autocmd("VimResized", {
-  pattern = "*",
-  command = "wincmd =",
+	pattern = "*",
+	command = "wincmd =",
 })
