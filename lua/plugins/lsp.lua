@@ -2,7 +2,7 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "saghen/blink.cmp" },
+		dependencies = { "saghen/blink.cmp", "williamboman/mason.nvim" },
 		config = function()
 			-- Nvim 0.12 native LSP wiring: nvim-lspconfig ships per-server configs
 			-- as lsp/*.lua runtime files, which vim.lsp.config() auto-discovers.
@@ -30,11 +30,7 @@ return {
 					vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
 					if client and client:supports_method("textDocument/codeLens") then
-						vim.lsp.codelens.refresh({ bufnr = args.buf })
-						vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
-							buffer = args.buf,
-							callback = function() vim.lsp.codelens.refresh({ bufnr = args.buf }) end,
-						})
+						vim.lsp.codelens.enable(true, { bufnr = args.buf })
 					end
 					local map = vim.keymap.set
 					local fzf = require("fzf-lua")
