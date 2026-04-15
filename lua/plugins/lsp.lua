@@ -2,7 +2,6 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "saghen/blink.cmp" },
 		config = function()
 			-- Nvim 0.12 native LSP wiring: nvim-lspconfig ships per-server configs
 			-- as lsp/*.lua runtime files, which vim.lsp.config() auto-discovers.
