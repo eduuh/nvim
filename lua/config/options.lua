@@ -86,16 +86,3 @@ vim.diagnostic.config({
 	update_in_insert = false,
 	float = { border = "rounded", source = true },
 })
-
--- Per-filetype textwidth instead of forcing 80 cols on every buffer.
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "gitcommit", "text" },
-	callback = function()
-		vim.opt_local.textwidth = 80
-	end,
-})
-
-vim.api.nvim_create_autocmd("VimResized", {
-	pattern = "*",
-	command = "wincmd =",
-})
