@@ -3,44 +3,42 @@ return {
 		"kdheepak/lazygit.nvim",
 		cmd = "LazyGit",
 		keys = {
-			{
-				";c",
-				":LazyGit<Return>",
-				silent = true,
-				noremap = true,
-			},
+			{ ";c", function() vim.cmd.LazyGit() end, desc = "LazyGit" },
 		},
 	},
 	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			require("gitsigns").setup({
-				signs = {
-					add = { text = "+" },
-					delete = { text = "-" },
-					change = { text = "+" },
-					topdelete = { text = "‾" },
-					changedelete = { text = "~" },
-					untracked = { text = "┆" },
-				},
-				on_attach = function(bufnr)
-					local map = vim.keymap.set
-					local buf = { buffer = bufnr }
-					map("n", "<leader>gc", "<cmd>lua require'fzf-lua'.git_commits()<CR>", buf)
-					map("n", "<leader>gb", "<cmd>lua require'fzf-lua'.git_branches()<CR>", buf)
-					map("n", "<leader>gs", "<cmd>lua require'fzf-lua'.git_stash()<CR>", buf)
-					map("n", "gb", "<cmd>Gitsigns blame_line<cr>", buf)
-					map("n", "gB", "<cmd>Gitsigns blame<cr>", buf)
-					map("n", "gn", "<cmd>Gitsigns next_hunk<cr>", buf)
-					map("n", "gp", "<cmd>Gitsigns prev_hunk<cr>", buf)
-					map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", buf)
-					map("n", "gs", "<cmd>Gitsigns stage_hunk<cr>", buf)
-					map("n", "gu", "<cmd>Gitsigns undo_stage_hunk<cr>", buf)
-					map("n", "gx", "<cmd>Gitsigns toggle_deleted<cr>", buf)
-					map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", buf)
-				end,
-			})
-		end,
+		opts = {
+			signs = {
+				add = { text = "+" },
+				delete = { text = "-" },
+				change = { text = "+" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~" },
+				untracked = { text = "┆" },
+			},
+			on_attach = function(bufnr)
+				local gs = require("gitsigns")
+				local fzf = require("fzf-lua")
+				local function map(lhs, rhs, desc)
+					vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
+				end
+
+				map("<leader>gc", fzf.git_commits, "Git: commits")
+				map("<leader>gb", fzf.git_branches, "Git: branches")
+				map("<leader>gs", fzf.git_stash, "Git: stash")
+
+				map("gb", gs.blame_line, "Gitsigns: blame line")
+				map("gB", gs.blame, "Gitsigns: blame")
+				map("gn", gs.next_hunk, "Gitsigns: next hunk")
+				map("gp", gs.prev_hunk, "Gitsigns: prev hunk")
+				map("<leader>gp", gs.preview_hunk, "Gitsigns: preview hunk")
+				map("gs", gs.stage_hunk, "Gitsigns: stage hunk")
+				map("gu", gs.undo_stage_hunk, "Gitsigns: undo stage hunk")
+				map("gx", gs.toggle_deleted, "Gitsigns: toggle deleted")
+				map("<leader>gr", gs.reset_hunk, "Gitsigns: reset hunk")
+			end,
+		},
 	},
 }
