@@ -32,7 +32,7 @@ require("lazy").setup({
     },
     reset_packpath = false,
     rtp = {
-      reset = true,
+      reset = false,
       disabled_plugins = {
         "gzip",
         "matchit",

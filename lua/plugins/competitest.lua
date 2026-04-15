@@ -1,7 +1,6 @@
 return {
 	"xeluxee/competitest.nvim",
 	ft = { "cpp", "c", "cs", "typescript", "javascript", "rs", "rust", "js" },
-	dependencies = "MunifTanjim/nui.nvim",
 	config = function()
 		require("competitest").setup({
 			testcases_use_single_file = true,

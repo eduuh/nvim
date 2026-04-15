@@ -181,7 +181,7 @@ return {
 	{
 		"Civitasv/cmake-tools.nvim",
 		event = "VeryLazy",
-		dependencies = { "nvim-lua/plenary.nvim", "stevearc/overseer.nvim", "akinsho/toggleterm.nvim" },
+		dependencies = { "stevearc/overseer.nvim", "akinsho/toggleterm.nvim" },
 		config = function()
 			M.cmake_tools_setup()
 		end,
