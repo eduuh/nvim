@@ -2,7 +2,28 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = { "saghen/blink.cmp" },
 		config = function()
+			-- Nvim 0.12 native LSP wiring: nvim-lspconfig ships per-server configs
+			-- as lsp/*.lua runtime files, which vim.lsp.config() auto-discovers.
+			local has_blink, blink = pcall(require, "blink.cmp")
+			vim.lsp.config("*", {
+				capabilities = has_blink and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities(),
+			})
+
+			vim.lsp.config("lua_ls", {
+				settings = {
+					Lua = {
+						workspace = { checkThirdParty = false },
+						diagnostics = { globals = { "vim" } },
+					},
+				},
+			})
+
+			-- Servers managed natively (rust_analyzer handled by rustaceanvim,
+			-- ts_ls handled by typescript-tools.nvim)
+			vim.lsp.enable({ "lua_ls", "cssls", "bashls", "marksman" })
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 				callback = function(args)

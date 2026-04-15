@@ -1,42 +1,12 @@
 return {
 	{
-		"williamboman/mason-lspconfig.nvim",
-		event = "VeryLazy",
-		config = function()
-			local mason_lspconfig = require("mason-lspconfig")
-			mason_lspconfig.setup({
-				automatic_enable = {
-					exclude = {
-						"rust_analyzer",
-						"ts_ls",
-					},
-				},
-				ensure_installed = {
-					"cssls",
-					"lua_ls",
-					"rust_analyzer",
-					"ts_ls",
-					"bashls",
-					"marksman",
-				},
-				auto_update = false,
-				run_on_start = true,
-				start_delay = 0,
-				debounce_hours = 5,
-			})
-		end,
-	},
-	{
 		"williamboman/mason.nvim",
 		event = "VeryLazy",
 		dependencies = {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 		},
 		config = function()
-			local mason = require("mason")
-
-			local mason_tool_installer = require("mason-tool-installer")
-			mason.setup({
+			require("mason").setup({
 				ui = {
 					icons = {
 						package_installed = "✓",
@@ -45,13 +15,24 @@ return {
 					},
 				},
 			})
-			mason_tool_installer.setup({
+
+			-- Nvim 0.12: mason-lspconfig is gone. Install servers directly here;
+			-- vim.lsp.enable() in lsp.lua handles the start/stop wiring.
+			require("mason-tool-installer").setup({
 				ensure_installed = {
+					-- LSP servers (previously in mason-lspconfig.ensure_installed)
+					"lua-language-server",
+					"css-lsp",
+					"bash-language-server",
+					"marksman",
+					-- (rust-analyzer installed via rustaceanvim + mason-registry)
+					-- (typescript-language-server installed on demand by typescript-tools.nvim)
+
+					-- Formatters & linters
 					"prettier",
+					"prettierd",
 					"stylua",
 					"eslint_d",
-					"vim-language-server",
-					"prettierd",
 					"clang-format",
 				},
 			})
