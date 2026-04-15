@@ -24,7 +24,9 @@ vim.pack.add({
 
   -- Completion stack: LuaSnip before blink.cmp (blink uses the luasnip preset).
   { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("v2") },
-  "https://github.com/saghen/blink.cmp",
+  -- blink.cmp needs a tagged release so its prebuilt fuzzy-matching binary
+  -- gets downloaded; the default branch expects you to `cargo build` yourself.
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
 
   -- Treesitter: pinned to master (the new `main` branch is a breaking rewrite
   -- without the .configs module our setup uses).
