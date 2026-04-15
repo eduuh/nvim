@@ -8,12 +8,17 @@ local js_based_languages = {
 	"typescript",
 }
 
--- Find a plugin's install path by name, regardless of which manager owns it.
--- Handles vim.pack (site/pack/core/opt/<name>) and lazy.nvim (lazy/<name>).
+-- Find a plugin's install dir by name, regardless of which manager owns it.
+-- Checks the known install locations on disk instead of the runtimepath, so
+-- it works for lazy-loaded plugins that haven't been sourced yet.
 local function plugin_path(name)
-	for _, rt in ipairs(vim.api.nvim_get_runtime_file("", true)) do
-		if vim.fs.basename(rt) == name then
-			return rt
+	local data = vim.fn.stdpath("data")
+	for _, candidate in ipairs({
+		data .. "/lazy/" .. name,              -- lazy.nvim
+		data .. "/site/pack/core/opt/" .. name, -- vim.pack
+	}) do
+		if vim.uv.fs_stat(candidate) then
+			return candidate
 		end
 	end
 	return nil
