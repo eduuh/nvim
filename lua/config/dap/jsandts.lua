@@ -8,12 +8,26 @@ local js_based_languages = {
 	"typescript",
 }
 
+-- Find a plugin's install path by name, regardless of which manager owns it.
+-- Handles vim.pack (site/pack/core/opt/<name>) and lazy.nvim (lazy/<name>).
+local function plugin_path(name)
+	for _, rt in ipairs(vim.api.nvim_get_runtime_file("", true)) do
+		if vim.fs.basename(rt) == name then
+			return rt
+		end
+	end
+	return nil
+end
+
 M.register_jsandts_dap = function()
 	local dap = require("dap")
 
+	local debugger_path = plugin_path("vscode-js-debug")
+		or error("dap: vscode-js-debug is not installed; check the dap.lua plugin spec")
+
 	require("dap-vscode-js").setup({
 		node_path = "node",
-		debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+		debugger_path = debugger_path,
 		debugger_cmd = { "js-debug-adapter" },
 		adapters = {
 			"chrome",
