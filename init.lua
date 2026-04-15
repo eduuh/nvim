@@ -1,4 +1,5 @@
 require("config.options")
+require("config.pack")
 require("config.lazy")
 
 vim.keymap.set({ "i", "n" }, "<C-s>", "<Esc>:w<CR>")

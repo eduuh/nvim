@@ -16,23 +16,6 @@ return {
 		},
 	},
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1001,
-		opts = {
-			flavour = "mocha",
-			integrations = {
-				diffview = true,
-				indent_blankline = { enabled = true },
-				mason = true,
-				render_markdown = true,
-				treesitter = true,
-				treesitter_context = true,
-				which_key = true,
-			},
-		},
-	},
-	{
 		"lukas-reineke/indent-blankline.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		main = "ibl",
