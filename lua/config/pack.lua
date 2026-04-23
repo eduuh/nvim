@@ -19,19 +19,13 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end
     if name == "LuaSnip" then
       vim.system({ "make", "install_jsregexp" }, { cwd = ev.data.path }):wait()
-    elseif name == "nvim-treesitter" then
-      if not ev.data.active then
-        vim.cmd.packadd("nvim-treesitter")
-      end
-      vim.cmd("TSUpdate")
     end
   end,
 })
 
 -- ─── Specs ───────────────────────────────────────────────────────────────────
 -- Order matters: plugins that are required by later setups (luasnip before
--- blink, treesitter before textobjects, mason before mason-tool-installer)
--- must appear first in the list.
+-- blink, mason before mason-tool-installer) must appear first in the list.
 vim.pack.add({
   -- Colorscheme
   { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
@@ -49,12 +43,6 @@ vim.pack.add({
   { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("v2") },
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
 
-  -- Treesitter is pinned to master. The new `main` branch is a breaking
-  -- rewrite without the .configs module our setup uses. Upstream plans to
-  -- archive master, so a follow-up migration is on the horizon.
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "master" },
-
   -- Core tooling & UI (always-needed; no lazy-loading value).
   "https://github.com/williamboman/mason.nvim",
   "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -67,8 +55,6 @@ vim.pack.add({
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/overseer.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
-  "https://github.com/windwp/nvim-ts-autotag",
-  "https://github.com/folke/ts-comments.nvim",
 })
 
 -- ─── Icons (needed by fzf-lua, lualine, oil, etc.) ──────────────────────────
@@ -81,9 +67,6 @@ require("catppuccin").setup({
     diffview = true,
     indent_blankline = { enabled = true },
     mason = true,
-    render_markdown = true,
-    treesitter = true,
-    treesitter_context = true,
     which_key = true,
   },
 })
@@ -106,7 +89,6 @@ require("blink.cmp").setup({
           { "kind_icon", "kind", gap = 1 },
           { "label", "label_description", gap = 2 },
         },
-        treesitter = { "lsp" },
       },
     },
   },
@@ -119,52 +101,6 @@ require("blink.cmp").setup({
   signature = { enabled = false },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
-  },
-})
-
--- ─── Treesitter ──────────────────────────────────────────────────────────────
-require("nvim-treesitter.configs").setup({
-  ensure_installed = {
-    "c",
-    "lua",
-    "vim",
-    "vimdoc",
-    "query",
-    "markdown",
-    "markdown_inline",
-    "javascript",
-    "typescript",
-    "rust",
-  },
-  highlight = { enable = true },
-  indent = { enable = true },
-  textobjects = {
-    move = {
-      enable = true,
-      set_jumps = true,
-      goto_next_start = {
-        ["]f"] = "@function.outer",
-        ["]c"] = "@class.outer",
-        ["]a"] = "@parameter.inner",
-      },
-      goto_previous_start = {
-        ["[f"] = "@function.outer",
-        ["[c"] = "@class.outer",
-        ["[a"] = "@parameter.inner",
-      },
-    },
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-      },
-    },
   },
 })
 
@@ -277,7 +213,6 @@ require("conform").setup({
 require("mini.pairs").setup({
   modes = { insert = true, command = true, terminal = false },
   skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-  skip_ts = { "string" },
   skip_unbalanced = true,
   markdown = true,
 })
@@ -290,6 +225,3 @@ require("ibl").setup({
   scope = { enabled = false },
   indent = { char = "▏" },
 })
-
-require("nvim-ts-autotag").setup()
-require("ts-comments").setup()

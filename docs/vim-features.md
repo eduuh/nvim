@@ -46,10 +46,6 @@ cs"' → change quotes.
 
 ysiw] → wrap word in brackets.
 
-## Treesitter Text Objects
-
-Operate on functions, classes, blocks directly (af, if, etc.).
-
 ## Fuzzy Finding (plugins: Telescope/FZF)
 
 :Telescope find_files, :Telescope live_grep → jump anywhere instantly.

@@ -80,28 +80,6 @@ Shape: `<op>{i|a}<object>` where `i` = inner, `a` = outer (includes surround).
 | `<` `>` | angle brackets |
 | `t` | xml tag contents |
 
-### Treesitter-powered (this config)
-Works in any language treesitter supports:
-
-| Object | Target |
-|--------|--------|
-| `af` / `if` | Function outer / inner |
-| `ac` / `ic` | Class outer / inner |
-| `aa` / `ia` | Parameter outer / inner |
-
-### Treesitter node selection (Nvim 0.12 built-in)
-Expand the visual selection along the treesitter tree:
-
-| Key (visual/op) | Action |
-|------|--------|
-| `an` | Select outer node |
-| `in` | Select inner node |
-| `]n` | Jump to next node |
-| `[n` | Jump to prev node |
-
-**Practice drill**: `vaf` → select the whole function. `vif` → just the body.
-Grow selection with `an`, shrink with the reverse.
-
 ---
 
 ## 3. Editing (operators + intent)
@@ -173,9 +151,7 @@ Inside the fzf picker:
 | Key (n/x/o) | Action |
 |-------------|--------|
 | `s` | Flash jump anywhere on screen |
-| `S` | Flash treesitter node jump |
 | `r` (op-pending) | Remote flash (operate on distant text) |
-| `R` (x/o) | Treesitter search |
 | `<C-s>` (cmdline) | Toggle flash search |
 
 **Practice drill**: instead of hunting with `f{c};;;`, do `s{c}{c}` to jump
@@ -331,7 +307,7 @@ completion via blink.cmp (tab/enter) and AI through codecompanion chat.
 
 ---
 
-## 9. Folding (treesitter-based)
+## 9. Folding (indent-based)
 
 | Key | Action |
 |-----|--------|
@@ -342,8 +318,7 @@ completion via blink.cmp (tab/enter) and AI through codecompanion chat.
 | `zj` / `zk` | Next / prev fold |
 | `zm` / `zr` | One level more / less folded |
 
-Folds are computed by `vim.treesitter.foldexpr()`; everything starts open
-(`foldlevelstart=99`).
+Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
@@ -457,7 +432,6 @@ Worth knowing what you **lose** by using this config:
 | Default key | What it normally did | Now |
 |-------------|---------------------|-----|
 | `s` | Substitute char | Flash jump |
-| `S` | Substitute line | Flash treesitter jump |
 | `r` (op-pending) | Replace char in op | Flash remote (edge case) |
 | `gr` | Virtual replace | LSP references via fzf |
 | `gi` | Resume last insert | LSP implementations via fzf |

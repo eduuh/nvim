@@ -60,13 +60,7 @@ vim.opt.diffopt:append("inline:word")
 -- Show LSP progress in cmdline message area.
 vim.opt.messagesopt = "hit-enter,history:500,progress:c"
 
--- render-markdown.nvim needs concealment to actually hide raw syntax.
-vim.opt.conceallevel = 2
-vim.opt.concealcursor = "nc"
-
--- Treesitter-based folding (Nvim 0.11+ ships the foldexpr).
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 99
 
 vim.opt.undofile = true
