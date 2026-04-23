@@ -55,6 +55,9 @@ vim.pack.add({
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/overseer.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
+
+  -- Treesitter parser manager on top of Nvim 0.12's built-in vim.treesitter.
+  "https://github.com/romus204/tree-sitter-manager.nvim",
 })
 
 -- ─── Icons (needed by fzf-lua, lualine, oil, etc.) ──────────────────────────
@@ -225,3 +228,5 @@ require("ibl").setup({
   scope = { enabled = false },
   indent = { char = "▏" },
 })
+
+require("tree-sitter-manager").setup({})
