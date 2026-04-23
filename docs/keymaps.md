@@ -376,12 +376,6 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 |-----|--------|
 | `<C-n>` | Toggle floating terminal |
 
-### Competitive programming (competitest)
-| Key (c/cpp/cs/ts/js/rs) | Action |
-|-------------------------|--------|
-| `;r` | Run testcases |
-| `;a` | Add testcase |
-
 ### Diagnostics in cmdline
 - `:messages` — show message history
 - `:checkhealth` — run health checks (try `:checkhealth vim.lsp`)
