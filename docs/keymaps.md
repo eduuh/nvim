@@ -287,7 +287,7 @@ launch.json.
 
 ---
 
-## 8. AI (codecompanion + copilot)
+## 8. AI (codecompanion)
 
 | Key | Action |
 |-----|--------|
@@ -302,8 +302,9 @@ Inside the chat buffer (insert mode):
 - `<C-b>` — buffer slash command
 - `<C-f>` — fetch slash command
 
-`copilot.lua` inline suggestions are **disabled** in this config — you drive
-completion via blink.cmp (tab/enter) and AI through codecompanion chat.
+Completion is driven by blink.cmp (tab/enter); AI lives in codecompanion
+chat. Copilot is accessed via codecompanion's built-in adapter (auth token
+read from `~/.config/github-copilot/`).
 
 ---
 

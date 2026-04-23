@@ -1,48 +1,5 @@
 return {
 	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		opts = {
-			panel = {
-				enabled = true,
-				auto_refresh = false,
-				keymap = {
-					jump_prev = "[[",
-					jump_next = "]]",
-					accept = "<CR>",
-					refresh = "gr",
-					open = "<M-CR>",
-				},
-				layout = { position = "bottom", ratio = 0.4 },
-			},
-			suggestion = {
-				enabled = false,
-				auto_trigger = false,
-				debounce = 75,
-				keymap = {
-					accept = "<C-l>",
-					accept_word = false,
-					accept_line = false,
-					next = "<C-]>",
-					prev = "<C-[>",
-					dismiss = "<C-]>",
-				},
-			},
-			filetypes = {
-				yaml = true,
-				markdown = true,
-				help = false,
-				gitcommit = true,
-				gitrebase = false,
-				hgcommit = false,
-				svn = false,
-				cvs = false,
-				["."] = false,
-			},
-			server_opts_overrides = {},
-		},
-	},
-	{
 		"olimorris/codecompanion.nvim",
 		cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
 		dependencies = {
