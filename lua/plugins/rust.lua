@@ -7,8 +7,7 @@ return {
 			"mason-org/mason-registry",
 			{
 				"saecki/crates.nvim",
-				event = "VeryLazy",
-				ft = { "toml" },
+				ft = "toml",
 				config = function()
 					require("crates").setup()
 				end,

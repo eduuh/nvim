@@ -200,7 +200,6 @@ All LSP keymaps are buffer-local (only active when a server is attached).
 | Key | Action |
 |-----|--------|
 | `K` | Hover docs |
-| `<C-s>` (insert) | Signature help (0.11 built-in) |
 | `grn` | Rename (0.11 built-in default) |
 | `gra` | Code action (0.11 built-in default) |
 | `grx` | Run code lens (0.12 built-in default) |

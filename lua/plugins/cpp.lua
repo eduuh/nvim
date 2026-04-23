@@ -5,7 +5,7 @@ return {
 		dependencies = "neovim/nvim-lspconfig",
 		opts = {
 			inlay_hints = {
-				inline = vim.fn.has("nvim-0.10") == 1,
+				inline = true,
 				only_current_line = false,
 				only_current_line_autocmd = { "CursorHold" },
 				show_parameter_hints = true,
