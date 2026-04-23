@@ -376,16 +376,6 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 |-----|--------|
 | `<C-n>` | Toggle floating terminal |
 
-### REST client (kulala)
-| Key | Action |
-|-----|--------|
-| `<leader>rr` | Run request |
-| `<leader>rn` / `<leader>rp` | Next / prev request |
-| `<leader>ri` | Inspect |
-| `<leader>rt` | Toggle view |
-| `<leader>rc` | Copy as curl |
-| `<leader>rI` | Import from curl |
-
 ### Competitive programming (competitest)
 | Key (c/cpp/cs/ts/js/rs) | Action |
 |-------------------------|--------|
