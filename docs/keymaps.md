@@ -287,28 +287,7 @@ launch.json.
 
 ---
 
-## 8. AI (codecompanion)
-
-| Key | Action |
-|-----|--------|
-| `<C-a>` (n/v) | CodeCompanion actions palette |
-| `<leader>a` (n/v) | Toggle chat buffer |
-| `<LocalLeader>a` (v) | Add selection to chat |
-| `:cc` | Cabbrev → `CodeCompanion` |
-
-Inside the chat buffer (insert mode):
-- `<C-CR>` / `<C-s>` — send
-- `<C-x>` — completion
-- `<C-b>` — buffer slash command
-- `<C-f>` — fetch slash command
-
-Completion is driven by blink.cmp (tab/enter); AI lives in codecompanion
-chat. Copilot is accessed via codecompanion's built-in adapter (auth token
-read from `~/.config/github-copilot/`).
-
----
-
-## 9. Folding (indent-based)
+## 8. Folding (indent-based)
 
 | Key | Action |
 |-----|--------|
@@ -323,7 +302,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
-## 10. Windows, buffers, tabs
+## 9. Windows, buffers, tabs
 
 ### Windows
 | Key | Action |
@@ -344,7 +323,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
-## 11. Completion (blink.cmp, inside the menu)
+## 10. Completion (blink.cmp, inside the menu)
 
 | Key | Action |
 |-----|--------|
@@ -358,7 +337,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
-## 12. Misc workflows
+## 11. Misc workflows
 
 ### Todo comments (TODO / FIX / …)
 | Key | Action |
@@ -383,7 +362,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
-## 13. Defaults that pay off if you remember them
+## 12. Defaults that pay off if you remember them
 
 Underused Vim defaults worth drilling:
 
@@ -410,7 +389,7 @@ Underused Vim defaults worth drilling:
 
 ---
 
-## 14. Conflicts with defaults this config opts into
+## 13. Conflicts with defaults this config opts into
 
 Worth knowing what you **lose** by using this config:
 
@@ -432,5 +411,5 @@ jump back to insert, `:browse start {url}` for URL open.
 1. **Week 1** — sections 1, 2, 3. Drill motions + text objects until operators feel natural.
 2. **Week 2** — section 4. Internalize flash (`s{char}{char}` for any jump). Stop using `/`.
 3. **Week 3** — section 5 (LSP). Rename (`grn`), code action (`gra`), references (`gr`), hover (`K`), hunk review (`gn`, `gp`, `gs`).
-4. **Week 4** — section 6 (git) + section 9 (folds). Stage hunks from nvim instead of terminal.
-5. **Ongoing** — section 7 when debugging, section 8 for AI, section 13 for the deep cuts.
+4. **Week 4** — section 6 (git) + section 8 (folds). Stage hunks from nvim instead of terminal.
+5. **Ongoing** — section 7 when debugging, section 12 for the deep cuts.
