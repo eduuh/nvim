@@ -229,4 +229,27 @@ require("ibl").setup({
   indent = { char = "▏" },
 })
 
-require("tree-sitter-manager").setup({})
+require("tree-sitter-manager").setup({
+  auto_install = true,
+  ensure_installed = {
+    "bash",
+    "c",
+    "cpp",
+    "css",
+    "html",
+    "javascript",
+    "json",
+    "lua",
+    "markdown",
+    "markdown_inline",
+    "python",
+    "query",
+    "rust",
+    "toml",
+    "tsx",
+    "typescript",
+    "vim",
+    "vimdoc",
+    "yaml",
+  },
+})
