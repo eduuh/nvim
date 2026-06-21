@@ -1,12 +1,5 @@
 return {
 	{
-		"kdheepak/lazygit.nvim",
-		cmd = "LazyGit",
-		keys = {
-			{ ";c", function() vim.cmd.LazyGit() end, desc = "LazyGit" },
-		},
-	},
-	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		opts = {
