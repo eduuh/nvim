@@ -122,6 +122,7 @@ return {
 	},
 	{
 		"mxsdev/nvim-dap-vscode-js",
+		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 		dependencies = {
 			"mfussenegger/nvim-dap",
 			"microsoft/vscode-js-debug",
