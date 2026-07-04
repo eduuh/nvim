@@ -24,11 +24,15 @@ return {
 
 				map("gb", gs.blame_line, "Gitsigns: blame line")
 				map("gB", gs.blame, "Gitsigns: blame")
-				map("gn", gs.next_hunk, "Gitsigns: next hunk")
-				map("gp", gs.prev_hunk, "Gitsigns: prev hunk")
+				map("gn", function()
+					gs.nav_hunk("next")
+				end, "Gitsigns: next hunk")
+				map("gp", function()
+					gs.nav_hunk("prev")
+				end, "Gitsigns: prev hunk")
 				map("<leader>gp", gs.preview_hunk, "Gitsigns: preview hunk")
 				map("gs", gs.stage_hunk, "Gitsigns: stage hunk")
-				map("gu", gs.undo_stage_hunk, "Gitsigns: undo stage hunk")
+				map("gu", gs.stage_hunk, "Gitsigns: unstage hunk (toggle)")
 				map("gx", gs.toggle_deleted, "Gitsigns: toggle deleted")
 				map("<leader>gr", gs.reset_hunk, "Gitsigns: reset hunk")
 			end,

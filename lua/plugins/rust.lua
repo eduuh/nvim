@@ -33,7 +33,8 @@ return {
 				},
 				server = {
 					["rust-analyzer"] = {
-						checkOnSave = {
+						checkOnSave = true,
+						check = {
 							command = "clippy",
 						},
 					},
