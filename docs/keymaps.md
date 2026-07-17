@@ -338,6 +338,23 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ## 11. Misc workflows
 
+### Agentic AI (Magenta)
+| Key | Action |
+|-----|--------|
+| `<leader>mt` | Toggle Magenta sidebar |
+| `<leader>mn` | Create a new thread |
+| `<leader>mw` | Create a worktree orchestrator thread |
+| `<leader>ma` | Abort the current operation |
+| `<leader>mc` | Clear Magenta state |
+| `<leader>mb` | Add current buffer to context |
+| `<leader>mf` | Pick files to add to context |
+| `<leader>mP` | Pick model profile |
+| `<leader>mp` | Paste clipboard into Magenta (normal) / paste selection (visual) |
+| `<leader>ms` | Toggle sandbox bypass for the current thread tree |
+
+Set `ANTHROPIC_API_KEY` before starting Neovim, or select the `claude-max`
+profile to authenticate with an Anthropic subscription.
+
 ### Todo comments (TODO / FIX / …)
 | Key | Action |
 |-----|--------|
