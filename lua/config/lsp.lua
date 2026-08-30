@@ -19,8 +19,14 @@ vim.lsp.config("lua_ls", {
   },
 })
 
+vim.lsp.config("eslint", {
+  settings = {
+    workingDirectory = { mode = "auto" },
+  },
+})
+
 -- Servers managed natively (rust_analyzer → rustaceanvim, ts_ls → typescript-tools).
-vim.lsp.enable({ "lua_ls", "cssls", "bashls", "marksman" })
+vim.lsp.enable({ "lua_ls", "cssls", "bashls", "marksman", "eslint" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),

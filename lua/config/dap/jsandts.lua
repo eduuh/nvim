@@ -8,124 +8,110 @@ local js_based_languages = {
 	"typescript",
 }
 
--- Find a plugin's install dir by name, regardless of which manager owns it.
--- Checks the known install locations on disk instead of the runtimepath, so
--- it works for lazy-loaded plugins that haven't been sourced yet.
-local function plugin_path(name)
-	local data = vim.fn.stdpath("data")
-	for _, candidate in ipairs({
-		data .. "/lazy/" .. name,              -- lazy.nvim
-		data .. "/site/pack/core/opt/" .. name, -- vim.pack
-	}) do
-		if vim.uv.fs_stat(candidate) then
-			return candidate
-		end
-	end
-	return nil
+local function adapter()
+	local script = vim.fs.joinpath(
+		vim.fn.stdpath("data"),
+		"mason",
+		"packages",
+		"js-debug-adapter",
+		"js-debug",
+		"src",
+		"dapDebugServer.js"
+	)
+
+	return {
+		type = "server",
+		host = "127.0.0.1",
+		port = "${port}",
+		executable = {
+			command = "node",
+			args = { script, "${port}" },
+		},
+	}
 end
 
 M.register_jsandts_dap = function()
 	local dap = require("dap")
 
-	local debugger_path = plugin_path("vscode-js-debug")
-		or error("dap: vscode-js-debug is not installed; check the dap.lua plugin spec")
-
-	require("dap-vscode-js").setup({
-		node_path = "node",
-		debugger_path = debugger_path,
-		debugger_cmd = { "js-debug-adapter" },
-		adapters = {
-			"chrome",
-			"pwa-node",
-			"pwa-chrome",
-			"node-terminal",
-			"pwa-extensionHost",
-		},
-	})
-
-	dap.adapters["pwa-node"] = {
-		type = "server",
-		host = "localhost",
-		port = "${port}",
-		executable = {
-			command = "node",
-			args = {
-				vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
-				"${port}",
-			},
-		},
-	}
-
-	dap.adapters["node"] = function(cb, config)
-		if config.type == "node" then
-			config.type = "pwa-node"
-		end
-		local nativeAdapter = dap.adapters["pwa-node"]
-		if type(nativeAdapter) == "function" then
-			nativeAdapter(cb, config)
-		else
-			cb(nativeAdapter)
-		end
+	for _, name in ipairs({ "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }) do
+		dap.adapters[name] = adapter()
 	end
 
+	local function alias(from, to)
+		dap.adapters[from] = function(cb, config)
+			config.type = to
+			cb(dap.adapters[to])
+		end
+	end
+	alias("node", "pwa-node")
+	alias("chrome", "pwa-chrome")
+	alias("msedge", "pwa-msedge")
+
 	local vscode = require("dap.ext.vscode")
-	vscode.type_to_filetypes["node"] = js_based_languages
-	vscode.type_to_filetypes["pwa-node"] = js_based_languages
+	for _, name in ipairs({
+		"node",
+		"pwa-node",
+		"chrome",
+		"pwa-chrome",
+		"msedge",
+		"pwa-msedge",
+		"node-terminal",
+		"pwa-extensionHost",
+	}) do
+		vscode.type_to_filetypes[name] = js_based_languages
+	end
 end
 
 M.setup_if_no_vscode_config = function()
 	for _, language in ipairs(js_based_languages) do
 		require("dap").configurations[language] = {
 			{
-				type = "pwa-node (lua config)",
+				type = "pwa-node",
 				request = "launch",
-				name = "launch typescript file",
-				cwd = vim.fn.getcwd(),
-				runtimeArgs = { "-r", "ts-node/register" },
-				runtimeExecutable = "node",
-				args = { "${relativeFile}" },
-				rootPath = "${workspaceFolder}",
-				console = "integratedTerminal",
-				skipFiles = { "<node_internals>/**", "node_modules/**" },
-			},
-			{
-				type = "pwa-node (lua config)",
-				request = "launch",
-				name = "Launch file",
+				name = "Launch current file",
 				program = "${file}",
 				cwd = "${workspaceFolder}",
+				sourceMaps = true,
+				skipFiles = { "<node_internals>/**", "${workspaceFolder}/node_modules/**" },
 			},
 			{
-				type = "pwa-node (lua config)",
+				type = "pwa-node",
 				request = "attach",
-				name = "Attach",
+				name = "Attach to Node process",
 				processId = require("dap.utils").pick_process,
 				cwd = "${workspaceFolder}",
+				skipFiles = { "<node_internals>/**", "${workspaceFolder}/node_modules/**" },
 			},
 			{
-				type = "pwa-chrome (lua config)",
+				type = "pwa-chrome",
 				request = "attach",
-				name = "Attach Program (pwa-chrome = { port: 9222 })",
-				program = "${file}",
-				cwd = vim.fn.getcwd(),
+				name = "Attach to Chrome on port 9222",
 				sourceMaps = true,
 				port = 9222,
 				webRoot = "${workspaceFolder}",
 			},
 			{
-				type = "pwa-node (lua config)",
+				type = "pwa-node",
 				request = "launch",
 				name = "Debug Jest Tests",
-				-- trace = true, -- include debugger info
 				runtimeExecutable = "node",
 				runtimeArgs = {
-					"./node_modules/jest/bin/jest.js",
+					"${workspaceFolder}/node_modules/jest/bin/jest.js",
 					"--runInBand",
 				},
-				rootPath = "${workspaceFolder}",
 				cwd = "${workspaceFolder}",
 				console = "integratedTerminal",
 				internalConsoleOptions = "neverOpen",
+			},
+			{
+				type = "pwa-node",
+				request = "launch",
+				name = "Debug current Vitest file",
+				program = "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+				args = { "run", "${file}", "--no-file-parallelism" },
+				cwd = "${workspaceFolder}",
+				console = "integratedTerminal",
+				smartStep = true,
 			},
 		}
 	end

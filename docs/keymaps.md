@@ -136,7 +136,7 @@ Examples: `ysiw"` quotes the word. `cs"'` changes double to single. `ds(` delete
 | `<C-p>` | Find files |
 | `<leader>ff` | Find files (alt) |
 | `<leader>fw` | Live grep across project |
-| `<leader>fo` | Recent files |
+| `<leader>rf` | Recent files |
 | `<leader>fr` | Registers |
 | `<leader>wd` | Workspace diagnostics |
 | `<leader>ql` | Quickfix list |
@@ -267,10 +267,16 @@ Use `grx` to run a codelens at the cursor.
 |-----|--------|
 | `;d` | Continue (start session) |
 | `;b` | Toggle breakpoint |
+| `;B` | Set a conditional breakpoint |
 | `;o` | Step over |
 | `;i` | Step into |
+| `;u` | Step out |
 | `;t` | Terminate session |
 | `<leader>d` | Dap commands picker (fzf) |
+
+Breakpoint signs use `●`, conditional breakpoints use `◆`, rejected
+breakpoints use `✘`, and the currently stopped line is marked with `▶` and a
+highlighted background.
 
 ### During an active session (dap-ui attached)
 | Key | Action |
@@ -281,8 +287,8 @@ Use `grx` to run a codelens at the cursor.
 | `<Up>` | Restart frame |
 
 Launch configs come from `.vscode/launch.json` automatically (Nvim 0.12
-handles JSONC). Falls back to hand-written JS/TS configs when there's no
-launch.json.
+handles JSONC). Without one, JS/TS gets launch, attach, Chrome, Jest, and
+Vitest configurations backed by Mason's `js-debug-adapter`.
 
 ---
 
@@ -333,6 +339,62 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 | `<C-k>` | Toggle signature help |
 | `<C-b>` / `<C-f>` | Scroll docs |
 | `<C-e>` | Hide menu |
+
+### Custom snippets
+
+Repository snippets live in `snippets/<filetype>.lua` and are loaded
+automatically by LuaSnip. `snippets/javascript.lua` is shared with
+JavaScript React, TypeScript, and TypeScript React buffers.
+
+| Key | Action |
+|-----|--------|
+| `<leader>se` | Open snippets for the current filetype |
+
+For fast object logging, type `.Log` after an identifier or property chain:
+
+```javascript
+response.data.Log
+```
+
+Accept the snippet to produce:
+
+```javascript
+console.log("Log", response.data);
+```
+
+Other fast workflow snippets:
+
+| Trigger | Result |
+|---------|--------|
+| `return expression;.LogR` | Extract, label with the function name, log, and return a temporary |
+| `value.Logs` | Pretty-print an object with `JSON.stringify` |
+| `rows.Table` | Display an array or object with `console.table` |
+| `value.Dir` | Deep-inspect an object with colors in Node.js |
+| `condition.Assert` | Assert an expression and select it for adding a comparison |
+| `request.Await` | Assign an awaited value to an editable variable |
+| `value.Return` | Convert the expression to `return value;` |
+| `request.Catch` | Add a promise catch that logs and rethrows the error |
+| `guard` | Insert an early-return guard clause |
+| `trya` | Insert an async-aware try/catch with visible error handling |
+| `fetchj` | Insert fetch, HTTP status checking, and JSON parsing |
+| `bench` | Measure and log the duration of a block |
+| `dbg` | Insert a `debugger;` breakpoint statement |
+| `trace` | Insert a labeled `console.trace` |
+| `timer` | Wrap a block with matching `console.time` calls |
+
+Add a snippet by returning another `s(...)` entry from the matching file:
+
+```lua
+s("trigger", {
+  t("text before "),
+  i(1, "editable placeholder"),
+  t(" text after"),
+})
+```
+
+Type `trigger`, select the snippet from completion, and use `<Tab>` /
+`<S-Tab>` to move through placeholders. Friendly Snippets is also loaded, so
+common community snippets remain available alongside repository snippets.
 
 ---
 
