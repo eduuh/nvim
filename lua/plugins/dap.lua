@@ -21,6 +21,58 @@ return {
 				desc = "Conditional breakpoint",
 			},
 			{
+				";L",
+				function()
+					require("dap").set_breakpoint(nil, nil, vim.fn.input("Log message: "))
+				end,
+				desc = "Logpoint",
+			},
+			{
+				";e",
+				function()
+					local dap = require("dap")
+					local session = dap.session()
+					local filters = session and session.capabilities and session.capabilities.exceptionBreakpointFilters
+					if not filters or vim.tbl_isempty(filters) then
+						vim.notify("Active debug adapter does not advertise exception breakpoint filters", vim.log.levels.INFO)
+						return
+					end
+
+					local choices = {}
+					local defaults = {}
+					for _, filter in ipairs(filters) do
+						if filter.default then
+							table.insert(defaults, filter.filter)
+						end
+						table.insert(choices, {
+							label = filter.label .. (filter.default and " (default)" or ""),
+							description = filter.description,
+							filters = { filter.filter },
+						})
+					end
+					if #defaults > 1 then
+						table.insert(choices, 1, {
+							label = "Adapter defaults",
+							description = "Enable all filters marked as default by the adapter",
+							filters = defaults,
+						})
+					end
+					table.insert(choices, { label = "Disable exception breaks", filters = {} })
+
+					vim.ui.select(choices, {
+						prompt = "Exception breakpoints",
+						format_item = function(item)
+							return item.description and (item.label .. " — " .. item.description) or item.label
+						end,
+					}, function(item)
+						if item then
+							dap.set_exception_breakpoints(item.filters)
+						end
+					end)
+				end,
+				desc = "Exception breakpoints",
+			},
+			{
 				";d",
 				function()
 					require("dap").continue()
@@ -54,6 +106,22 @@ return {
 					require("fzf-lua").dap_commands()
 				end,
 				desc = "dap commands",
+			},
+			{
+				"<leader>dw",
+				function()
+					require("dapui").elements.watches.add()
+				end,
+				mode = { "n", "v" },
+				desc = "Add DAP watch",
+			},
+			{
+				"<leader>de",
+				function()
+					require("dapui").eval()
+				end,
+				mode = { "n", "v" },
+				desc = "Evaluate expression",
 			},
 			{
 				";t",

@@ -22,9 +22,20 @@
  * ;;                Open Oil file browser
  * gn / gp           Next / previous Git hunk
  * <leader>gp        Preview Git hunk
- * ;b / ;B / ;d      Breakpoint / conditional breakpoint / continue
+ * ;b / ;B / ;L      Breakpoint / conditional breakpoint / logpoint
+ * ;e                Exception break behavior
+ * <leader>dw / de   Watch / evaluate an expression
  * ;o / ;i / ;u      Step over / into / out
  * ;t                Terminate debugger
+ * <leader>nn / nd   Run / debug the nearest Jest or Vitest test
+ * <leader>nf        Run the current test file
+ * <leader>nw / nW   Watch nearest test / current test file
+ * <leader>nr        Rerun failures in test watch mode
+ * <leader>rs        Pick and run a package.json script
+ * <leader>cl / ct   Load LCOV coverage / toggle gutter signs
+ * <leader>hr / hR   Run / replay a request in a .http file
+ * <leader>hi        Inspect a .http request
+ * <leader>db        Toggle the database UI (SQL completion uses Dadbod)
  * <leader>rr        Save and run this file with Node
  * <leader>se        Edit snippets
  *

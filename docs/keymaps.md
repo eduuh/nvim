@@ -268,11 +268,15 @@ Use `grx` to run a codelens at the cursor.
 | `;d` | Continue (start session) |
 | `;b` | Toggle breakpoint |
 | `;B` | Set a conditional breakpoint |
+| `;L` | Set a logpoint |
+| `;e` | Choose exception break behavior |
 | `;o` | Step over |
 | `;i` | Step into |
 | `;u` | Step out |
 | `;t` | Terminate session |
 | `<leader>d` | Dap commands picker (fzf) |
+| `<leader>dw` | Watch the word or selected expression |
+| `<leader>de` | Evaluate the word or selected expression |
 
 Breakpoint signs use `●`, conditional breakpoints use `◆`, rejected
 breakpoints use `✘`, and the currently stopped line is marked with `▶` and a
@@ -287,12 +291,72 @@ highlighted background.
 | `<Up>` | Restart frame |
 
 Launch configs come from `.vscode/launch.json` automatically (Nvim 0.12
-handles JSONC). Without one, JS/TS gets launch, attach, Chrome, Jest, and
-Vitest configurations backed by Mason's `js-debug-adapter`.
+handles JSONC). Without one, JS/TS gets Node launch/attach, direct
+Chrome/Chromium/Edge launch, Chrome attach, Jest, and Vitest configurations
+backed by Mason's `js-debug-adapter`. Browser discovery checks Linux commands,
+common WSL paths, with `CHROME_PATH`, `CHROMIUM_PATH`, or `EDGE_PATH`
+available as explicit overrides.
 
 ---
 
-## 8. Folding (indent-based)
+## 8. Testing (Jest and Vitest)
+
+| Key | Action |
+|-----|--------|
+| `<leader>nn` | Run the nearest test |
+| `<leader>nd` | Debug the nearest test |
+| `<leader>nf` | Run the current test file |
+| `<leader>na` | Run all project tests |
+| `<leader>nw` | Watch the nearest test |
+| `<leader>nW` | Watch the current test file |
+| `<leader>nr` | Rerun failures in the active watch session |
+
+Place the cursor inside an `it()` or `test()` block. Use `<leader>nn` for a
+normal run or `<leader>nd` to stop at breakpoints inside that test. The runner
+is selected from the nearest `package.json`: Vitest is preferred when both are
+installed.
+
+In Vitest or Jest watch mode, `<leader>nr` sends `f` to rerun failed tests.
+
+### Package scripts
+
+| Key | Action |
+|-----|--------|
+| `<leader>rs` | Pick and run a script from the nearest `package.json` |
+
+### Coverage reports
+
+Generate `coverage/lcov.info` with Jest or Vitest, then:
+
+| Key | Action |
+|-----|--------|
+| `<leader>cl` | Load LCOV and show coverage gutters |
+| `<leader>ct` | Toggle coverage signs |
+| `<leader>cs` | Open coverage summary |
+
+### HTTP requests (`*.http`)
+
+| Key | Action |
+|-----|--------|
+| `<leader>hr` | Run request under cursor |
+| `<leader>hR` | Replay the last request |
+| `<leader>hi` | Inspect request without sending |
+
+### Databases
+
+| Key / command | Action |
+|---------------|--------|
+| `<leader>db` | Toggle Dadbod UI |
+| `:DBUIAddConnection` | Add a saved connection |
+| `:DB {url}` | Open a query using a database URL |
+
+SQL, MySQL, and PL/SQL buffers use Dadbod schema completion through blink.cmp.
+Prefer environment variables or Dadbod's saved connections; do not commit
+credentials.
+
+---
+
+## 9. Folding (indent-based)
 
 | Key | Action |
 |-----|--------|
@@ -307,7 +371,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
-## 9. Windows, buffers, tabs
+## 10. Windows, buffers, tabs
 
 ### Windows
 | Key | Action |
@@ -328,7 +392,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 
 ---
 
-## 10. Completion (blink.cmp, inside the menu)
+## 11. Completion (blink.cmp, inside the menu)
 
 | Key | Action |
 |-----|--------|
@@ -398,7 +462,7 @@ common community snippets remain available alongside repository snippets.
 
 ---
 
-## 11. Misc workflows
+## 12. Misc workflows
 
 ### Agentic AI (Magenta)
 | Key | Action |
@@ -440,7 +504,7 @@ profile to authenticate with an Anthropic subscription.
 
 ---
 
-## 12. Defaults that pay off if you remember them
+## 13. Defaults that pay off if you remember them
 
 Underused Vim defaults worth drilling:
 
@@ -467,7 +531,7 @@ Underused Vim defaults worth drilling:
 
 ---
 
-## 13. Conflicts with defaults this config opts into
+## 14. Conflicts with defaults this config opts into
 
 Worth knowing what you **lose** by using this config:
 
