@@ -14,6 +14,13 @@ return {
 				desc = "Toggle breakpoint",
 			},
 			{
+				";B",
+				function()
+					require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+				end,
+				desc = "Conditional breakpoint",
+			},
+			{
 				";d",
 				function()
 					require("dap").continue()
@@ -34,7 +41,13 @@ return {
 				end,
 				desc = "Step Into",
 			},
-
+			{
+				";u",
+				function()
+					require("dap").step_out()
+				end,
+				desc = "Step Out",
+			},
 			{
 				"<leader>d",
 				function()
@@ -51,6 +64,21 @@ return {
 			},
 		},
 		config = function()
+			vim.api.nvim_set_hl(0, "DapBreakpoint", { link = "DiagnosticError", default = true })
+			vim.api.nvim_set_hl(0, "DapLogPoint", { link = "DiagnosticInfo", default = true })
+			vim.api.nvim_set_hl(0, "DapStopped", { link = "DiagnosticOk", default = true })
+			vim.api.nvim_set_hl(0, "DapStoppedLine", { link = "Visual", default = true })
+
+			vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })
+			vim.fn.sign_define("DapBreakpointCondition", { text = "◆", texthl = "DapBreakpoint" })
+			vim.fn.sign_define("DapBreakpointRejected", { text = "✘", texthl = "DapBreakpoint" })
+			vim.fn.sign_define("DapLogPoint", { text = "◆", texthl = "DapLogPoint" })
+			vim.fn.sign_define("DapStopped", {
+				text = "▶",
+				texthl = "DapStopped",
+				linehl = "DapStoppedLine",
+			})
+
 			require("overseer").enable_dap()
 			require("config.dap.codelldb").register_codelldb_dap()
 			require("config.dap.jsandts").register_jsandts_dap()
@@ -71,9 +99,12 @@ return {
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "nvim-neotest/nvim-nio" },
 		config = function(_, _)
+			local dap_keymap_bufnr
+
 			local function set_dap_keymaps()
 				local dap = require("dap")
-				local opts = { buffer = true }
+				dap_keymap_bufnr = vim.api.nvim_get_current_buf()
+				local opts = { buffer = dap_keymap_bufnr }
 				vim.keymap.set("n", "<Down>", dap.step_over, vim.tbl_extend("force", opts, { desc = "DAP: Step Over" }))
 				vim.keymap.set(
 					"n",
@@ -92,10 +123,13 @@ return {
 
 			-- remove mappings when DAP session ends
 			local function unset_dap_keymaps()
-				vim.keymap.del("n", "<Down>")
-				vim.keymap.del("n", "<Right>")
-				vim.keymap.del("n", "<Left>")
-				vim.keymap.del("n", "<Up>")
+				if not dap_keymap_bufnr or not vim.api.nvim_buf_is_valid(dap_keymap_bufnr) then
+					return
+				end
+				for _, key in ipairs({ "<Down>", "<Right>", "<Left>", "<Up>" }) do
+					vim.keymap.del("n", key, { buffer = dap_keymap_bufnr })
+				end
+				dap_keymap_bufnr = nil
 			end
 
 			local dap = require("dap")
@@ -119,13 +153,5 @@ return {
 				dapui.close({})
 			end
 		end,
-	},
-	{
-		"mxsdev/nvim-dap-vscode-js",
-		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"microsoft/vscode-js-debug",
-		},
 	},
 }

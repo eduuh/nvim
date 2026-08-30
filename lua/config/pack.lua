@@ -77,7 +77,17 @@ vim.cmd.colorscheme("catppuccin")
 
 -- ─── Completion stack ────────────────────────────────────────────────────────
 require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
+require("luasnip.loaders.from_lua").lazy_load({
+  paths = vim.fs.joinpath(vim.fn.stdpath("config"), "snippets"),
+})
+
+local luasnip = require("luasnip")
+for _, filetype in ipairs({ "javascriptreact", "typescript", "typescriptreact" }) do
+  luasnip.filetype_extend(filetype, { "javascript" })
+end
+vim.keymap.set("n", "<leader>se", function()
+  require("luasnip.loaders").edit_snippet_files()
+end, { desc = "Edit snippets" })
 
 require("blink.cmp").setup({
   completion = {
@@ -125,12 +135,16 @@ require("mason-tool-installer").setup({
     "css-lsp",
     "bash-language-server",
     "marksman",
+    "typescript-language-server",
+    "eslint-lsp",
     -- Formatters & linters
     "prettier",
     "prettierd",
     "stylua",
     "eslint_d",
     "clang-format",
+    -- Debug adapters
+    "js-debug-adapter",
   },
 })
 
@@ -160,7 +174,7 @@ do
   map("<C-p>", fzf.files, "Files")
   map("<leader>ff", fzf.files, "Files")
   map("<leader>fw", fzf.live_grep, "Live grep")
-  map("<leader>fo", fzf.oldfiles, "Recent files")
+  map("<leader>rf", fzf.oldfiles, "Recent files")
   map("<leader>fr", fzf.registers, "Registers")
   map("<leader>wd", fzf.diagnostics_workspace, "Workspace diagnostics")
   map("<leader>ql", fzf.quickfix, "Quickfix list")
@@ -197,6 +211,11 @@ require("conform").setup({
     lua = { "stylua" },
     python = { "isort", "black" },
     javascript = { "prettierd", "prettier", stop_after_first = true },
+    javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+    typescript = { "prettierd", "prettier", stop_after_first = true },
+    typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+    json = { "prettierd", "prettier", stop_after_first = true },
+    jsonc = { "prettierd", "prettier", stop_after_first = true },
     c = { "clang-format" },
     cpp = { "clang-format" },
     cmake = { "cmake-format" },
@@ -207,7 +226,7 @@ require("conform").setup({
     sh = { "shfmt" },
   },
   format_on_save = {
-    timeout_ms = 500,
+    timeout_ms = 2000,
     lsp_fallback = true,
   },
 })

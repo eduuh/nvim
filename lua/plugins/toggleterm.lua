@@ -6,6 +6,7 @@ return {
 			{ [[<C-t>]], mode = { "n", "i" } },
 			{ ";c", mode = "n" },
 			{ "<leader>ts", mode = { "n", "v" } },
+			{ "<leader>rr", mode = "n" },
 		},
 		cmd = { "ToggleTerm", "TermExec" },
 		version = "*",
@@ -91,6 +92,20 @@ return {
 			vim.keymap.set("v", "<leader>ts", function()
 				require("toggleterm").send_lines_to_terminal("visual_lines", false, { args = vim.v.count })
 			end, { noremap = true, silent = true, desc = "Send selection to terminal" })
+
+			vim.keymap.set("n", "<leader>rr", function()
+				if vim.bo.filetype ~= "javascript" then
+					vim.notify("Run current file supports JavaScript buffers", vim.log.levels.WARN)
+					return
+				end
+
+				vim.cmd.write()
+				Terminal:new({
+					cmd = ("node %s"):format(vim.fn.shellescape(vim.api.nvim_buf_get_name(0))),
+					direction = "horizontal",
+					close_on_exit = false,
+				}):toggle()
+			end, { noremap = true, silent = true, desc = "Run current JavaScript file" })
 
 			-- Terminal autocmds
 			vim.api.nvim_create_autocmd("TermOpen", {
