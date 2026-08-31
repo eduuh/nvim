@@ -277,6 +277,9 @@ Use `grx` to run a codelens at the cursor.
 | `<leader>d` | Dap commands picker (fzf) |
 | `<leader>dw` | Watch the word or selected expression |
 | `<leader>de` | Evaluate the word or selected expression |
+| `<leader>rd` | Debug a Node-oriented current JS/TS/React file |
+| `<leader>rD` | Pick and debug a package script |
+| `<leader>rb` | Attach to a browser, prompting for its debugging port |
 
 Breakpoint signs use `●`, conditional breakpoints use `◆`, rejected
 breakpoints use `✘`, and the currently stopped line is marked with `▶` and a
@@ -296,6 +299,23 @@ Chrome/Chromium/Edge launch, Chrome attach, Jest, and Vitest configurations
 backed by Mason's `js-debug-adapter`. Browser discovery checks Linux commands,
 common WSL paths, with `CHROME_PATH`, `CHROMIUM_PATH`, or `EDGE_PATH`
 available as explicit overrides.
+
+`<leader>rd` runs plain `.js`, `.mjs`, and `.cjs` files with Node (or Yarn's
+project-aware Node runtime). Direct `.ts`, `.tsx`, and `.jsx` debugging
+requires `tsx` to be installed in the project; npm, pnpm, and Yarn PnP
+resolution are supported. A standalone plain JavaScript file falls back to
+Node and its own directory. Bun run and package-script workflows still work,
+but Bun debugging is intentionally blocked because js-debug cannot launch it
+reliably. `<leader>rb` defaults to port `9222`.
+
+For Rsbuild client applications, browser debugging is the primary workflow:
+start the dev server, use `;d` and choose **Launch browser for dev server**,
+then confirm or edit the URL (commonly `http://localhost:3000`). The launch
+uses the nearest package root as `webRoot` with source maps enabled, so a
+different Rsbuild port is supported without changing this config. Use
+`<leader>rb` instead when attaching to an already-running Chrome or Edge
+remote-debugging session; its port is the browser debugging port, not
+necessarily the Rsbuild dev-server port.
 
 ---
 
@@ -323,6 +343,7 @@ In Vitest or Jest watch mode, `<leader>nr` sends `f` to rerun failed tests.
 | Key | Action |
 |-----|--------|
 | `<leader>rs` | Pick and run a script from the nearest `package.json` |
+| `<leader>rD` | Pick and debug a script from the nearest `package.json` |
 
 ### Coverage reports
 
@@ -445,6 +466,18 @@ Other fast workflow snippets:
 | `dbg` | Insert a `debugger;` breakpoint statement |
 | `trace` | Insert a labeled `console.trace` |
 | `timer` | Wrap a block with matching `console.time` calls |
+| `promiseall` / `allsettled` | Await grouped promises with editable results |
+| `abortctl` | Create an `AbortController` and signal |
+| `resolves` / `rejects` | Add async Jest/Vitest expectations |
+| `wsclient` / `wswatch` | Inspect explicit client traffic and lifecycle |
+| `wssend` | Log and send an outbound client payload |
+| `wsserver` / `wsserversend` | Inspect an existing Node server/socket |
+
+WebSocket snippets are opt-in and add no dependency or global hook. Their logs
+include `[filename]` labels, ISO timestamps, ready state, direction, payload,
+errors, and close details. TypeScript/TSX also provides exact triggers
+`interface`, `type`, `enum`, `asconst`, `satisfies`, and `typeguard`; these do
+not load in plain JavaScript.
 
 Add a snippet by returning another `s(...)` entry from the matching file:
 
@@ -501,6 +534,8 @@ profile to authenticate with an Anthropic subscription.
 ### Diagnostics in cmdline
 - `:messages` — show message history
 - `:checkhealth` — run health checks (try `:checkhealth vim.lsp`)
+- `:StartupProfile` — profile a separate startup and open a report
+- `:StartupProfile!` — print a concise slow-entry summary (headless-friendly)
 
 ---
 

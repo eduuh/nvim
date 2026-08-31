@@ -230,13 +230,60 @@ const data = await response.json();
 		)
 	),
 	s(
-		"bench",
-		fmt([[const startedAt = performance.now();
-{}
-console.log({}, performance.now() - startedAt);]], {
+		"promiseall",
+		fmt("const [{}] = await Promise.all([{}]);\n{}", {
+			i(1, "first, second"),
+			i(2, "firstPromise, secondPromise"),
 			i(0),
-			label_node("Duration (ms)"),
 		})
+	),
+	s(
+		"allsettled",
+		fmt("const {} = await Promise.allSettled([{}]);\n{}", {
+			i(1, "results"),
+			i(2, "firstPromise, secondPromise"),
+			i(0),
+		})
+	),
+	s(
+		"abortctl",
+		fmt(
+			[[const {} = new AbortController();
+const {{ signal }} = {};
+
+{}]],
+			{
+				i(1, "controller"),
+				rep(1),
+				i(0),
+			}
+		)
+	),
+	s(
+		"resolves",
+		fmt("await expect({}).resolves.toEqual({});", {
+			i(1, "promise"),
+			i(0, "expected"),
+		})
+	),
+	s(
+		"rejects",
+		fmt("await expect({}).rejects.toThrow({});", {
+			i(1, "promise"),
+			i(0, "expectedError"),
+		})
+	),
+	s(
+		"bench",
+		fmt(
+			[[const startedAt = performance.now();
+{}
+console.log({}, performance.now() - startedAt);]],
+			{
+				i(0),
+				label_node("Duration (ms)"),
+			}
+		)
 	),
 	s("dbg", {
 		t("debugger;"),
@@ -262,90 +309,199 @@ console.log({}, performance.now() - startedAt);]], {
 	}),
 	s(
 		"wsclient",
-		fmt([[const {} = new WebSocket({});
+		fmt(
+			[[const {} = new WebSocket({});
 
-{}.addEventListener("open", () => console.log({}, {}.url));
-{}.addEventListener("message", (event) => console.log({}, event.data));
-{}.addEventListener("error", (error) => console.error({}, error));
+{}.addEventListener("open", () => console.log({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "connected",
+	payload: {}.url,
+}}));
+{}.addEventListener("message", (event) => console.log({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "inbound",
+	payload: event.data,
+}}));
+{}.addEventListener("error", (error) => console.error({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "error",
+	payload: error,
+}}));
 {}.addEventListener("close", (event) => {{
-	console.log({}, {{ code: event.code, reason: event.reason }});
+	console.log({}, {{
+		timestamp: new Date().toISOString(),
+		readyState: {}.readyState,
+		direction: "closed",
+		code: event.code,
+		reason: event.reason,
+	}});
 }});
 
-{}]], {
-			i(1, "socket"),
-			i(2, '"ws://localhost:8080"'),
-			rep(1),
-			label_node("WebSocket opened"),
-			rep(1),
-			rep(1),
-			label_node("WebSocket message received"),
-			rep(1),
-			label_node("WebSocket error"),
-			rep(1),
-			label_node("WebSocket closed"),
-			i(0),
-		})
+{}]],
+			{
+				i(1, "socket"),
+				i(2, '"ws://localhost:8080"'),
+				rep(1),
+				label_node("WebSocket client state"),
+				rep(1),
+				rep(1),
+				rep(1),
+				label_node("WebSocket client traffic"),
+				rep(1),
+				rep(1),
+				label_node("WebSocket client error"),
+				rep(1),
+				rep(1),
+				label_node("WebSocket client state"),
+				rep(1),
+				i(0),
+			}
+		)
 	),
 	s(
 		"wswatch",
-		fmt([[{}.addEventListener("open", () => console.log({}, {}.url));
-{}.addEventListener("message", (event) => console.log({}, event.data));
-{}.addEventListener("error", (error) => console.error({}, error));
+		fmt(
+			[[{}.addEventListener("open", () => console.log({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "connected",
+	payload: {}.url,
+}}));
+{}.addEventListener("message", (event) => console.log({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "inbound",
+	payload: event.data,
+}}));
+{}.addEventListener("error", (error) => console.error({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "error",
+	payload: error,
+}}));
 {}.addEventListener("close", (event) => {{
-	console.log({}, {{ code: event.code, reason: event.reason }});
-}});]], {
-			i(1, "socket"),
-			label_node("WebSocket opened"),
-			rep(1),
-			rep(1),
-			label_node("WebSocket message received"),
-			rep(1),
-			label_node("WebSocket error"),
-			rep(1),
-			label_node("WebSocket closed"),
-		})
+	console.log({}, {{
+		timestamp: new Date().toISOString(),
+		readyState: {}.readyState,
+		direction: "closed",
+		code: event.code,
+		reason: event.reason,
+	}});
+}});]],
+			{
+				i(1, "socket"),
+				label_node("WebSocket client state"),
+				rep(1),
+				rep(1),
+				rep(1),
+				label_node("WebSocket client traffic"),
+				rep(1),
+				rep(1),
+				label_node("WebSocket client error"),
+				rep(1),
+				rep(1),
+				label_node("WebSocket client state"),
+				rep(1),
+			}
+		)
 	),
 	s(
 		"wssend",
-		fmt([[{}.send(JSON.stringify({{
+		fmt(
+			[[const {} = {{
 	type: "{}",
 	payload: {},
-}}));]], {
-			i(1, "socket"),
-			i(2, "message"),
-			i(0, "{}"),
-		})
+}};
+console.log({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "outbound",
+	payload: {},
+}});
+{}.send(JSON.stringify({}));]],
+			{
+				i(1, "message"),
+				i(2, "message"),
+				i(3, "{}"),
+				label_node("WebSocket client traffic"),
+				i(4, "socket"),
+				rep(1),
+				rep(4),
+				rep(1),
+			}
+		)
 	),
 	s(
 		"wsserver",
-		fmt([[import {{ WebSocketServer }} from "ws";
-
-const {} = new WebSocketServer({{ port: {} }});
-
-{}.on("connection", (socket, request) => {{
-	console.log({}, request.socket.remoteAddress);
-	socket.on("message", (data, isBinary) => {{
-		console.log({}, {{ data: data.toString(), isBinary }});
+		fmt(
+			[[{}.on("connection", (socket, request) => {{
+	console.log({}, {{
+		timestamp: new Date().toISOString(),
+		readyState: socket.readyState,
+		direction: "connected",
+		payload: request.socket.remoteAddress,
 	}});
-	socket.on("error", (error) => console.error({}, error));
+	socket.on("message", (data, isBinary) => {{
+		console.log({}, {{
+			timestamp: new Date().toISOString(),
+			readyState: socket.readyState,
+			direction: "inbound",
+			payload: isBinary ? data : data.toString(),
+		}});
+	}});
+	socket.on("error", (error) => console.error({}, {{
+		timestamp: new Date().toISOString(),
+		readyState: socket.readyState,
+		direction: "error",
+		payload: error,
+	}}));
 	socket.on("close", (code, reason) => {{
-		console.log({}, {{ code, reason: reason.toString() }});
+		console.log({}, {{
+			timestamp: new Date().toISOString(),
+			readyState: socket.readyState,
+			direction: "closed",
+			code,
+			reason: reason.toString(),
+		}});
 	}});
 	{}
-}});]], {
-			i(1, "server"),
-			i(2, "8080"),
-			rep(1),
-			label_node("WebSocket client connected"),
-			label_node("WebSocket message received"),
-			label_node("WebSocket error"),
-			label_node("WebSocket closed"),
-			i(0),
-		})
+}});]],
+			{
+				i(1, "server"),
+				label_node("WebSocket server state"),
+				label_node("WebSocket server traffic"),
+				label_node("WebSocket server error"),
+				label_node("WebSocket server state"),
+				i(0),
+			}
+		)
+	),
+	s(
+		"wsserversend",
+		fmt(
+			[[console.log({}, {{
+	timestamp: new Date().toISOString(),
+	readyState: {}.readyState,
+	direction: "outbound",
+	payload: {},
+}});
+{}.send({});]],
+			{
+				label_node("WebSocket server traffic"),
+				i(1, "socket"),
+				i(2, "payload"),
+				rep(1),
+				rep(2),
+			}
+		)
 	),
 	s(
 		"eventlag",
-		fmt([[import {{ monitorEventLoopDelay }} from "node:perf_hooks";
+		fmt(
+			[[import {{ monitorEventLoopDelay }} from "node:perf_hooks";
 
 const eventLoopDelay = monitorEventLoopDelay({{ resolution: {} }});
 eventLoopDelay.enable();
@@ -357,15 +513,18 @@ setInterval(() => {{
 		p99: eventLoopDelay.percentile(99) / 1e6,
 	}});
 	eventLoopDelay.reset();
-}}, {});]], {
-			i(1, "20"),
-			label_node("Event loop delay (ms)"),
-			i(0, "1000"),
-		})
+}}, {});]],
+			{
+				i(1, "20"),
+				label_node("Event loop delay (ms)"),
+				i(0, "1000"),
+			}
+		)
 	),
 	s(
 		"asynctrace",
-		fmt([[import {{ createHook }} from "node:async_hooks";
+		fmt(
+			[[import {{ createHook }} from "node:async_hooks";
 import {{ writeSync }} from "node:fs";
 
 		const asyncTraceLabel = {};
@@ -379,10 +538,12 @@ import {{ writeSync }} from "node:fs";
 			}},
 		}}).enable();
 
-		{}]], {
-					label_node("Async resource"),
-					i(0),
-				})
+		{}]],
+			{
+				label_node("Async resource"),
+				i(0),
+			}
+		)
 	),
 	s("uxmark", {
 		t('data-debug="'),

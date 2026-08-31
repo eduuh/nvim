@@ -121,27 +121,115 @@ end
 
 M.find_browser = find_browser
 
+M.current_file_config = function(path)
+	local context = js_package.debug_context(path or vim.api.nvim_buf_get_name(0))
+	return {
+		type = "pwa-node",
+		request = "launch",
+		name = "Debug current file",
+		program = context.program,
+		args = context.args,
+		cwd = context.root,
+		runtimeExecutable = context.runtime,
+		runtimeArgs = context.runtime_args,
+		sourceMaps = true,
+		smartStep = true,
+		resolveSourceMapLocations = {
+			vim.fs.joinpath(context.root, "**"),
+			("!%s"):format(vim.fs.joinpath(context.root, "node_modules", "**")),
+		},
+		skipFiles = { "<node_internals>/**", "${workspaceFolder}/node_modules/**" },
+	}
+end
+
+M.current_file_config_entry = function()
+	return setmetatable({ name = "Debug current file" }, {
+		__call = function()
+			return M.current_file_config()
+		end,
+	})
+end
+
+M.debug_current_file = function()
+	local ok, config = pcall(M.current_file_config)
+	if not ok then
+		vim.notify(config, vim.log.levels.ERROR)
+		return
+	end
+	vim.cmd.write()
+	require("lazy").load({ plugins = { "nvim-dap" } })
+	require("dap").run(config)
+end
+
+M.package_script_config = function(root, script)
+	js_package.debug_runtime(root)
+	local command = js_package.script(root, script)
+	return {
+		type = "pwa-node",
+		request = "launch",
+		name = "Debug package script: " .. script,
+		runtimeExecutable = command[1],
+		runtimeArgs = vim.list_slice(command, 2),
+		cwd = root,
+		console = "integratedTerminal",
+		internalConsoleOptions = "neverOpen",
+		sourceMaps = true,
+		skipFiles = { "<node_internals>/**", vim.fs.joinpath(root, "node_modules", "**") },
+	}
+end
+
+local function browser_root()
+	local ok, root = pcall(js_package.root, vim.api.nvim_buf_get_name(0))
+	return ok and root or vim.fn.getcwd()
+end
+
+M.dev_server_url = function()
+	return vim.fn.input("Rsbuild dev server URL: ", "http://localhost:3000")
+end
+
+M.browser_launch_config = function(url)
+	return {
+		type = "pwa-chrome",
+		request = "launch",
+		name = "Launch browser for dev server",
+		runtimeExecutable = find_browser,
+		url = url or M.dev_server_url,
+		webRoot = browser_root,
+		sourceMaps = true,
+	}
+end
+
+M.browser_attach_config = function(port)
+	return {
+		type = "pwa-chrome",
+		request = "attach",
+		name = ("Attach to browser on port %d"):format(port),
+		sourceMaps = true,
+		port = port,
+		webRoot = browser_root(),
+	}
+end
+
+M.attach_browser = function()
+	vim.ui.input({ prompt = "Browser remote-debugging port: ", default = "9222" }, function(value)
+		if value == nil then
+			return
+		end
+		local port = tonumber(value)
+		if not port or port < 1 or port > 65535 or port % 1 ~= 0 then
+			vim.notify("Browser debugging port must be an integer from 1 to 65535", vim.log.levels.ERROR)
+			return
+		end
+		require("lazy").load({ plugins = { "nvim-dap" } })
+		require("dap").run(M.browser_attach_config(port))
+	end)
+end
+
 M.setup_if_no_vscode_config = function()
 	for _, language in ipairs(js_based_languages) do
 		require("dap").configurations[language] = {
-			{
-				type = "pwa-node",
-				request = "launch",
-				name = "Launch current file",
-				program = "${file}",
-				cwd = "${workspaceFolder}",
-				sourceMaps = true,
-				skipFiles = { "<node_internals>/**", "${workspaceFolder}/node_modules/**" },
-			},
-			{
-				type = "pwa-chrome",
-				request = "launch",
-				name = "Launch Chrome/Chromium/Edge",
-				runtimeExecutable = find_browser,
-				url = "http://localhost:3000",
-				webRoot = "${workspaceFolder}",
-				sourceMaps = true,
-			},
+			M.current_file_config_entry(),
+			M.browser_launch_config(),
 			{
 				type = "pwa-node",
 				request = "attach",
