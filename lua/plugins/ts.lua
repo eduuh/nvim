@@ -59,6 +59,27 @@ return {
 				end,
 				desc = "Run package script",
 			},
+			{
+				"<leader>rd",
+				function()
+					require("config.dap.jsandts").debug_current_file()
+				end,
+				desc = "Debug current JS/TS file",
+			},
+			{
+				"<leader>rD",
+				function()
+					require("config.js_scripts").debug_pick()
+				end,
+				desc = "Debug package script",
+			},
+			{
+				"<leader>rb",
+				function()
+					require("config.dap.jsandts").attach_browser()
+				end,
+				desc = "Attach browser debugger",
+			},
 		},
 		opts = {
 			settings = {

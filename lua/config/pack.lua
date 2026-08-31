@@ -76,18 +76,7 @@ require("catppuccin").setup({
 vim.cmd.colorscheme("catppuccin")
 
 -- ─── Completion stack ────────────────────────────────────────────────────────
-require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip.loaders.from_lua").lazy_load({
-  paths = vim.fs.joinpath(vim.fn.stdpath("config"), "snippets"),
-})
-
-local luasnip = require("luasnip")
-for _, filetype in ipairs({ "javascriptreact", "typescript", "typescriptreact" }) do
-  luasnip.filetype_extend(filetype, { "javascript" })
-end
-vim.keymap.set("n", "<leader>se", function()
-  require("luasnip.loaders").edit_snippet_files()
-end, { desc = "Edit snippets" })
+require("config.snippets").setup()
 
 require("blink.cmp").setup({
   completion = {

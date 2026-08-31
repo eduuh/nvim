@@ -32,6 +32,9 @@
  * <leader>nw / nW   Watch nearest test / current test file
  * <leader>nr        Rerun failures in test watch mode
  * <leader>rs        Pick and run a package.json script
+ * <leader>rd / rD   Debug Node scripts / pick a Node-compatible package script
+ * ;d                Launch a browser for an Rsbuild client dev server
+ * <leader>rb        Attach to a browser (debugging port defaults to 9222)
  * <leader>cl / ct   Load LCOV coverage / toggle gutter signs
  * <leader>hr / hR   Run / replay a request in a .http file
  * <leader>hi        Inspect a .http request
@@ -152,7 +155,9 @@ getUser();
 // Use `dbg` for a statement breakpoint, `trace` for a call stack, and `timer`
 // or `bench` when you need to find a slow block.
 //
-// WebSocket: wsclient, wswatch, wssend, wsserver
+// WebSocket: wsclient, wswatch, wssend, wsserver, wsserversend
+// Async/test: promiseall, allsettled, abortctl, resolves, rejects
+// TypeScript only: interface, type, enum, asconst, satisfies, typeguard
 // Event loop: eventlag, asynctrace
 // JSX identification: type `uxmark` inside an opening tag:
 // <div uxmark>
@@ -252,12 +257,19 @@ function checkout() {
 
 // Debug drill:
 // 1. Put the cursor on `const tax` and press `;b`.
-// 2. Press `;d` and choose "Launch current file".
+// 2. Press `<leader>rd` to launch this plain JavaScript file with Node.
 // 3. Confirm `●` marks the breakpoint and `▶` marks the stopped line.
 // 4. Inspect `amount`, `rate`, and `tax` in the DAP UI.
 // 5. Step with `;o`, `;i`, and `;u`.
 // 6. Finish with `;t`.
 // 7. Press `<leader>rr` to run the complete file without the debugger.
+// 8. Try `<leader>rD` to pick a package script, or `<leader>rb` to attach to
+//    Chrome/Edge started with a remote-debugging port (default 9222).
+// TypeScript, TSX, and JSX direct debugging requires project-installed `tsx`.
+// Bun scripts can be run normally, but this config intentionally blocks Bun DAP.
+// For an Rsbuild client app, start its dev server, press `;d`, and choose
+// "Launch browser for dev server". Confirm or edit its URL (often
+// http://localhost:3000); source maps use the nearest package root as webRoot.
 //
 // Conditional drill: press `;B` on `const tax`, enter `amount > 40`, then run.
 // The debugger stops only when that expression is true.

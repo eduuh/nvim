@@ -11,6 +11,15 @@ local function source_line(source, text)
 	error("Could not find source line containing " .. text)
 end
 
+local function buffer_line(text)
+	for line, value in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
+		if value:find(text, 1, true) then
+			return line
+		end
+	end
+	error("Could not find buffer line containing " .. text)
+end
+
 local function nearest(source, declaration)
 	vim.cmd("enew!")
 	vim.bo.filetype = "typescript"
@@ -49,10 +58,10 @@ local jsandts = require("config.dap.jsandts")
 jsandts.setup_if_no_vscode_config()
 local configs = package.loaded.dap.configurations.javascript
 local jest = vim.iter(configs):find(function(config)
-	return config.name == "Debug Jest Tests"
+	return type(config) == "table" and config.name == "Debug Jest Tests"
 end)
 local vitest = vim.iter(configs):find(function(config)
-	return config.name == "Debug current Vitest file"
+	return type(config) == "table" and config.name == "Debug current Vitest file"
 end)
 assert(type(jest.cwd) == "function")
 assert(type(jest.runtimeExecutable) == "function")
@@ -101,7 +110,7 @@ local ok, error_message = xpcall(function()
 	vim.fn.writefile({ '{"devDependencies":{"vitest":"1.0.0"}}' }, vim.fs.joinpath(package_root, "package.json"))
 	vim.fn.writefile(vim.split(multiline, "\n", { plain = true }), test_file)
 	vim.cmd("edit " .. vim.fn.fnameescape(test_file))
-	vim.api.nvim_win_set_cursor(0, { source_line(multiline, "watches and debugs across lines"), 0 })
+	vim.api.nvim_win_set_cursor(0, { buffer_line("watches and debugs across lines"), 0 })
 
 	local terminals = {}
 	local running_jobs = {}
@@ -176,7 +185,7 @@ local ok, error_message = xpcall(function()
 	vim.notify = original_notify
 	js_package.root = original_root
 	vim.cmd("edit " .. vim.fn.fnameescape(test_file))
-	vim.api.nvim_win_set_cursor(0, { source_line(multiline, "watches and debugs across lines"), 0 })
+	vim.api.nvim_win_set_cursor(0, { buffer_line("watches and debugs across lines"), 0 })
 
 	local special_name = "matches (groups) [items] \\ paths .*+?^${}|"
 	local escaped_name = "matches \\(groups\\) \\[items\\] \\\\ paths \\.\\*\\+\\?\\^\\$\\{\\}\\|"
