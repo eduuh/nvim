@@ -15,5 +15,7 @@ JavaScript snippets are shared with TypeScript and React filetypes.
 Magenta requires Node.js and either `ANTHROPIC_API_KEY` or Claude Max
 authentication. Press `<leader>mt` to open its sidebar.
 
-See `docs/keymaps.md` for the full keymap reference and `docs/vim-features.md`
-for a survey of underused Vim features.
+See the printable [Neovim + Rsbuild cheat sheet](docs/nvim-rsbuild-cheat-sheet.pdf)
+for the daily debugging, testing, WebSocket, and snippet workflows.
+`docs/keymaps.md` contains the full keymap reference, and
+`docs/vim-features.md` surveys underused Vim features.
