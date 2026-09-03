@@ -12,6 +12,22 @@ actions, and Node/Chrome/Jest/Vitest debugging. Project-specific
 Custom LuaSnip snippets live in `snippets/<filetype>.lua`. The included
 JavaScript snippets are shared with TypeScript and React filetypes.
 
+## Setup
+
+`install-deps.sh` provisions everything Neovim will not install for
+itself — the `tree-sitter` CLI (without which no parser builds), a C toolchain,
+`ripgrep`/`fzf`/`fd`, `clangd`, Node.js and Rust — then runs Neovim headlessly to
+drive lazy.nvim, mason and the tree-sitter parsers to completion and verify the
+result. It supports Debian/Ubuntu and macOS, and is safe to re-run.
+
+```sh
+./install-deps.sh --check   # report what is missing, change nothing
+./install-deps.sh           # install and verify
+```
+
+The tool lists live in `lua/config/deps.lua`, shared by the runtime config and
+the installer so the two cannot drift.
+
 Magenta requires Node.js and either `ANTHROPIC_API_KEY` or Claude Max
 authentication. Press `<leader>mt` to open its sidebar.
 
