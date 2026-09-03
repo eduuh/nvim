@@ -129,23 +129,7 @@ require("mason").setup({
 })
 
 require("mason-tool-installer").setup({
-  ensure_installed = {
-    -- LSP servers
-    "lua-language-server",
-    "css-lsp",
-    "bash-language-server",
-    "marksman",
-    "typescript-language-server",
-    "eslint-lsp",
-    -- Formatters & linters
-    "prettier",
-    "prettierd",
-    "stylua",
-    "eslint_d",
-    "clang-format",
-    -- Debug adapters
-    "js-debug-adapter",
-  },
+  ensure_installed = require("config.deps").mason,
 })
 
 -- ─── Fzf-lua ─────────────────────────────────────────────────────────────────
@@ -248,27 +232,19 @@ require("ibl").setup({
   indent = { char = "▏" },
 })
 
-require("tree-sitter-manager").setup({
-  auto_install = true,
-  ensure_installed = {
-    "bash",
-    "c",
-    "cpp",
-    "css",
-    "html",
-    "javascript",
-    "json",
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "python",
-    "query",
-    "rust",
-    "toml",
-    "tsx",
-    "typescript",
-    "vim",
-    "vimdoc",
-    "yaml",
-  },
-})
+-- tree-sitter-manager shells out to the `tree-sitter` CLI for every parser
+-- build. Without it each build throws an ENOENT that surfaces as a stack trace
+-- on startup, so degrade to a single actionable message instead.
+if vim.fn.executable("tree-sitter") == 1 then
+  require("tree-sitter-manager").setup({
+    auto_install = true,
+    ensure_installed = require("config.deps").treesitter,
+  })
+else
+  vim.schedule(function()
+    vim.notify(
+      "tree-sitter CLI not found — parsers will not build. Run scripts/install-deps.sh",
+      vim.log.levels.WARN
+    )
+  end)
+end
