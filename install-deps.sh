@@ -8,16 +8,16 @@
 # throws `ENOENT: ... 'tree-sitter'` on the first FileType event.
 #
 # Usage:
-#   scripts/install-deps.sh              # install everything, then verify
-#   scripts/install-deps.sh --check      # report what is missing, change nothing
-#   scripts/install-deps.sh --skip-headless   # system deps only, no Neovim run
-#   scripts/install-deps.sh --yes        # never prompt (CI)
+#   install-deps.sh              # install everything, then verify
+#   install-deps.sh --check      # report what is missing, change nothing
+#   install-deps.sh --skip-headless   # system deps only, no Neovim run
+#   install-deps.sh --yes        # never prompt (CI)
 #
 # Supported: Debian/Ubuntu (apt) and macOS (Homebrew).
 
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NVIM_MIN="0.12.0"
 LOCAL_BIN="${HOME}/.local/bin"
 
@@ -326,7 +326,7 @@ ensure_tree_sitter_cli() {
 run_headless_bootstrap() {
   step "Neovim plugin, parser and tool install (headless)"
   if [ "$SKIP_HEADLESS" -eq 1 ]; then note "skipped (--skip-headless)"; return 0; fi
-  if [ "$CHECK_ONLY" -eq 1 ]; then note "would run scripts/bootstrap.lua under headless Neovim"; return 0; fi
+  if [ "$CHECK_ONLY" -eq 1 ]; then note "would run bootstrap.lua under headless Neovim"; return 0; fi
 
   load_nvm || true
   [ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
@@ -338,7 +338,7 @@ run_headless_bootstrap() {
   active_config="$(readlink -f "${XDG_CONFIG_HOME:-$HOME/.config}/nvim" 2>/dev/null || true)"
 
   if [ "$active_config" = "$REPO_ROOT" ]; then
-    nvim --headless -c "luafile $REPO_ROOT/scripts/bootstrap.lua"
+    nvim --headless -c "luafile $REPO_ROOT/bootstrap.lua"
   else
     # `nvim -u <file>` does not put the repo on the runtimepath, so point
     # XDG_CONFIG_HOME at a throwaway dir whose nvim/ links to this checkout.
@@ -346,7 +346,7 @@ run_headless_bootstrap() {
     local shim
     shim="$(mktemp -d)"
     ln -s "$REPO_ROOT" "$shim/nvim"
-    XDG_CONFIG_HOME="$shim" nvim --headless -c "luafile $REPO_ROOT/scripts/bootstrap.lua"
+    XDG_CONFIG_HOME="$shim" nvim --headless -c "luafile $REPO_ROOT/bootstrap.lua"
     local rc=$?
     rm -rf "$shim"
     return $rc

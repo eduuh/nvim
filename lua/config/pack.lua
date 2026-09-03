@@ -243,7 +243,7 @@ if vim.fn.executable("tree-sitter") == 1 then
 else
   vim.schedule(function()
     vim.notify(
-      "tree-sitter CLI not found — parsers will not build. Run scripts/install-deps.sh",
+      "tree-sitter CLI not found — parsers will not build. Run install-deps.sh",
       vim.log.levels.WARN
     )
   end)

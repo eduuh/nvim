@@ -14,15 +14,15 @@ JavaScript snippets are shared with TypeScript and React filetypes.
 
 ## Setup
 
-`scripts/install-deps.sh` provisions everything Neovim will not install for
+`install-deps.sh` provisions everything Neovim will not install for
 itself — the `tree-sitter` CLI (without which no parser builds), a C toolchain,
 `ripgrep`/`fzf`/`fd`, `clangd`, Node.js and Rust — then runs Neovim headlessly to
 drive lazy.nvim, mason and the tree-sitter parsers to completion and verify the
 result. It supports Debian/Ubuntu and macOS, and is safe to re-run.
 
 ```sh
-scripts/install-deps.sh --check   # report what is missing, change nothing
-scripts/install-deps.sh           # install and verify
+./install-deps.sh --check   # report what is missing, change nothing
+./install-deps.sh           # install and verify
 ```
 
 The tool lists live in `lua/config/deps.lua`, shared by the runtime config and

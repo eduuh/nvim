@@ -27,14 +27,14 @@ end
 
 -- The parsers listed as markdown dependencies must both be present, otherwise
 -- tree-sitter-manager installs markdown_inline implicitly and the verification
--- in scripts/bootstrap.lua never checks it.
+-- in bootstrap.lua never checks it.
 local parsers = {}
 for _, lang in ipairs(deps.treesitter) do
 	parsers[lang] = true
 end
 assert(parsers.markdown and parsers.markdown_inline, "markdown needs markdown_inline alongside it")
 
--- Anything scripts/install-deps.sh treats as required must be declared here too,
+-- Anything install-deps.sh treats as required must be declared here too,
 -- so `--check` and the headless run agree on what a working install looks like.
 local required = {}
 for _, bin in ipairs(deps.binaries) do

@@ -1,8 +1,8 @@
 -- Single source of truth for the tools this config expects to exist.
 --
 -- lua/config/pack.lua feeds these to mason-tool-installer and
--- tree-sitter-manager; scripts/bootstrap.lua installs and then verifies the
--- same lists headlessly, so `scripts/install-deps.sh` can fail loudly instead
+-- tree-sitter-manager; bootstrap.lua installs and then verifies the
+-- same lists headlessly, so `install-deps.sh` can fail loudly instead
 -- of leaving a half-provisioned machine.
 
 return {

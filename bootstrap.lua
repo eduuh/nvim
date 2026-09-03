@@ -1,7 +1,7 @@
 -- Headless provisioning for this Neovim config.
 --
--- Run through scripts/install-deps.sh, or directly:
---   nvim --headless -c "lua dofile('scripts/bootstrap.lua')"
+-- Run through install-deps.sh, or directly:
+--   nvim --headless -c "lua dofile('bootstrap.lua')"
 --
 -- Everything Neovim installs at startup (vim.pack clones, lazy.nvim installs,
 -- mason tools, tree-sitter parsers) is asynchronous, so a plain `nvim
