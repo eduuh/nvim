@@ -165,13 +165,25 @@ M.current_file_config_entry = function()
 	})
 end
 
+-- Saving must never block running or debugging. A failing BufWritePre
+-- autocommand -- a formatter that is not installed, say -- makes `:write` throw,
+-- and an unguarded write aborts the whole launch before the runner ever starts.
+-- Observed 2026-09-05: mason failing to install clang-format killed
+-- `debug_nearest` with "BufWritePre Autocommands for \"*\": Vim(append)".
+local function save_quietly()
+  local ok, err = pcall(vim.cmd.write)
+  if not ok then
+    vim.notify("Continuing without saving: " .. tostring(err), vim.log.levels.WARN)
+  end
+end
+
 M.debug_current_file = function()
 	local ok, config = pcall(M.current_file_config)
 	if not ok then
 		vim.notify(config, vim.log.levels.ERROR)
 		return
 	end
-	vim.cmd.write()
+	save_quietly()
 	require("lazy").load({ plugins = { "nvim-dap" } })
 	require("dap").run(config)
 end
