@@ -28,6 +28,10 @@ vim.lsp.config("eslint", {
 -- Servers managed natively (rust_analyzer → rustaceanvim, ts_ls → typescript-tools).
 vim.lsp.enable({ "lua_ls", "cssls", "bashls", "marksman", "eslint" })
 
+-- Workspaces shipping @typescript/native get its tsgo server for TS/JS instead of
+-- typescript-tools, which is disabled there (see lua/config/tsgo.lua).
+require("config.tsgo").setup()
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(args)

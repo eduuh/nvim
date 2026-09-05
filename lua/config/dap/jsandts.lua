@@ -82,22 +82,37 @@ local function adapter()
 			command = "node",
 			args = { script, "${port}" },
 		},
+		-- js-debug is a large bundle: ~5s to bind its port on an idle machine,
+		-- but measured at 85s with a dev server and a TS server running.
+		-- nvim-dap only retries 14 x 250ms = 3.5s before giving up, so every
+		-- launch died with ECONNREFUSED. 600 retries is a 150s budget, which
+		-- only costs time when the adapter genuinely fails to start.
+		options = { max_retries = 600 },
 	}
 end
 
 M.register_jsandts_dap = function()
 	local dap = require("dap")
-	dap.defaults["pwa-node"].exception_breakpoints = { "all" }
-	dap.defaults["pwa-chrome"].exception_breakpoints = { "all" }
+	-- "all" halts on every *caught* throw too. Real toolchains throw constantly
+	-- as control flow -- yarn's CLI and jest-resolve's module probing both do --
+	-- so "all" stops dozens of times in third-party code before ever reaching
+	-- your breakpoint. "uncaught" still catches the crashes you care about.
+	dap.defaults["pwa-node"].exception_breakpoints = { "uncaught" }
+	dap.defaults["pwa-chrome"].exception_breakpoints = { "uncaught" }
 
+	-- Hand out a fresh table per session: nvim-dap substitutes ${port} by
+	-- mutating the adapter in place, so a shared table would pin every later
+	-- session to the first session's (now dead) port.
 	for _, name in ipairs({ "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }) do
-		dap.adapters[name] = adapter()
+		dap.adapters[name] = function(cb)
+			cb(adapter())
+		end
 	end
 
 	local function alias(from, to)
 		dap.adapters[from] = function(cb, config)
 			config.type = to
-			cb(dap.adapters[to])
+			cb(adapter())
 		end
 	end
 	alias("node", "pwa-node")
@@ -252,8 +267,13 @@ M.setup_if_no_vscode_config = function()
 				name = "Debug Jest Tests",
 				runtimeExecutable = test_runtime,
 				runtimeArgs = test_runtime_args,
-				program = test_program("jest/bin/jest.js"),
-				args = { "--runInBand" },
+				-- Extensionless: jest 29+ ships an "exports" map that only publishes
+				-- "./bin/jest", so resolving "jest/bin/jest.js" fails outright. Node
+				-- adds the .js itself for packages without an exports map.
+				program = test_program("jest/bin/jest"),
+				-- --coverage=false: istanbul instrumentation breaks breakpoint line
+				-- mapping (see lua/config/js_tests.lua).
+				args = { "--runInBand", "--coverage=false" },
 				cwd = test_root,
 				console = "integratedTerminal",
 				internalConsoleOptions = "neverOpen",

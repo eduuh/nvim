@@ -228,8 +228,15 @@ function M.debug_nearest()
 		program = js_package.resolve(ctx.root, "vitest/vitest.mjs")
 		args = { "run", ctx.file, "-t", test_name, "--no-file-parallelism" }
 	else
-		program = js_package.resolve(ctx.root, "jest/bin/jest.js")
-		args = { ctx.file, "--runInBand", "-t", test_name }
+		-- Extensionless: jest 29+ ships an "exports" map that publishes only
+		-- "./bin/jest", so "jest/bin/jest.js" fails to resolve. Node appends the
+		-- .js itself for packages without an exports map.
+		program = js_package.resolve(ctx.root, "jest/bin/jest")
+		-- Coverage instrumentation (istanbul) rewrites the file and breaks
+		-- breakpoint line mapping: a breakpoint lands inside a generated
+		-- cov_*() counter instead of your source line. Projects that set
+		-- collectCoverage in jest.config need this off to be debuggable.
+		args = { ctx.file, "--runInBand", "--coverage=false", "-t", test_name }
 	end
 
 	vim.cmd.write()

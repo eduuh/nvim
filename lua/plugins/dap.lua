@@ -126,9 +126,18 @@ return {
 			{
 				";t",
 				function()
-					require("dap").terminate()
+					local dap = require("dap")
+					local session = dap.session()
+					-- On an `attach` session the debuggee is someone else's process --
+					-- a dev server you attached to. `terminate` kills it; detaching
+					-- leaves it running so you can attach again.
+					if session and (session.config or {}).request == "attach" then
+						dap.disconnect({ terminateDebuggee = false })
+					else
+						dap.terminate()
+					end
 				end,
-				desc = "dap terminate",
+				desc = "dap terminate (detach when attached)",
 			},
 		},
 		config = function()
