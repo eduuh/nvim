@@ -14,9 +14,13 @@ return {
 			},
 		},
 		config = function()
-			local mason_packages = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages")
-			local codelldb_path = vim.fs.joinpath(mason_packages, "codelldb")
-			local liblldb_path = vim.fs.joinpath(mason_packages, "lldb", "lib", "liblldb.so")
+			-- Both are paths to FILES, and both used to be wrong. `get_codelldb_adapter` execs the
+			-- first and passes the second as `--liblldb`, but the first named the package
+			-- *directory* (not an executable) and the second named an `lldb` mason package that
+			-- does not exist — liblldb.so ships inside codelldb's own extension.
+			local codelldb = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "codelldb")
+			local codelldb_path = vim.fs.joinpath(codelldb, "extension", "adapter", "codelldb")
+			local liblldb_path = vim.fs.joinpath(codelldb, "extension", "lldb", "lib", "liblldb.so")
 			local cfg = require("rustaceanvim.config")
 
 			vim.g.rustaceanvim = {
