@@ -19,6 +19,18 @@ vim.opt.splitkeep = "cursor"
 vim.opt.signcolumn = "yes:1"
 vim.opt.mouse = "a"
 vim.opt.clipboard = { "unnamedplus" }
+-- On WSL, reach the Windows clipboard directly through bn-clip (win32yank, else clip.exe and
+-- PowerShell). Left to itself nvim picks wl-copy, which goes through the WSLg bridge; that bridge
+-- stops syncing now and then, so yanks and pastes worked only sometimes. tmux uses the same script.
+local bn_clip = vim.fn.expand("~/.config/bn/repo/config/workflow/bin/bn-clip")
+if vim.fn.has("wsl") == 1 and vim.fn.filereadable(bn_clip) == 1 then
+  vim.g.clipboard = {
+    name = "bn-clip",
+    copy = { ["+"] = { "sh", bn_clip, "copy" }, ["*"] = { "sh", bn_clip, "copy" } },
+    paste = { ["+"] = { "sh", bn_clip, "paste" }, ["*"] = { "sh", bn_clip, "paste" } },
+    cache_enabled = 0,
+  }
+end
 vim.opt.ignorecase = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
