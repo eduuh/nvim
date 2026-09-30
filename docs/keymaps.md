@@ -253,7 +253,11 @@ Use `grx` to run a codelens at the cursor.
 | Key | Action |
 |-----|--------|
 | `;c` | Open LazyGit |
-| `<leader>vd` | DiffviewOpen |
+| `<leader>vd` | Diff working tree |
+| `<leader>vs` | Diff staged changes (index vs HEAD) |
+| `<leader>vm` | Diff branch vs base merge-base (`origin/HEAD`, else main/master) |
+| `<leader>vf` | Diff current file only |
+| `<leader>vr` | Prompt for a rev or range (e.g. `HEAD~3`, `v1.0..v2.0`) |
 | `<leader>vh` | File history (current file) |
 | `<leader>vb` | Branch history |
 | `<leader>vc` | DiffviewClose |
