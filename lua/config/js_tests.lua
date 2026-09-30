@@ -3,6 +3,18 @@ local test_terminal
 local watch_terminal
 local js_package = require("config.js_package")
 
+-- Saving must never block running or debugging. A failing BufWritePre
+-- autocommand -- a formatter that is not installed, say -- makes `:write` throw,
+-- and an unguarded write aborts the whole launch before the runner ever starts.
+-- Observed 2026-09-05: mason failing to install clang-format killed
+-- `debug_nearest` with "BufWritePre Autocommands for \"*\": Vim(append)".
+local function save_quietly()
+  local ok, err = pcall(vim.cmd.write)
+  if not ok then
+    vim.notify("Continuing without saving: " .. tostring(err), vim.log.levels.WARN)
+  end
+end
+
 local function context()
 	local file = vim.api.nvim_buf_get_name(0)
 	local root = js_package.root(file)
@@ -162,7 +174,7 @@ end
 
 local function run(test_name)
 	local ctx = context()
-	vim.cmd.write()
+	save_quietly()
 	test_terminal = open_terminal(ctx, command(ctx, test_name), "JavaScript tests")
 end
 
@@ -176,7 +188,7 @@ end
 
 function M.run_project()
 	local ctx = context()
-	vim.cmd.write()
+	save_quietly()
 	local args = ctx.runner == "vitest" and js_package.exec(ctx.root, "vitest", { "run" })
 		or js_package.exec(ctx.root, "jest", { "--runInBand" })
 	test_terminal = open_terminal(ctx, args, "JavaScript tests")
@@ -187,7 +199,7 @@ function M.watch_nearest()
 	local name = literal_test_pattern(M.nearest_test_name())
 	local args = ctx.runner == "vitest" and js_package.exec(ctx.root, "vitest", { ctx.file, "-t", name })
 		or js_package.exec(ctx.root, "jest", { ctx.file, "--watch", "-t", name })
-	vim.cmd.write()
+	save_quietly()
 	open_watch_terminal(ctx, args)
 end
 
@@ -195,7 +207,7 @@ function M.watch_file()
 	local ctx = context()
 	local args = ctx.runner == "vitest" and js_package.exec(ctx.root, "vitest", { ctx.file })
 		or js_package.exec(ctx.root, "jest", { ctx.file, "--watch" })
-	vim.cmd.write()
+	save_quietly()
 	open_watch_terminal(ctx, args)
 end
 
@@ -228,11 +240,18 @@ function M.debug_nearest()
 		program = js_package.resolve(ctx.root, "vitest/vitest.mjs")
 		args = { "run", ctx.file, "-t", test_name, "--no-file-parallelism" }
 	else
-		program = js_package.resolve(ctx.root, "jest/bin/jest.js")
-		args = { ctx.file, "--runInBand", "-t", test_name }
+		-- Extensionless: jest 29+ ships an "exports" map that publishes only
+		-- "./bin/jest", so "jest/bin/jest.js" fails to resolve. Node appends the
+		-- .js itself for packages without an exports map.
+		program = js_package.resolve(ctx.root, "jest/bin/jest")
+		-- Coverage instrumentation (istanbul) rewrites the file and breaks
+		-- breakpoint line mapping: a breakpoint lands inside a generated
+		-- cov_*() counter instead of your source line. Projects that set
+		-- collectCoverage in jest.config need this off to be debuggable.
+		args = { ctx.file, "--runInBand", "--coverage=false", "-t", test_name }
 	end
 
-	vim.cmd.write()
+	save_quietly()
 	require("lazy").load({ plugins = { "nvim-dap" } })
 	local runtime, runtime_args = js_package.debug_runtime(ctx.root)
 	require("dap").run({

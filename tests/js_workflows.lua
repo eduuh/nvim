@@ -89,7 +89,7 @@ end
 assert(jest.cwd() == "/workspace/packages/app")
 assert(jest.runtimeExecutable() == "yarn")
 assert(vim.deep_equal(jest.runtimeArgs(), { "node" }))
-assert(jest.program() == "/virtual/jest/bin/jest.js")
+assert(jest.program() == "/virtual/jest/bin/jest")
 assert(vitest.cwd() == "/workspace/packages/app")
 assert(vitest.runtimeExecutable() == "yarn")
 assert(vim.deep_equal(vitest.runtimeArgs(), { "node" }))
@@ -217,8 +217,11 @@ local ok, error_message = xpcall(function()
 	assert(terminals[#terminals].options.cmd:find("--watch", 1, true))
 	assert(terminals[#terminals].options.cmd:find(vim.fn.shellescape(escaped_name), 1, true))
 	js_tests.debug_nearest()
-	assert(debug_config.program == "/virtual/jest/bin/jest.js")
+	assert(debug_config.program == "/virtual/jest/bin/jest")
 	assert(vim.tbl_contains(debug_config.args, escaped_name))
+	-- Coverage instrumentation breaks breakpoint line mapping, so a debug run
+	-- must always turn it off.
+	assert(vim.tbl_contains(debug_config.args, "--coverage=false"))
 end, debug.traceback)
 
 js_package.root = original_root
