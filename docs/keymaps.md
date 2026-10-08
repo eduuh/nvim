@@ -355,14 +355,6 @@ Generate `coverage/lcov.info` with Jest or Vitest, then:
 | `<leader>ct` | Toggle coverage signs |
 | `<leader>cs` | Open coverage summary |
 
-### HTTP requests (`*.http`)
-
-| Key | Action |
-|-----|--------|
-| `<leader>hr` | Run request under cursor |
-| `<leader>hR` | Replay the last request |
-| `<leader>hi` | Inspect request without sending |
-
 ### Databases
 
 | Key / command | Action |
