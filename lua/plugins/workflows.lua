@@ -42,42 +42,6 @@ return {
 		},
 	},
 	{
-		"mistweaverco/kulala.nvim",
-		ft = { "http", "rest" },
-		keys = {
-			{
-				"<leader>hr",
-				function()
-					require("kulala").run()
-				end,
-				mode = { "n", "v" },
-				desc = "HTTP: run request",
-			},
-			{
-				"<leader>hR",
-				function()
-					require("kulala").replay()
-				end,
-				desc = "HTTP: replay request",
-			},
-			{
-				"<leader>hi",
-				function()
-					require("kulala").inspect()
-				end,
-				desc = "HTTP: inspect request",
-			},
-		},
-		opts = {
-			global_keymaps = false,
-			kulala_keymaps = true,
-			ui = {
-				display_mode = "split",
-				split_direction = "right",
-			},
-		},
-	},
-	{
 		"tpope/vim-dadbod",
 		cmd = { "DB" },
 	},
