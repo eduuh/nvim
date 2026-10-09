@@ -4,12 +4,7 @@ map({ "i", "n" }, "<C-s>", "<cmd>w<CR>", { desc = "Save buffer" })
 map({ "n", "v" }, "<BS>", "<C-^>", { desc = "Alternate buffer" })
 map("n", ";n", "<cmd>cnext<CR>", { desc = "Next quickfix" })
 map("n", ";p", "<cmd>cprev<CR>", { desc = "Prev quickfix" })
-map("n", "<leader>q", function()
-  if vim.fn.exists(":DiffviewClose") == 2 then
-    vim.cmd.DiffviewClose()
-  end
-  vim.cmd("qa!")
-end, { desc = "Close Diffview and quit all without saving" })
+map("n", "<leader>q", "<cmd>qa!<CR>", { desc = "Quit all without saving" })
 
 -- bn editor (see lua/bn/init.lua). Loaded lazily and guarded: these panes are created by
 -- `bn edit`, but this config still has to start cleanly anywhere the module is absent.

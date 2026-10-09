@@ -257,7 +257,6 @@ Use `grx` to run a codelens at the cursor.
 | `<leader>vh` | File history (current file) |
 | `<leader>vb` | Branch history |
 | `<leader>vc` | DiffviewClose |
-| `<leader>q` | Close Diffview, then quit all Neovim windows without saving (`:qa!`) |
 
 ---
 
@@ -390,6 +389,7 @@ Folds follow indent level; everything starts open (`foldlevelstart=99`).
 ### Windows
 | Key | Action |
 |-----|--------|
+| `<leader>q` | Quit the entire Neovim instance without saving (`:qa!`) |
 | `<C-w>h/j/k/l` | Move between splits |
 | `<C-w>s` / `<C-w>v` | Horizontal / vertical split |
 | `<C-w>q` | Close split |
