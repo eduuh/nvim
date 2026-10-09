@@ -257,6 +257,7 @@ Use `grx` to run a codelens at the cursor.
 | `<leader>vh` | File history (current file) |
 | `<leader>vb` | Branch history |
 | `<leader>vc` | DiffviewClose |
+| `<leader>q` | Close Diffview, then quit all Neovim windows without saving (`:qa!`) |
 
 ---
 
