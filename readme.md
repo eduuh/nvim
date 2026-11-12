@@ -1,8 +1,14 @@
 ## Eduuh Nvim Config
 
-Personal Neovim 0.12 configuration. Built around `vim.pack` + lazy.nvim
-(hybrid), with LSP/DAP for C/C++, Rust, Lua, and TypeScript/JavaScript, plus
+I keep editing, debugging and project tooling in one Neovim 0.12 config.
+`vim.pack` loads the shared plugins at startup; lazy.nvim loads the rest on
+demand. LSP/DAP covers C/C++, Rust, Lua and TypeScript/JavaScript, with
 Magenta for agentic AI workflows.
+
+It's a personal config. Start with [Setup](#setup) for the Debian/Ubuntu and
+macOS dependency installer, then use the [keymap reference](docs/keymaps.md).
+The shared [dependency lists](lua/config/deps.lua) drive both runtime tool
+installation and the installer's headless verification.
 
 JavaScript and TypeScript support includes TypeScript IntelliSense, ESLint
 diagnostics and fixes, Prettier formatting, inlay hints, import/refactor code
