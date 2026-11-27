@@ -66,6 +66,10 @@
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "tiny-cmdline.nvim": {
+      "rev": "b6bb66ee46421b7965cbc961c9fae89310a87bd1",
+      "src": "https://github.com/rachartier/tiny-cmdline.nvim"
+    },
     "tree-sitter-manager.nvim": {
       "rev": "6b5d8768a1cc5a35af5ec9d3b082bc6e2bdfdb95",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"

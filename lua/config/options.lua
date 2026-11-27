@@ -8,7 +8,7 @@ vim.opt.number = false
 vim.opt.relativenumber = false
 
 vim.opt.showcmd = true
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0 -- ui2 + tiny-cmdline float the cmdline (see config/pack.lua)
 vim.opt.laststatus = 3
 vim.opt.showtabline = 0
 
