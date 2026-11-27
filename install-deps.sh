@@ -18,7 +18,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NVIM_MIN="0.12.0"
+NVIM_MIN="0.13.0"   # guh.nvim needs 0.13; until it ships, that means nightly
 LOCAL_BIN="${HOME}/.local/bin"
 
 CHECK_ONLY=0
@@ -265,19 +265,20 @@ ensure_neovim() {
   local current=""
   have nvim && current="$(nvim --version | head -1 | sed 's/^NVIM v//')"
 
-  if [ -n "$current" ] && ! version_lt "$current" "$NVIM_MIN"; then
+  # Compare the base version so a nightly like 0.13.0-dev-2211+g8cf5 counts as 0.13.0.
+  if [ -n "$current" ] && ! version_lt "${current%%-*}" "$NVIM_MIN"; then
     ok "nvim $current"
     return 0
   fi
   if [ -z "$current" ]; then bad "nvim is not installed"; else bad "nvim $current is older than $NVIM_MIN"; fi
-  if [ "$CHECK_ONLY" -eq 1 ]; then note "would install the latest stable Neovim"; return 0; fi
+  if [ "$CHECK_ONLY" -eq 1 ]; then note "would install the Neovim nightly build"; return 0; fi
 
-  confirm "Install the latest stable Neovim?" || die "aborted (Neovim >= $NVIM_MIN is required)"
+  confirm "Install the Neovim nightly build?" || die "aborted (Neovim >= $NVIM_MIN is required)"
 
   if [ "$PLATFORM" = brew ]; then
-    brew install neovim
+    brew install --HEAD neovim
   else
-    # Ubuntu's archive lags well behind 0.12, so take the official tarball.
+    # No distro ships 0.13 yet, so take the official nightly tarball.
     local arch asset tmp
     case "$(uname -m)" in
       x86_64)         arch=x86_64 ;;
@@ -288,14 +289,15 @@ ensure_neovim() {
     tmp="$(mktemp -d)"
     trap 'rm -rf "$tmp"' RETURN
     curl -fsSL -o "$tmp/$asset" \
-      "https://github.com/neovim/neovim/releases/latest/download/$asset"
-    mkdir -p "$HOME/.local"
+      "https://github.com/neovim/neovim/releases/download/nightly/$asset"
+    local dest="$HOME/.local/opt/nvim-nightly"
     tar -xzf "$tmp/$asset" -C "$tmp"
-    rm -rf "$HOME/.local/nvim"
-    mv "$tmp/nvim-linux-${arch}" "$HOME/.local/nvim"
+    mkdir -p "$(dirname "$dest")"
+    rm -rf "$dest"
+    mv "$tmp/nvim-linux-${arch}" "$dest"
     mkdir -p "$LOCAL_BIN"
-    ln -sf "$HOME/.local/nvim/bin/nvim" "$LOCAL_BIN/nvim"
-    note "installed to $HOME/.local/nvim, linked at $LOCAL_BIN/nvim"
+    ln -sf "$dest/bin/nvim" "$LOCAL_BIN/nvim"
+    note "installed to $dest, linked at $LOCAL_BIN/nvim (re-run to update the nightly)"
   fi
   hash -r
   ok "nvim $(nvim --version | head -1 | sed 's/^NVIM v//')"
