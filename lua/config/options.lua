@@ -32,7 +32,7 @@ if vim.fn.has("wsl") == 1 and vim.fn.filereadable(bn_clip) == 1 then
   }
 end
 vim.opt.ignorecase = true
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 vim.opt.expandtab = true
