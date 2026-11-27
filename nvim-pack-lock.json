@@ -26,6 +26,10 @@
       "rev": "6048a5b243c9ee0e72cdc09edb44f996c892e005",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
+    "guh.nvim": {
+      "rev": "bb67084d8a22ecfe12406c7e9e29b99db382cd6d",
+      "src": "https://github.com/justinmk/guh.nvim"
+    },
     "indent-blankline.nvim": {
       "rev": "d28a3f70721c79e3c5f6693057ae929f3d9c0a03",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
