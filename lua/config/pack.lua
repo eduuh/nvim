@@ -55,6 +55,7 @@ vim.pack.add({
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/overseer.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
+  "https://github.com/Wansmer/treesj",
 
   -- Treesitter parser manager on top of Nvim 0.12's built-in vim.treesitter.
   "https://github.com/romus204/tree-sitter-manager.nvim",
@@ -224,6 +225,9 @@ require("mini.pairs").setup({
 })
 
 require("nvim-surround").setup()
+
+require("treesj").setup({ use_default_keymaps = false, max_join_length = 150 })
+vim.keymap.set("n", "<leader>j", require("treesj").toggle, { desc = "Split/join node" })
 require("overseer").setup()
 
 require("ibl").setup({
