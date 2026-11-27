@@ -57,6 +57,7 @@ vim.pack.add({
   "https://github.com/stevearc/overseer.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
   "https://github.com/Wansmer/treesj",
+  "https://github.com/justinmk/guh.nvim", -- :Guh, GitHub PRs/issues/CI via gh (README asks for Nvim 0.13+)
 
   -- Treesitter parser manager on top of Nvim 0.12's built-in vim.treesitter.
   "https://github.com/romus204/tree-sitter-manager.nvim",
