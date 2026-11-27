@@ -59,6 +59,9 @@ vim.pack.add({
   "https://github.com/Wansmer/treesj",
   "https://github.com/justinmk/guh.nvim", -- :Guh, GitHub PRs/issues/CI via gh (README asks for Nvim 0.13+)
 
+  -- Log-statement inserter (console.log & friends, per filetype).
+  "https://github.com/chrisgrieser/nvim-chainsaw",
+
   -- Treesitter parser manager on top of Nvim 0.12's built-in vim.treesitter.
   "https://github.com/romus204/tree-sitter-manager.nvim",
 })
@@ -236,6 +239,30 @@ vim.keymap.set("n", "<leader>j", require("treesj").toggle, { desc = "Split/join 
 -- (snippet_forward → fallback) hands off to this mapping.
 require("tabout").setup()
 require("overseer").setup()
+
+-- ─── Chainsaw (log statements) ───────────────────────────────────────────────
+-- <leader>L… because <leader>l is the LSP namespace. Variable/object/type/assert
+-- logs also take a visual selection; removeLogs in visual mode only clears the
+-- selected lines.
+do
+  local chainsaw = require("chainsaw")
+  chainsaw.setup()
+
+  local function map(modes, lhs, fn, desc)
+    vim.keymap.set(modes, lhs, function() chainsaw[fn]() end, { desc = "Log: " .. desc })
+  end
+  map({ "n", "x" }, "<leader>Ll", "variableLog", "variable")
+  map({ "n", "x" }, "<leader>Lo", "objectLog", "object")
+  map({ "n", "x" }, "<leader>Lt", "typeLog", "type")
+  map({ "n", "x" }, "<leader>La", "assertLog", "assert")
+  map("n", "<leader>Le", "emojiLog", "emoji marker")
+  map("n", "<leader>Lm", "messageLog", "message")
+  map("n", "<leader>LT", "timeLog", "timer start/stop")
+  map("n", "<leader>Ld", "debugLog", "debugger statement")
+  map("n", "<leader>Ls", "stacktraceLog", "stacktrace")
+  map("n", "<leader>Lc", "clearLog", "clear console")
+  map({ "n", "x" }, "<leader>Lr", "removeLogs", "remove all")
+end
 
 require("ibl").setup({
   enabled = true,

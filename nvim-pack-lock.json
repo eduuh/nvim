@@ -54,6 +54,10 @@
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
+    "nvim-chainsaw": {
+      "rev": "c38210b379d5a61b3e1bf918cf787212fa1eedd9",
+      "src": "https://github.com/chrisgrieser/nvim-chainsaw"
+    },
     "nvim-surround": {
       "rev": "9291040de8cd8a4439eb64c441e8d5d2bf884a5a",
       "src": "https://github.com/kylechui/nvim-surround"
