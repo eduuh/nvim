@@ -53,6 +53,7 @@ vim.pack.add({
   -- Small VeryLazy quality-of-life plugins; effectively eager after VimEnter.
   "https://github.com/echasnovski/mini.pairs",
   "https://github.com/kylechui/nvim-surround",
+  "https://github.com/abecodes/tabout.nvim",
   "https://github.com/stevearc/overseer.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
   "https://github.com/Wansmer/treesj",
@@ -228,6 +229,11 @@ require("nvim-surround").setup()
 
 require("treesj").setup({ use_default_keymaps = false, max_join_length = 150 })
 vim.keymap.set("n", "<leader>j", require("treesj").toggle, { desc = "Split/join node" })
+
+-- <Tab> jumps past the closing pair/quote (treesitter-aware); falls back to a
+-- normal tab when there is nothing to tab out of. blink.cmp's <Tab>
+-- (snippet_forward → fallback) hands off to this mapping.
+require("tabout").setup()
 require("overseer").setup()
 
 require("ibl").setup({
