@@ -373,6 +373,19 @@ Generate `coverage/lcov.info` with Jest or Vitest, then:
 | `<leader>ct` | Toggle coverage signs |
 | `<leader>cs` | Open coverage summary |
 
+### HTTP requests (`*.http`, rest.nvim)
+
+The nearest `.env` above the file (or `<name>.env` next to `<name>.http`) is
+loaded automatically; `<leader>he` picks a different one.
+
+| Key | Action |
+|-----|--------|
+| `<leader>hr` | Run request under cursor |
+| `<leader>hR` | Rerun the last request |
+| `<leader>ho` | Open the result pane |
+| `<leader>he` | Select env file |
+| `<leader>hl` | Show rest.nvim logs |
+
 ### Databases
 
 | Key / command | Action |
