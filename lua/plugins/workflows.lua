@@ -42,6 +42,20 @@ return {
 		},
 	},
 	{
+		-- HTTP client for `*.http` files. Its Lua deps (nvim-nio, mimetypes,
+		-- xml2lua, fidget) come from the rockspec, so lazy.nvim needs luarocks.
+		"rest-nvim/rest.nvim",
+		ft = "http",
+		cmd = "Rest",
+		keys = {
+			{ "<leader>hr", "<cmd>Rest run<CR>", ft = "http", desc = "HTTP: run request" },
+			{ "<leader>hR", "<cmd>Rest last<CR>", ft = "http", desc = "HTTP: rerun last request" },
+			{ "<leader>ho", "<cmd>Rest open<CR>", ft = "http", desc = "HTTP: open result pane" },
+			{ "<leader>he", "<cmd>Rest env select<CR>", ft = "http", desc = "HTTP: select env file" },
+			{ "<leader>hl", "<cmd>Rest logs<CR>", ft = "http", desc = "HTTP: logs" },
+		},
+	},
+	{
 		"tpope/vim-dadbod",
 		cmd = { "DB" },
 	},

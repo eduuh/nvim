@@ -66,5 +66,7 @@ return {
     { cmd = "shfmt", required = false, why = "conform sh formatter" },
     { cmd = "cargo", required = false, why = "rustaceanvim / crates.nvim" },
     { cmd = "lazygit", required = false, why = "toggleterm lazygit terminal" },
+    { cmd = "curl", required = false, why = "rest.nvim HTTP requests" },
+    { cmd = "luarocks", required = false, why = "rest.nvim Lua dependencies (lazy.nvim rocks)" },
   },
 }
