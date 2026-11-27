@@ -62,6 +62,9 @@ vim.pack.add({
   -- Log-statement inserter (console.log & friends, per filetype).
   "https://github.com/chrisgrieser/nvim-chainsaw",
 
+  -- Centered floating cmdline on top of Nvim 0.12's native ui2.
+  "https://github.com/rachartier/tiny-cmdline.nvim",
+
   -- Treesitter parser manager on top of Nvim 0.12's built-in vim.treesitter.
   "https://github.com/romus204/tree-sitter-manager.nvim",
 })
@@ -263,6 +266,13 @@ do
   map("n", "<leader>Lc", "clearLog", "clear console")
   map({ "n", "x" }, "<leader>Lr", "removeLogs", "remove all")
 end
+
+-- tiny-cmdline renders through ui2, which must be enabled explicitly.
+-- The blink adapter keeps blink's cmdline menu anchored to the float.
+require("vim._core.ui2").enable({})
+require("tiny-cmdline").setup({
+  on_reposition = require("tiny-cmdline").adapters.blink,
+})
 
 require("ibl").setup({
   enabled = true,

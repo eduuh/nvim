@@ -78,6 +78,10 @@
       "rev": "9a3499480a8e53dcaa665e2836f287e3b7764009",
       "src": "https://github.com/abecodes/tabout.nvim"
     },
+    "tiny-cmdline.nvim": {
+      "rev": "b6bb66ee46421b7965cbc961c9fae89310a87bd1",
+      "src": "https://github.com/rachartier/tiny-cmdline.nvim"
+    },
     "tree-sitter-manager.nvim": {
       "rev": "6b5d8768a1cc5a35af5ec9d3b082bc6e2bdfdb95",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"
