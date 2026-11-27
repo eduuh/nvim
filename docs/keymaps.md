@@ -317,6 +317,24 @@ different Rsbuild port is supported without changing this config. Use
 remote-debugging session; its port is the browser debugging port, not
 necessarily the Rsbuild dev-server port.
 
+### Log statements (nvim-chainsaw)
+Inserts filetype-aware log lines (`console.log` in JS/TS, `print` in Lua, …)
+below the cursor. All are dot-repeatable; `x` = also works on a visual selection.
+
+| Key | Action |
+|-----|--------|
+| `<leader>Ll` | Log variable under cursor (n, x) |
+| `<leader>Lo` | Log object, e.g. `JSON.stringify` (n, x) |
+| `<leader>Lt` | Log type, e.g. `typeof` (n, x) |
+| `<leader>La` | Assert variable (n, x) |
+| `<leader>Le` | Emoji marker for control flow |
+| `<leader>Lm` | Message log, cursor placed for text |
+| `<leader>LT` | Timer: 1st call starts, 2nd logs elapsed |
+| `<leader>Ld` | `debugger` statement |
+| `<leader>Ls` | Stacktrace |
+| `<leader>Lc` | Clear console |
+| `<leader>Lr` | Remove all chainsaw logs (x: selected lines only) |
+
 ---
 
 ## 8. Testing (Jest and Vitest)
