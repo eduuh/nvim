@@ -11,7 +11,9 @@ return {
   -- sockets while the plugin on main registers them under $XDG_RUNTIME_DIR, so a mismatched pair
   -- discovers nothing and reports it as "no editor open". lazy-lock.json pins the commit and this
   -- build re-runs on update, so they stay in step. (install-deps.sh already ensures cargo.)
-  build = "cargo install --path .",
+  -- --locked builds the plugin's own Cargo.lock; without it cargo re-resolves every dependency to
+  -- whatever is newest that day, so the same commit can build one day and break the next.
+  build = "cargo install --locked --path .",
   config = function()
     require("nvim-mcp").setup({})
   end,
